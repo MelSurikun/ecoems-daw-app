@@ -2,7 +2,7 @@
 
 <div align="center">
 
-## Portal web para consulta y análisis de resultados de la Evaluación de Competencias de Egresados de Educación Media Superior (ECOEMS)
+## Portal web para consulta y análisis de resultados de acceso libre para explorar el histórico de puntajes de corte, demanda y oferta del concurso de asignación a la Educación Media Superior en la Zona Metropolitana de la Ciudad de México.
 
 ---
 
@@ -14,6 +14,20 @@
 ![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+</div>
+
+---
+
+## Equipo de desarrollo
+
+<div align="center">
+
+| Integrante | Rol | Descripción |
+|------------|-----|-------------|
+| Héctor | Analista de Datos | Exploración y validación del dataset ECOEMS, definición de métricas, consultas SQL y lógica de análisis estadístico. |
+| Melanie | Backend & Base de Datos | Desarrollo en PHP, diseño de la base de datos MariaDB, scripts ETL de carga de CSV y endpoints de API. |
+| Amalia | Frontend | Diseño e implementación de interfaces HTML5/CSS3, integración de Chart.js para gráficas y Leaflet.js para el mapa. |
 
 </div>
 
