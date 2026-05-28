@@ -37,25 +37,22 @@ $stmt = $pdo->prepare("
 $stmt->execute($params);
 $totales = $stmt->fetch();
 
-// Top 10 planteles más solicitados
+// Top 10 planteles más solicitados (con nombre desde catálogo)
 $stmt2 = $pdo->prepare("
-    SELECT opc_ed01 AS clave, COUNT(*) AS solicitudes
-    FROM sustentantes
-    WHERE opc_ed01 IS NOT NULL AND pre_exa='S'
-    GROUP BY opc_ed01
+    SELECT s.opc_ed01 AS clave, COALESCE(p.nombre, '') AS nombre, COUNT(*) AS solicitudes
+    FROM sustentantes s
+    LEFT JOIN planteles p ON p.clave = s.opc_ed01
+    WHERE s.opc_ed01 IS NOT NULL AND pre_exa='S'
+    GROUP BY s.opc_ed01
     ORDER BY solicitudes DESC
     LIMIT 10
 ");
 $stmt2->execute();
 $top_planteles = $stmt2->fetchAll();
 
-// Distribución por institución asignada
+// Distribución por institución asignada (usando vista)
 $stmt3 = $pdo->query("
-    SELECT cveins_asi AS institucion, COUNT(*) AS asignados
-    FROM sustentantes
-    WHERE expl_fin='ASI'
-    GROUP BY cveins_asi
-    ORDER BY asignados DESC
+    SELECT * FROM v_resumen_instituciones ORDER BY asignados DESC
 ");
 $por_institucion = $stmt3->fetchAll();
 

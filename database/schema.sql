@@ -95,16 +95,17 @@ CREATE TABLE IF NOT EXISTS sustentantes (
 -- Catálogo de planteles (opciones educativas)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS planteles (
-    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    clave      CHAR(7)      NOT NULL UNIQUE COMMENT 'Clave COMIPEMS (ej. B00001, U60001)',
-    nombre     VARCHAR(120) NOT NULL,
-    subsistema VARCHAR(50)  COMMENT 'DGETI, UNAM, IPN, CONALEP, COLBACH, etc.',
-    turno      VARCHAR(20)  COMMENT 'Matutino, Vespertino',
-    municipio  VARCHAR(50),
-    estado     VARCHAR(30)  DEFAULT 'Ciudad de México',
-    direccion  VARCHAR(200) COMMENT 'Domicilio del plantel',
-    latitud    DECIMAL(9,6),
-    longitud   DECIMAL(9,6)
+    id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    clave        CHAR(7)      NOT NULL UNIQUE COMMENT 'Clave COMIPEMS (ej. B00001, U60001)',
+    nombre       VARCHAR(120) NOT NULL COMMENT 'Nombre del plantel',
+    especialidad VARCHAR(100) COMMENT 'Especialidad / carrera',
+    subsistema   VARCHAR(50)  COMMENT 'DGETI, UNAM, IPN, CONALEP, COLBACH, etc.',
+    turno        VARCHAR(20)  COMMENT 'Matutino, Vespertino',
+    municipio    VARCHAR(50),
+    estado       VARCHAR(30)  DEFAULT 'Ciudad de México',
+    direccion    VARCHAR(250) COMMENT 'Domicilio del plantel',
+    latitud      DECIMAL(9,6),
+    longitud     DECIMAL(9,6)
 ) ENGINE=InnoDB COMMENT='Catálogo de opciones educativas COMIPEMS';
 
 -- Índices para búsquedas frecuentes del portal

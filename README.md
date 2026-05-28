@@ -1,191 +1,142 @@
-<div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="">
-    <img alt="ECOEMS" src="" width="480">
-  </picture>
-  <br><br>
+# ECOEMS — Portal de Datos DAW
 
-  **Portal de consulta y análisis de resultados del concurso de asignación a la Educación Media Superior en la Zona Metropolitana de la Ciudad de México.**
-
-  <br>
-
-  [![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
-  [![MariaDB](https://img.shields.io/badge/MariaDB-11.x-003545?style=flat-square&logo=mariadb&logoColor=white)](https://mariadb.org)
-  [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-  [![Chart.js](https://img.shields.io/badge/Chart.js-4.4.0-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)](https://www.chartjs.org)
-  [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat-square&logo=leaflet&logoColor=white)](https://leafletjs.com)
-  [![CSS3](https://img.shields.io/badge/CSS3-Flexbox_Grid-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-  [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)]()
-</div>
+Portal web para consulta, comparacion y visualizacion de resultados del concurso COMIPEMS de asignacion a la educacion media superior en la Zona Metropolitana de la Ciudad de Mexico.
 
 ---
 
-## 📋 Tabla de Contenido
+## Stack
 
-- [Descripción](#-descripción)
-- [Stack Tecnológico](#-stack-tecnológico)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Instalación](#-instalación)
-  - [Requisitos](#requisitos)
-  - [Base de Datos](#base-de-datos)
-  - [Carga de Datos](#carga-de-datos)
-- [Uso](#-uso)
-- [API REST](#-api-rest)
-- [Equipo](#-equipo)
-- [Licencia](#-licencia)
+| Tecnologia | Uso |
+|---|---|
+| PHP 8 | Backend, API REST, templates |
+| MariaDB | Base de datos relacional |
+| JavaScript | Frontend interactivo |
+| Chart.js 4.4.0 | Graficas (CDN) |
+| Leaflet 1.9.4 | Mapas interactivos (CDN) |
+| CSS3 | Estilos responsive |
+| Sora + IBM Plex Serif | Tipografia (Google Fonts) |
 
----
-
-## 🎯 Descripción
-
-**ECOEMS** (*Estadísticas del Concurso de Opciones Educativas de la Educación Media Superior*) es una aplicación web que permite explorar, comparar y visualizar datos históricos del concurso de asignación escolar COMIPEMS. La plataforma ofrece:
-
-- **Búsqueda** de planteles educativos por nombre o clave.
-- **Comparación** lado a lado de hasta 4 escuelas con gráficas de puntajes históricos.
-- **Mapa interactivo** con geolocalización de los 902 planteles registrados.
-- **Resumen estadístico** con métricas globales y filtros por institución.
-- **Catálogo completo** de planteles con búsqueda y filtros por tipo de institución.
+Sin build steps, sin npm, sin composer. Servido directamente por Apache/Nginx.
 
 ---
 
-## 🛠 Stack Tecnológico
-
-| Tecnología | Versión | Propósito |
-|---|---|---|
-| **PHP** | 8.x | Backend, API REST, templates |
-| **MariaDB** | 11.x | Base de datos relacional |
-| **JavaScript** | ES6 | Frontend interactivo |
-| **Chart.js** | 4.4.0 | Gráficas de datos (CDN) |
-| **Leaflet** | 1.9.4 | Mapas interactivos (CDN) |
-| **CSS3** | — | Diseño responsive con custom properties |
-| **Sora + IBM Plex Serif** | — | Tipografía vía Google Fonts |
-
-Sin build steps, sin npm, sin composer — servido directamente por Apache/Nginx.
-
----
-
-## 📁 Estructura del Proyecto
-
-```
-ecoems-daw-app/
-├── frontend/               → Interfaces de usuario
-│   ├── index.php           →   Página de inicio (búsqueda)
-│   ├── escuela.php         →   Ficha por plantel (stats)
-│   ├── comparar.php        →   Comparador (máx. 4 planteles)
-│   ├── mapa.php            →   Mapa interactivo (Leaflet)
-│   ├── resumen.php         →   Estadísticas generales
-│   ├── planteles.php       →   Catálogo completo de planteles
-│   ├── acerca.php          →   Acerca del proyecto
-│   ├── includes/
-│   │   └── navbar.php      →   Navbar compartido (SVG logo)
-│   ├── css/
-│   │   └── estilos.css     →   Estilos globales
-│   └── js/
-│       ├── graficas.js     →   Módulos Chart.js
-│       └── mapa.js         →   Lógica Leaflet
-├── backend/
-│   ├── config.php          →   Conexión PDO a MariaDB
-│   ├── api/
-│   │   ├── escuela.php     →   GET /?plantel=CLAVE&q=texto
-│   │   ├── comparar.php    →   GET /?claves[]=A&claves[]=B
-│   │   ├── resumen.php     →   GET / (global) / ?institucion=X
-│   │   └── planteles.php   →   GET /?q=texto / ?clave=X (vacio=todo)
-│   └── etl/
-│       ├── carga_csv.php   →   ETL: CSV → tabla sustentantes (CLI)
-│       └── carga_planteles.py → ETL: PDF → tabla planteles
-├── database/
-│   └── schema.sql          →   DDL completo (tablas + vistas)
-├── temp/                   →   Archivos temporales (CSV, PDF extraído)
-├── docs/                   →   Documentación del proyecto
-└── prototipo/              →   Wireframes (primera entrega)
-```
-
----
-
-## 🚀 Instalación
+## Instalacion
 
 ### Requisitos
 
-- PHP 8.x con extensiones `pdo_mysql` y `mbstring`
-- MariaDB 10.x / 11.x
+- PHP 8 con extensiones `pdo_mysql` y `mbstring`
+- MariaDB 10+ o MySQL 8+
 - Apache o Nginx
 - Python 3 + `pdftotext` (solo para ETL de planteles)
 
-### Base de Datos
+### 1. Base de datos
 
 ```bash
-# Crear la base de datos y tablas
 mysql -u root < database/schema.sql
+```
 
-# Poblar catálogo de planteles (902 registros)
+### 2. Catalogos
+
+```bash
+# Poblar los 902 planteles (extraidos del PDF oficial COMIPEMS)
 mysql -u root ecoems_db < temp/planteles_inserts.sql
 ```
 
-### Carga de Datos (CSV)
+### 3. Carga de datos (CSV)
 
 ```bash
-# Importar archivo CSV de sustentantes
 php backend/etl/carga_csv.php --archivo=/ruta/al/archivo.csv
 ```
 
-> **Nota:** El ETL normaliza codificación (latin1 → utf8), valúa columnas y hace commit cada 500 filas. Ejecutar solo en CLI.
+El ETL normaliza codificacion (latin1 a utf8), valida columnas y hace commit cada 500 filas. Solo se ejecuta en CLI.
 
-### Extracción de Planteles desde PDF
+### 4. (Opcional) Extraer planteles desde PDF
 
 ```bash
-# Extraer 902 planteles del PDF oficial COMIPEMS
 python3 backend/etl/carga_planteles.py temp/OPC_EDU_2025.pdf
+```
 
-# El script genera temp/planteles_inserts.sql automáticamente
+Genera `temp/planteles_inserts.sql` con los 902 planteles.
+
+---
+
+## Estructura
+
+```
+ecoems-daw-app/
+├── frontend/          → Paginas PHP (index, escuela, comparar, mapa, resumen, planteles, acerca)
+│   ├── includes/
+│   │   └── navbar.php → Barra de navegacion compartida
+│   ├── css/estilos.css
+│   └── js/
+│       ├── graficas.js
+│       └── mapa.js
+├── backend/
+│   ├── config.php     → Conexion PDO a MariaDB
+│   ├── api/           → Endpoints REST (escuela, comparar, resumen, planteles)
+│   └── etl/           → Scripts de carga (carga_csv.php, carga_planteles.py)
+├── database/
+│   └── schema.sql     → DDL completo
+├── temp/              → Archivos temporales (CSV, SQL generado)
+├── docs/
+└── prototipo/
 ```
 
 ---
 
-## 💻 Uso
+## Paginas
 
-| Ruta | Descripción |
+| Ruta | Que hace |
 |---|---|
-| `/index.php` | Búsqueda por nombre, clave o tipo de institución |
-| `/escuela.php?plantel=B00001` | Ficha completa con estadísticas históricas |
-| `/comparar.php` | Comparación simultánea de hasta 4 planteles |
-| `/mapa.php` | Vista geográfica de todos los planteles |
-| `/resumen.php` | Dashboard con métricas globales |
-| `/planteles.php` | Catálogo completo con búsqueda y filtros |
-| `/acerca.php` | Información del proyecto y equipo |
+| `/index.php` | Busqueda por nombre, clave o tipo de institucion |
+| `/escuela.php?plantel=CLAVE` | Ficha completa con estadisticas |
+| `/comparar.php` | Comparacion de hasta 4 planteles |
+| `/mapa.php` | Mapa interactivo con todos los planteles |
+| `/resumen.php` | Dashboard con metricas globales |
+| `/planteles.php` | Catalogo completo con busqueda y filtros |
+| `/acerca.php` | Informacion del proyecto |
 
 ---
 
-## 🔌 API REST
+## API REST
 
 Todos los endpoints devuelven `{ status, datos }`.
 
-| Endpoint | Parámetros | Descripción |
+| Endpoint | Parametros | Descripcion |
 |---|---|---|
-| `backend/api/planteles.php` | `?q=texto` / `?clave=X` / (vacío) | Catálogo de planteles |
-| `backend/api/escuela.php` | `?plantel=X` (stats) / `?q=texto` (autocomplete) | Datos por plantel |
-| `backend/api/comparar.php` | `?claves[]=A&claves[]=B` (1-5) | Comparación múltiple |
-| `backend/api/resumen.php` | `?institucion=X` / (vacío = global) | Estadísticas generales |
+| `backend/api/planteles.php` | `?q=texto` / `?clave=X` / vacio | Catalogo de planteles |
+| `backend/api/escuela.php` | `?plantel=X` / `?q=texto` | Datos por plantel |
+| `backend/api/comparar.php` | `?claves[]=A&claves[]=B` (1-5) | Comparacion multiple |
+| `backend/api/resumen.php` | `?institucion=X` / vacio | Estadisticas generales |
 
 ---
 
-## 👥 Equipo
+## Base de datos
 
-| Integrante | Rol |
-|---|---|
-| **Héctor** | Analista de Datos — métricas, consultas SQL, validación del dataset |
-| **Melanie** | Backend & BD — PHP, MariaDB, API, ETL |
-| **Amalia** | Frontend — HTML5/CSS3, Chart.js, Leaflet, UX |
+El schema crea la base `ecoems_db` con tres objetos principales:
 
-Proyecto desarrollado para la materia de **Digitalización de Archivos Web (DAW)** — IPN-LCD.
+- **sustentantes** — Tabla principal con 66 columnas (folio, datos demograficos, resultados del examen, asignacion)
+- **planteles** — Catalogo de 902 opciones educativas con clave, nombre, subsistema, ubicacion y coordenadas
+- **v_corte_por_plantel** — Vista con puntajes de corte por plantel
+- **v_resumen_instituciones** — Vista con resumen por institucion
+
+### Configuracion
+
+Editar `backend/config.php` con las credenciales de tu base de datos:
+
+```php
+$host = 'localhost';
+$db   = 'ecoems_db';
+$user = 'ecoems_user';
+$pass = 'password';
+```
 
 ---
 
-## 📄 Licencia
+## Equipo
 
-Este proyecto es educativo y se distribuye bajo licencia - IPN.
+- **Hector** — Analisis de datos, metricas, consultas SQL
+- **Melanie** — Backend, base de datos, API, ETL
+- **Amalia** — Frontend, diseno, Chart.js, Leaflet
 
----
-
-<div align="center">
-  <sub>Hecho con ❤️ por el equipo DAW · IPN 2025-2026</sub>
-</div>
+Proyecto para la materia de Digitalizacion de Archivos Web (DAW) — IPN-LCD.

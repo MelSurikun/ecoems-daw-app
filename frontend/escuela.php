@@ -105,6 +105,21 @@
   <script>
     // ── Plantilla HTML para resultados ──────────────────────
     function plantillaResultado(clave, d) {
+      const nombreEsc = d.nombre || clave;
+      if (!d.tiene_datos) {
+        return `
+          <div class="result-header">
+            <div class="result-header-name">
+              <h2>${nombreEsc}</h2>
+              <p>Clave: <code>${clave}</code></p>
+            </div>
+          </div>
+          <div class="estado-msg">
+            Aun no tenemos un analisis de esta escuela.
+          </div>
+        `;
+      }
+
       const totalSol   = parseInt(d.total_solicitudes ?? 0).toLocaleString('es-MX');
       const asignados  = parseInt(d.asignados ?? 0).toLocaleString('es-MX');
       const corteMin   = d.puntaje_corte_min ?? '—';
@@ -115,11 +130,10 @@
       const mujeres    = parseInt(d.mujeres ?? 0).toLocaleString('es-MX');
 
       return `
-        <!-- Encabezado resultado -->
         <div class="result-header">
           <div class="result-header-name">
-            <h2>Plantel <code>${clave}</code></h2>
-            <p>Datos del proceso COMIPEMS 2024 &nbsp;·&nbsp; Fuente: XABER A.C.</p>
+            <h2>${nombreEsc}</h2>
+            <p>Clave: <code>${clave}</code> &nbsp;·&nbsp; Datos del proceso COMIPEMS 2024 &nbsp;·&nbsp; Fuente: XABER A.C.</p>
           </div>
           <div style="text-align:right">
             <p class="corte-label">Puntaje de corte promedio</p>
@@ -127,31 +141,27 @@
           </div>
         </div>
 
-        <!-- Stats rápidas -->
         <div class="stats-row mb-3">
-          <div class="stat-card"><div class="stat-num">${corteMin}</div><div class="stat-label">Corte mínimo</div></div>
+          <div class="stat-card"><div class="stat-num">${corteMin}</div><div class="stat-label">Corte minimo</div></div>
           <div class="stat-card"><div class="stat-num">${corteProm}</div><div class="stat-label">Corte promedio</div></div>
-          <div class="stat-card"><div class="stat-num">${corteMax}</div><div class="stat-label">Corte máximo</div></div>
+          <div class="stat-card"><div class="stat-num">${corteMax}</div><div class="stat-label">Corte maximo</div></div>
           <div class="stat-card"><div class="stat-num">${totalSol}</div><div class="stat-label">Solicitudes</div></div>
           <div class="stat-card"><div class="stat-num">${asignados}</div><div class="stat-label">Asignados</div></div>
         </div>
 
-        <!-- Gráficas -->
         <div class="grid-2 mb-3">
-          <!-- Distribución por sexo -->
           <div class="chart-area">
             <div class="chart-area-header">
-              <h3>👤 Distribución por sexo (asignados)</h3>
+              <h3>Distribucion por sexo (asignados)</h3>
             </div>
             <div class="canvas-wrap">
               <canvas id="chart-sexo" height="220"></canvas>
             </div>
           </div>
 
-          <!-- Stats adicionales -->
           <div class="chart-area">
             <div class="chart-area-header">
-              <h3>📋 Resumen del plantel</h3>
+              <h3>Resumen del plantel</h3>
             </div>
             <div style="padding:1.5rem">
               <table class="data-table">
@@ -159,8 +169,8 @@
                   <tr><td>Hombres solicitantes</td><td class="num">${hombres}</td></tr>
                   <tr><td>Mujeres solicitantes</td><td class="num">${mujeres}</td></tr>
                   <tr><td>Promedio certificado (asignados)</td><td class="num">${promCert}</td></tr>
-                  <tr><td>Puntaje de corte mín.</td><td class="num">${corteMin} pts</td></tr>
-                  <tr><td>Puntaje de corte máx.</td><td class="num">${corteMax} pts</td></tr>
+                  <tr><td>Puntaje de corte min.</td><td class="num">${corteMin} pts</td></tr>
+                  <tr><td>Puntaje de corte max.</td><td class="num">${corteMax} pts</td></tr>
                   <tr><td>Puntaje de corte prom.</td><td class="num" style="color:var(--bordo);font-weight:700">${corteProm} pts</td></tr>
                 </tbody>
               </table>
@@ -186,8 +196,8 @@
         const resp = await fetch(`${base}/api/escuela.php?plantel=${encodeURIComponent(clave)}`);
         const json = await resp.json();
 
-        if (json.status !== 'ok' || !json.datos.total_solicitudes) {
-          div.innerHTML = `<div class="estado-msg">⚠️ No se encontraron datos para la clave <strong>${clave}</strong>. Verifica que el plantel exista en la base de datos.</div>`;
+        if (json.status !== 'ok' || !json.datos) {
+          div.innerHTML = `<div class="estado-msg">No se encontraron datos para la clave <strong>${clave}</strong>. Verifica que el plantel exista en la base de datos.</div>`;
           return;
         }
 
@@ -229,7 +239,12 @@
         // Mostrar FAB
         document.getElementById('btn-fab').style.display = 'flex';
         document.getElementById('btn-fab').onclick = () => {
-          sessionStorage.setItem('comparar_agregar', clave);
+          let opcs;
+          try { opcs = JSON.parse(sessionStorage.getItem('comparar_opciones') || 'null'); } catch(e) { opcs = null; }
+          if (!Array.isArray(opcs)) opcs = [null, null, null, null];
+          const idx = opcs.indexOf(null);
+          if (idx !== -1 && !opcs.includes(clave)) opcs[idx] = clave;
+          sessionStorage.setItem('comparar_opciones', JSON.stringify(opcs));
           window.location.href = 'comparar.php';
         };
 
@@ -264,7 +279,7 @@
                  onclick="document.getElementById('inp-plantel').value='${item.clave_plantel}';
                           document.getElementById('autocomplete-list').style.display='none'">
               <strong>${item.clave_plantel}</strong>
-              <span style="color:#4a6070;margin-left:.5rem">${item.solicitudes.toLocaleString()} solicitudes</span>
+              <span style="color:#4a6070;margin-left:.5rem">${item.nombre ? item.nombre.substring(0,50) + ' · ' : ''}${item.solicitudes.toLocaleString()} solicitudes</span>
             </div>
           `).join('');
           autocomplete.style.display = 'block';

@@ -234,10 +234,11 @@
         // ── Tabla: top planteles ───────────────────────────
         document.getElementById('tbody-top').innerHTML = tp.map((d, i) => {
           const rankClass = i < 3 ? `rank-${i+1}` : 'rank-n';
+          const nombreEsc = d.nombre || d.clave || '—';
           return `
             <tr>
               <td><span class="ranking-badge ${rankClass}">${i+1}</span></td>
-              <td><strong>${d.clave ?? '—'}</strong></td>
+              <td><strong>${nombreEsc}</strong><br><span style="font-size:.72rem;color:var(--texto-2)">${d.clave ?? ''}</span></td>
               <td class="num">${parseInt(d.solicitudes ?? 0).toLocaleString('es-MX')}</td>
               <td><a href="escuela.php?plantel=${encodeURIComponent(d.clave ?? '')}"
                     class="btn btn-sm btn-bordo" style="font-size:.75rem;padding:.3rem .7rem">Ver →</a></td>

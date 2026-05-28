@@ -111,7 +111,7 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>Clave</th>
+              <th>Plantel</th>
               <th>Solicitudes</th>
               <th>Asignados</th>
               <th>Corte mín.</th>
@@ -154,8 +154,23 @@
     const SLOT_COLORES  = ['#023047', '#ffb703', '#fb8500', '#1E64C8'];
     const SLOT_CLASES   = ['s1', 's2', 's3', 's4'];
     const SLOT_NOMBRES  = ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'];
-    let opciones        = [null, null, null, null];   // claves seleccionadas
-    let slotActivo      = -1;                          // qué slot está esperando clave
+    let opciones = (() => {
+      try {
+        const saved = sessionStorage.getItem('comparar_opciones');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length === 4) return parsed;
+        }
+      } catch (e) {}
+      return [null, null, null, null];
+    })();
+
+    function guardarOpciones() {
+      sessionStorage.setItem('comparar_opciones', JSON.stringify(opciones));
+    }
+
+    let slotNombres   = [null, null, null, null];
+    let slotActivo    = -1;
 
     // ── Render de los 4 slots ───────────────────────────────
     function renderSlots() {
@@ -166,16 +181,16 @@
             <span style="font-size:1.5rem">＋</span>
             <span>${SLOT_NOMBRES[i]}</span>
           </div>`;
+        const nombre = slotNombres[i] || clave;
         return `
           <div class="option-slot filled ${SLOT_CLASES[i]}">
             <span class="slot-num">${SLOT_NOMBRES[i]}</span>
-            <span class="slot-name">${clave}</span>
+            <span class="slot-name">${nombre}</span>
             <span class="slot-inst" id="slot-inst-${i}">cargando…</span>
             <span class="slot-corte" id="slot-corte-${i}">…</span>
             <button class="slot-remove" onclick="quitarOpcion(${i})">✕ Quitar</button>
           </div>`;
       }).join('');
-      // Cargar mini-datos de cada slot llenado
       opciones.forEach((clave, i) => { if (clave) cargarMiniDato(clave, i); });
     }
 
@@ -185,12 +200,15 @@
         const json = await resp.json();
         if (json.status === 'ok') {
           const d = json.datos;
+          if (d.nombre) { slotNombres[idx] = d.nombre; document.querySelectorAll('.slot-name')[idx].textContent = d.nombre; }
           document.getElementById(`slot-corte-${idx}`).textContent =
             (d.puntaje_corte_prom ?? '—') + ' pts';
           document.getElementById(`slot-inst-${idx}`).textContent =
-            `Solicitudes: ${parseInt(d.total_solicitudes ?? 0).toLocaleString('es-MX')}`;
+            d.tiene_datos
+              ? `Solicitudes: ${parseInt(d.total_solicitudes ?? 0).toLocaleString('es-MX')}`
+              : 'Sin datos disponibles';
         }
-      } catch (e) { /* sin conexión */ }
+      } catch (e) {}
     }
 
     // ── Modal ───────────────────────────────────────────────
@@ -208,6 +226,7 @@
       if (!clave) { alert('Escribe una clave de plantel.'); return; }
       if (opciones.includes(clave)) { alert('Esa clave ya está en la comparación.'); return; }
       opciones[slotActivo] = clave;
+      guardarOpciones();
       cerrarModal();
       renderSlots();
     }
@@ -220,6 +239,7 @@
 
     function quitarOpcion(idx) {
       opciones[idx] = null;
+      guardarOpciones();
       renderSlots();
       document.getElementById('area-grafica').style.display = 'none';
       document.getElementById('area-tabla').style.display   = 'none';
@@ -254,21 +274,27 @@
       }
     });
 
+    function nombreSlot(i) {
+      const opc = opciones.filter(Boolean);
+      const idx = opc.indexOf(opciones[i]);
+      return slotNombres[i] || opciones[i] || ('Opción ' + (i + 1));
+    }
+
     // ── Gráfica de barras agrupadas ─────────────────────────
     function renderGraficaComparacion(datos, claves) {
       const areaGrafica = document.getElementById('area-grafica');
       areaGrafica.style.display = 'block';
 
-      // Leyenda
+      const indices = claves.map(c => opciones.indexOf(c));
       document.getElementById('leyenda-comparar').innerHTML = datos.map((d, i) => `
         <div class="legend-item-compare">
           <div class="legend-color" style="background:${SLOT_COLORES[claves.indexOf(d.clave_plantel ?? claves[i])]}"></div>
           ${d.clave_plantel ?? claves[i]}
         </div>`).join('');
 
-      const labels   = ['Total solicitudes', 'Asignados', 'Corte mín.', 'Corte prom.', 'Corte máx.'];
+      const labels   = ['Total solicitudes', 'Asignados', 'Corte min.', 'Corte prom.', 'Corte max.'];
       const datasets = datos.map((d, i) => ({
-        label: d.clave_plantel ?? claves[i],
+        label: (i < indices.length ? nombreSlot(indices[i]) : (d.clave_plantel ?? claves[i])),
         data: [
           parseInt(d.total_solicitudes ?? 0),
           parseInt(d.asignados ?? 0),
@@ -304,11 +330,15 @@
     // ── Tabla comparativa ───────────────────────────────────
     function renderTablaComparacion(datos) {
       document.getElementById('area-tabla').style.display = 'block';
-      document.getElementById('tabla-cuerpo').innerHTML = datos.map((d, i) => `
+      const indices = opciones.map((o, i) => ({o, i})).filter(x => x.o).map(x => x.i);
+      document.getElementById('tabla-cuerpo').innerHTML = datos.map((d, i) => {
+        const idx = i < indices.length ? indices[i] : -1;
+        const nombre = idx >= 0 ? nombreSlot(idx) : (d.clave_plantel ?? '—');
+        return `
         <tr>
           <td><span style="width:10px;height:10px;border-radius:50%;background:${SLOT_COLORES[i]};display:inline-block;margin-right:.4rem"></span>
               <a href="escuela.php?plantel=${encodeURIComponent(d.clave_plantel ?? '')}" style="color:var(--bordo);font-weight:600">
-                ${d.clave_plantel ?? '—'}
+                ${nombre}
               </a></td>
           <td class="num">${parseInt(d.total_solicitudes ?? 0).toLocaleString('es-MX')}</td>
           <td class="num">${parseInt(d.asignados ?? 0).toLocaleString('es-MX')}</td>
@@ -317,13 +347,17 @@
           <td class="num" style="font-weight:700;color:var(--bordo)">${d.puntaje_prom ?? '—'}</td>
           <td class="num">${d.pct_mat ?? '—'}%</td>
           <td class="num">${d.pct_esp ?? '—'}%</td>
-        </tr>`).join('');
+        </tr>`;}).join('');
     }
 
-    // ── Al cargar: revisar sessionStorage (viene de escuela.php) ──
+    // ── Al cargar: revisar si escuela.php redirigio con una clave ──
     const clavePendiente = sessionStorage.getItem('comparar_agregar');
     if (clavePendiente) {
-      opciones[0] = clavePendiente;
+      const idx = opciones.indexOf(null);
+      if (idx !== -1 && !opciones.includes(clavePendiente)) {
+        opciones[idx] = clavePendiente;
+        guardarOpciones();
+      }
       sessionStorage.removeItem('comparar_agregar');
     }
     renderSlots();

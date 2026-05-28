@@ -10,16 +10,11 @@
         </defs>
         <rect width="300" height="70" rx="8" fill="#023047"/>
 
-        <!-- Left cyan border -->
-        <rect x="12" y="12" width="3" height="46" rx="1" fill="#00e5ff"/>
-
-        <!-- Gold star/sparkle -->
-        <path d="M44 10 L46 17 L53 19 L46 21 L44 28 L42 21 L35 19 L42 17 Z" fill="url(#goldGrad)"/>
-
-        <!-- Abstract cyan "E" emblem -->
-        <rect x="20" y="17" width="7" height="36" rx="1.5" fill="#00e5ff"/>
-        <path d="M20 20 Q30 18 52 24 L52 28 Q30 22 20 24 Z" fill="#00e5ff"/>
-        <path d="M20 48 L52 48 L52 51 L20 51 Z" fill="#00e5ff"/>
+        <!-- Gold graduation cap (birrete) -->
+        <polygon points="40,6 62,13 40,20 18,13" fill="url(#goldGrad)"/>
+        <rect x="26" y="18" width="28" height="5" rx="2" fill="url(#goldGrad)"/>
+        <path d="M55,20 Q58,25 55,33" stroke="url(#goldGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M53,31 L57,31 Q55,35 55,38" stroke="url(#goldGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
         <!-- Gold right accent line -->
         <line x1="284" y1="14" x2="284" y2="56" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
@@ -28,7 +23,7 @@
         <text x="72" y="33" font-family="'Sora',Arial,sans-serif" font-size="22" font-weight="800" fill="#00e5ff" letter-spacing="3">ECOEMS</text>
 
         <!-- "DATOS" subtitle -->
-        <text x="72" y="51" font-family="'Sora',Arial,sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,.6)" letter-spacing="2.5">DATOS</text>
+        <text x="72" y="51" font-family="'Sora',Arial,sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,.6)" letter-spacing="2.5">PORTAL</text>
       </svg>
     </a>
   </div>

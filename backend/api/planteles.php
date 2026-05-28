@@ -15,7 +15,7 @@ if ($clave) {
     echo json_encode(['status' => 'ok', 'datos' => $row ?: null]);
 } elseif ($q) {
     $stmt = $pdo->prepare("
-        SELECT clave, nombre, subsistema, municipio, estado, direccion
+        SELECT clave, nombre, especialidad, subsistema, municipio, estado, direccion
         FROM planteles
         WHERE clave LIKE :q OR nombre LIKE :q2
         ORDER BY clave

@@ -140,7 +140,9 @@
           const resp = await fetch('../backend/api/planteles.php');
           const json = await resp.json();
           if (json.status !== 'ok') throw new Error('Error al cargar planteles');
-          todosPlanteles = json.datos.filter(p => p.latitud && p.longitud);
+          todosPlanteles = json.datos;
+          const conCoords = todosPlanteles.filter(p => p.latitud && p.longitud).length;
+          console.log(`Planteles cargados: ${todosPlanteles.length}, con coordenadas: ${conCoords}`);
         }
 
         const filtro = q ? todosPlanteles.filter(p =>
@@ -158,7 +160,8 @@
         lista.innerHTML = '';
 
         for (const p of filtro) {
-          const coords = [parseFloat(p.latitud), parseFloat(p.longitud)];
+          const tieneCoords = p.latitud && p.longitud;
+          const coords = tieneCoords ? [parseFloat(p.latitud), parseFloat(p.longitud)] : null;
           const color = colorPorInst(p.clave);
 
           const li = document.createElement('li');
@@ -175,9 +178,11 @@
 
           // Fetch stats
           let puntaje = '?';
+          let sjData = null;
           try {
             const sr = await fetch(`../backend/api/escuela.php?plantel=${encodeURIComponent(p.clave)}`);
             const sj = await sr.json();
+            sjData = sj;
             if (sj.status === 'ok' && sj.datos.total_solicitudes) {
               const d = sj.datos;
               puntaje = d.puntaje_corte_prom ? Math.round(parseFloat(d.puntaje_corte_prom)) : '?';
@@ -186,32 +191,40 @@
             }
           } catch (e) {}
 
-          const marker = L.marker(coords, { icon: crearIcono(color, puntaje) });
-          marker.bindPopup(`
-            <div style="font-family:Sora,sans-serif;min-width:200px">
-              <strong style="color:#023047;font-size:.95rem">${p.nombre || p.clave}</strong>
-              <div style="font-size:.78rem;color:var(--texto-2);margin:.3rem 0">
-                ${p.clave} · ${p.subsistema || '—'}
-              </div>
-              <hr style="margin:.5rem 0;border-color:#e2eaf0">
-              <table style="width:100%;font-size:.82rem">
-                <tr><td style="color:#4a6070">Solicitudes</td>
-                    <td style="text-align:right;font-weight:700">${puntaje !== '?' ? parseInt(sj?.datos?.total_solicitudes ?? 0).toLocaleString('es-MX') : '—'}</td></tr>
-                <tr><td style="color:#4a6070">Corte prom.</td>
-                    <td style="text-align:right;font-weight:700;color:#023047">${puntaje} pts</td></tr>
-              </table>
-              <a href="escuela.php?plantel=${encodeURIComponent(p.clave)}"
-                 style="display:block;margin-top:.6rem;background:#023047;color:#fff;
-                        text-align:center;padding:.35rem;border-radius:4px;font-size:.78rem;
-                        text-decoration:none">Ver detalle →</a>
-            </div>
-          `);
-          marcadoresLayer.addLayer(marker);
+          const totalSolicitudes = sjData?.datos?.total_solicitudes
+            ? parseInt(sjData.datos.total_solicitudes).toLocaleString('es-MX') : '—';
 
-          li.addEventListener('click', () => {
-            mapaLeaflet.setView(coords, 14);
-            marker.openPopup();
-          });
+          if (tieneCoords) {
+            const marker = L.marker(coords, { icon: crearIcono(color, puntaje) });
+            marker.bindPopup(`
+              <div style="font-family:Sora,sans-serif;min-width:200px">
+                <strong style="color:#023047;font-size:.95rem">${p.nombre || p.clave}</strong>
+                <div style="font-size:.78rem;color:var(--texto-2);margin:.3rem 0">
+                  ${p.clave} · ${p.subsistema || '—'}
+                </div>
+                <hr style="margin:.5rem 0;border-color:#e2eaf0">
+                <table style="width:100%;font-size:.82rem">
+                  <tr><td style="color:#4a6070">Solicitudes</td>
+                      <td style="text-align:right;font-weight:700">${totalSolicitudes}</td></tr>
+                  <tr><td style="color:#4a6070">Corte prom.</td>
+                      <td style="text-align:right;font-weight:700;color:#023047">${puntaje} pts</td></tr>
+                </table>
+                <a href="escuela.php?plantel=${encodeURIComponent(p.clave)}"
+                   style="display:block;margin-top:.6rem;background:#023047;color:#fff;
+                          text-align:center;padding:.35rem;border-radius:4px;font-size:.78rem;
+                          text-decoration:none">Ver detalle →</a>
+              </div>
+            `);
+            marcadoresLayer.addLayer(marker);
+
+            li.addEventListener('click', () => {
+              mapaLeaflet.setView(coords, 14);
+              marker.openPopup();
+            });
+          } else {
+            li.style.opacity = '0.6';
+            li.title = 'Sin coordenadas disponibles';
+          }
         }
 
         renderFiltros(filtro);

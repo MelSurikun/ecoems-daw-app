@@ -1,0 +1,7 @@
+.vscode/
+AGENTS.md
+.DS_Store
+Thumbs.db
+*.swp
+*.local
+.env
