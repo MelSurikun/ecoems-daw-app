@@ -89,21 +89,7 @@
 </head>
 <body class="page-wrapper">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-brand">
-      <div class="navbar-logo">E</div>
-      <div><span>Portal ECOEMS</span><small>Consulta Histórica · IPN-LCD</small></div>
-    </div>
-    <ul class="navbar-nav">
-      <li><a href="index.php">Inicio</a></li>
-      <li><a href="escuela.php">Por Escuela</a></li>
-      <li><a href="comparar.php">Comparador</a></li>
-      <li><a href="mapa.php">Mapa</a></li>
-      <li><a href="resumen.php">Resumen</a></li>
-      <li><a href="acerca.php" class="activo">Acerca</a></li>
-    </ul>
-  </nav>
+  <?php require 'includes/navbar.php'; ?>
 
   <!-- Page header -->
   <div class="page-header">

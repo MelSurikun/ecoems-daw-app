@@ -5,269 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS — Resumen Estadístico</title>
   <link rel="stylesheet" href="css/estilos.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    .sort-arrow { color: var(--oro); margin-left: .3rem; font-size: .75rem; }
-    .trend-spark { font-size: 1.1rem; }
-    .num-med { color: #1E64C8; font-family: var(--font-display); font-weight: 700; }
-    .num-mean { color: #2E7D32; font-family: var(--font-display); font-weight: 700; }
-
-    /* Mini sparkline SVG */
     .spark { width: 70px; height: 28px; vertical-align: middle; }
     .spark polyline { fill: none; stroke-width: 2; stroke-linecap: round; }
-
     .ranking-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      font-size: .78rem;
-      font-weight: 700;
-      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      font-size: .78rem; font-weight: 700; flex-shrink: 0;
     }
-    .rank-1 { background: var(--oro);   color: var(--bordo); }
-    .rank-2 { background: #c0c0c0;      color: #333; }
-    .rank-3 { background: #cd7f32;      color: #fff; }
-    .rank-n { background: var(--fondo); color: var(--texto-2); border: 1px solid var(--borde); }
-
-    .tab-bar {
-      display: flex;
-      gap: .4rem;
-      border-bottom: 2px solid var(--borde);
-      margin-bottom: 1.5rem;
-    }
+    .rank-1 { background: var(--oro); color: var(--bordo); }
+    .rank-2 { background: #c0c0c0;    color: #333; }
+    .rank-3 { background: #cd7f32;    color: #fff; }
+    .rank-n { background: var(--fondo); color: var(--texto-2); border:1px solid var(--borde); }
+    .tab-bar { display:flex; gap:.4rem; border-bottom:2px solid var(--borde); margin-bottom:1.5rem; }
     .tab-btn {
-      padding: .6rem 1.2rem;
-      border: none;
-      background: none;
-      font-family: var(--font-body);
-      font-size: .86rem;
-      font-weight: 600;
-      color: var(--texto-2);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      transition: var(--trans);
+      padding:.6rem 1.2rem; border:none; background:none;
+      font-family:var(--font-body); font-size:.86rem; font-weight:600;
+      color:var(--texto-2); cursor:pointer; border-bottom:2px solid transparent;
+      margin-bottom:-2px; transition:var(--trans);
     }
-    .tab-btn.active { color: var(--bordo); border-bottom-color: var(--bordo); }
-    .tab-btn:hover { color: var(--bordo); }
+    .tab-btn.active { color:var(--bordo); border-bottom-color:var(--bordo); }
+    .tab-btn:hover { color:var(--bordo); }
+    .spinner { display:inline-block; width:16px; height:16px; border:2px solid var(--borde);
+               border-top-color:var(--bordo); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .canvas-wrap { padding:1.5rem; }
   </style>
 </head>
 <body class="page-wrapper">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-brand">
-      <div class="navbar-logo">E</div>
-      <div><span>Portal ECOEMS</span><small>Consulta Histórica · IPN-LCD</small></div>
-    </div>
-    <ul class="navbar-nav">
-      <li><a href="index.php">Inicio</a></li>
-      <li><a href="escuela.php">Por Escuela</a></li>
-      <li><a href="comparar.php">Comparador</a></li>
-      <li><a href="mapa.php">Mapa</a></li>
-      <li><a href="resumen.php" class="activo">Resumen</a></li>
-      <li><a href="acerca.php">Acerca</a></li>
-    </ul>
-  </nav>
+  <?php require 'includes/navbar.php'; ?>
 
   <!-- Page header -->
   <div class="page-header">
     <div class="container">
       <p class="page-header-eyebrow">Módulo 4</p>
       <h1>Resumen Estadístico</h1>
-      <p>Tabla dinámica de media, mediana, tendencia y ranking de puntajes de corte por institución.</p>
+      <p>Estadísticas globales del proceso COMIPEMS 2024 obtenidas en tiempo real desde la base de datos.</p>
     </div>
   </div>
 
   <section class="section">
     <div class="container">
 
-      <!-- Filtros -->
-      <div class="filters-panel mb-3">
-        <div class="filter-group">
-          <label>Año</label>
-          <select class="filter-select">
-            <option selected>2024</option><option>2023</option><option>Promedio 2015-2024</option><option>Promedio histórico</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Institución</label>
-          <select class="filter-select">
-            <option>Todas</option>
-            <option>UNAM</option>
-            <option>IPN</option>
-            <option>SEP</option>
-            <option>CONALEP</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Ordenar por</label>
-          <select class="filter-select">
-            <option>Mayor puntaje de corte</option>
-            <option>Menor puntaje de corte</option>
-            <option>Mayor demanda</option>
-            <option>Mayor ratio D/O</option>
-          </select>
-        </div>
-        <button class="btn btn-bordo btn-sm">Aplicar</button>
-        <button class="btn btn-sm" style="background:var(--fondo);border:1.5px solid var(--borde)">↓ Exportar CSV</button>
+      <!-- KPIs globales (se llenan con JS) -->
+      <div class="stats-row mb-3" id="kpis-globales">
+        <div class="stat-card"><div class="stat-num"><span class="spinner"></span></div><div class="stat-label">Total sustentantes</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Presentaron examen</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Asignados</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Puntaje prom. global</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Hombres</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Mujeres</div></div>
       </div>
 
-      <!-- KPIs globales 2024 -->
-      <div class="stats-row mb-3">
-        <div class="stat-card"><div class="stat-num">107</div><div class="stat-label">Corte prom. ZMCDMX</div></div>
-        <div class="stat-card"><div class="stat-num">108</div><div class="stat-label">Mediana de cortes</div></div>
-        <div class="stat-card"><div class="stat-num">603</div><div class="stat-label">Opciones disponibles</div></div>
-        <div class="stat-card"><div class="stat-num">380K</div><div class="stat-label">Aspirantes 2024</div></div>
-        <div class="stat-card"><div class="stat-num">118</div><div class="stat-label">Corte más alto (Prepa 6)</div></div>
-        <div class="stat-card"><div class="stat-num">58</div><div class="stat-label">Corte más bajo</div></div>
+      <!-- Gráficas -->
+      <div class="grid-2 mb-3">
+        <div class="chart-area">
+          <div class="chart-area-header">
+            <h3>🏫 Asignados por institución</h3>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="chart-inst" height="240"></canvas>
+          </div>
+        </div>
+        <div class="chart-area">
+          <div class="chart-area-header">
+            <h3>📐 Porcentaje por materia (promedio global)</h3>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="chart-materias" height="240"></canvas>
+          </div>
+        </div>
       </div>
 
       <!-- Tabs -->
       <div class="tab-bar">
-        <button class="tab-btn active">Por institución</button>
-        <button class="tab-btn">Por plantel (top 20)</button>
-        <button class="tab-btn">Tendencia anual</button>
+        <button class="tab-btn active" id="tab-inst">Por institución</button>
+        <button class="tab-btn" id="tab-top">Top 10 planteles más solicitados</button>
       </div>
 
-      <!-- Tabla principal -->
-      <div class="data-table-wrap">
-        <div style="padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--borde)">
-          <h3 style="font-family:var(--font-display);color:var(--bordo)">Resumen por institución — 2024</h3>
-          <span style="font-size:.78rem;color:var(--texto-2)">Haz clic en los encabezados para ordenar</span>
+      <!-- Tabla por institución -->
+      <div id="panel-inst">
+        <div class="data-table-wrap">
+          <div style="padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--borde)">
+            <h3 style="font-family:var(--font-display);color:var(--bordo)">Resumen por institución asignada — 2024</h3>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Institución</th>
+                <th>Aspirantes</th>
+                <th>Asignados</th>
+                <th>Prom. aciertos</th>
+                <th>Prom. certificado</th>
+                <th>Hombres</th>
+                <th>Mujeres</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-inst">
+              <tr><td colspan="8" style="text-align:center;padding:1.5rem;color:var(--texto-2)">
+                <span class="spinner"></span> Cargando desde la base de datos…
+              </td></tr>
+            </tbody>
+          </table>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:40px">#</th>
-              <th>Institución</th>
-              <th>Planteles</th>
-              <th>Corte prom. <span class="sort-arrow">▲</span></th>
-              <th>Corte mediana</th>
-              <th>Corte más alto</th>
-              <th>Corte más bajo</th>
-              <th>Demanda total</th>
-              <th>Tendencia (5 años)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="ranking-badge rank-1">1</span></td>
-              <td><strong>UNAM — ENP</strong></td>
-              <td>9</td>
-              <td class="num">113</td>
-              <td class="num-med">114</td>
-              <td class="num">118</td>
-              <td>108</td>
-              <td>72,400</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,22 18,18 31,15 44,12 57,10 65,8" stroke="#023047"/>
-                </svg>
-                <span class="badge badge-up">▲ +5</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-2">2</span></td>
-              <td><strong>UNAM — CCH</strong></td>
-              <td>5</td>
-              <td class="num">110</td>
-              <td class="num-med">111</td>
-              <td class="num">115</td>
-              <td>104</td>
-              <td>56,200</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,20 18,17 31,16 44,14 57,13 65,11" stroke="#023047"/>
-                </svg>
-                <span class="badge badge-up">▲ +3</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-3">3</span></td>
-              <td><strong>UAM</strong></td>
-              <td>4</td>
-              <td class="num">102</td>
-              <td class="num-med">103</td>
-              <td class="num">108</td>
-              <td>97</td>
-              <td>18,100</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,18 18,17 31,16 44,15 57,15 65,14" stroke="#ffb703"/>
-                </svg>
-                <span class="badge badge-up">▲ +2</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-n">4</span></td>
-              <td><strong>IPN — CECyT</strong></td>
-              <td>16</td>
-              <td class="num">95</td>
-              <td class="num-med">96</td>
-              <td class="num">104</td>
-              <td>84</td>
-              <td>88,000</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,16 18,17 31,15 44,14 57,14 65,12" stroke="#ffb703"/>
-                </svg>
-                <span class="badge badge-up">▲ +2</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-n">5</span></td>
-              <td><strong>SEP — DGETI (CETIS/CBTIS)</strong></td>
-              <td>42</td>
-              <td class="num">78</td>
-              <td class="num-med">76</td>
-              <td class="num">95</td>
-              <td>58</td>
-              <td>95,000</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,14 18,15 31,16 44,14 57,13 65,13" stroke="#1E64C8"/>
-                </svg>
-                <span class="badge badge-down">▼ −1</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-n">6</span></td>
-              <td><strong>CONALEP</strong></td>
-              <td>28</td>
-              <td class="num">70</td>
-              <td class="num-med">69</td>
-              <td class="num">82</td>
-              <td>58</td>
-              <td>62,000</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,12 18,14 31,13 44,14 57,15 65,14" stroke="#2E7D32"/>
-                </svg>
-                <span class="badge badge-down">▼ −1</span>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="ranking-badge rank-n">7</span></td>
-              <td><strong>SEP — DGB (Preparatorias)</strong></td>
-              <td>18</td>
-              <td class="num">68</td>
-              <td class="num-med">67</td>
-              <td class="num">79</td>
-              <td>58</td>
-              <td>42,000</td>
-              <td>
-                <svg class="spark" viewBox="0 0 70 28">
-                  <polyline points="5,15 18,16 31,17 44,16 57,16 65,17" stroke="#888"/>
-                </svg>
-                <span class="badge badge-down">▼ −2</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="padding:.8rem 1.5rem;background:var(--fondo);font-size:.76rem;color:var(--texto-2)">
-          7 instituciones · 122 planteles mostrados · Datos ECOEMS 2024 via XABER A.C.
+      </div>
+
+      <!-- Tabla top planteles (oculta al inicio) -->
+      <div id="panel-top" style="display:none">
+        <div class="data-table-wrap">
+          <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--borde)">
+            <h3 style="font-family:var(--font-display);color:var(--bordo)">Top 10 planteles más solicitados — 2024</h3>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>#</th><th>Clave de plantel</th><th>Solicitudes (opción 1ª)</th><th>Ver detalle</th></tr>
+            </thead>
+            <tbody id="tbody-top"></tbody>
+          </table>
         </div>
       </div>
 
@@ -277,5 +135,141 @@
   <footer class="site-footer">
     <p>Portal de Consulta Histórica <strong>ECOEMS</strong> &nbsp;·&nbsp; IPN-LCD &nbsp;·&nbsp; Datos: <a href="#">XABER A.C.</a> &nbsp;·&nbsp; 2026</p>
   </footer>
+
+  <script src="js/graficas.js"></script>
+  <script>
+    // ── Cargar datos del resumen ────────────────────────────
+    async function cargarResumen() {
+      try {
+        const resp = await fetch('../backend/api/resumen.php');
+        const json = await resp.json();
+        if (json.status !== 'ok') throw new Error('API error');
+
+        const t  = json.totales;
+        const pi = json.por_institucion;
+        const tp = json.top_planteles;
+
+        // ── KPIs ───────────────────────────────────────────
+        const kpis = document.querySelectorAll('#kpis-globales .stat-num');
+        const vals = [
+          parseInt(t.total_sustentantes ?? 0).toLocaleString('es-MX'),
+          parseInt(t.presentaron_examen ?? 0).toLocaleString('es-MX'),
+          parseInt(t.asignados ?? 0).toLocaleString('es-MX'),
+          (t.promedio_global ?? '—') + ' pts',
+          parseInt(t.hombres ?? 0).toLocaleString('es-MX'),
+          parseInt(t.mujeres ?? 0).toLocaleString('es-MX'),
+        ];
+        kpis.forEach((el, i) => { el.textContent = vals[i] ?? '—'; });
+
+        // ── Gráfica: asignados por institución ─────────────
+        const colores = ['#023047','#ffb703','#fb8500','#1E64C8','#2E7D32','#6B3FA0','#e63946','#457b9d'];
+        new Chart(document.getElementById('chart-inst'), {
+          type: 'bar',
+          data: {
+            labels:   pi.map(d => d.institucion ?? '—'),
+            datasets: [{
+              label: 'Asignados',
+              data:  pi.map(d => parseInt(d.asignados)),
+              backgroundColor: pi.map((_, i) => (colores[i % colores.length]) + 'cc'),
+              borderColor:     pi.map((_, i) =>  colores[i % colores.length]),
+              borderWidth: 1.5, borderRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { beginAtZero: true, ticks: { font: { family: 'Sora', size: 11 } }, grid: { color: '#e2eaf0' } },
+              x: { ticks: { font: { family: 'Sora', size: 10 } }, grid: { display: false } }
+            }
+          }
+        });
+
+        // ── Gráfica: radar de materias ──────────────────────
+        const materias   = ['Matemáticas','Español','Historia','Biología','Física','Química'];
+        const pctCampos  = ['pct_matematicas','pct_espanol','pct_historia','pct_biologia','pct_fisica','pct_quimica'];
+        new Chart(document.getElementById('chart-materias'), {
+          type: 'radar',
+          data: {
+            labels: materias,
+            datasets: [{
+              label: 'Promedio % aciertos',
+              data:  pctCampos.map(k => parseFloat(t[k] ?? 0)),
+              borderColor: '#023047',
+              backgroundColor: 'rgba(2,48,71,0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#ffb703',
+              pointRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { labels: { font: { family: 'Sora' } } } },
+            scales: {
+              r: {
+                beginAtZero: true,
+                ticks: { font: { family: 'Sora', size: 10 } },
+                pointLabels: { font: { family: 'Sora', size: 11 } }
+              }
+            }
+          }
+        });
+
+        // ── Tabla: por institución ─────────────────────────
+        document.getElementById('tbody-inst').innerHTML = pi.map((d, i) => {
+          const rankClass = i < 3 ? `rank-${i+1}` : 'rank-n';
+          return `
+            <tr>
+              <td><span class="ranking-badge ${rankClass}">${i+1}</span></td>
+              <td><strong>${d.institucion ?? '—'}</strong></td>
+              <td class="num">${parseInt(d.total_aspirantes ?? 0).toLocaleString('es-MX')}</td>
+              <td class="num">${parseInt(d.asignados ?? 0).toLocaleString('es-MX')}</td>
+              <td class="num">${d.promedio_aciertos ?? '—'}</td>
+              <td class="num">${d.promedio_certificado ?? '—'}</td>
+              <td class="num">${parseInt(d.hombres ?? 0).toLocaleString('es-MX')}</td>
+              <td class="num">${parseInt(d.mujeres ?? 0).toLocaleString('es-MX')}</td>
+            </tr>`;
+        }).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--texto-2);padding:1rem">Sin datos disponibles.</td></tr>';
+
+        // ── Tabla: top planteles ───────────────────────────
+        document.getElementById('tbody-top').innerHTML = tp.map((d, i) => {
+          const rankClass = i < 3 ? `rank-${i+1}` : 'rank-n';
+          return `
+            <tr>
+              <td><span class="ranking-badge ${rankClass}">${i+1}</span></td>
+              <td><strong>${d.clave ?? '—'}</strong></td>
+              <td class="num">${parseInt(d.solicitudes ?? 0).toLocaleString('es-MX')}</td>
+              <td><a href="escuela.php?plantel=${encodeURIComponent(d.clave ?? '')}"
+                    class="btn btn-sm btn-bordo" style="font-size:.75rem;padding:.3rem .7rem">Ver →</a></td>
+            </tr>`;
+        }).join('');
+
+      } catch (err) {
+        document.getElementById('tbody-inst').innerHTML =
+          `<tr><td colspan="8" style="text-align:center;color:#c00;padding:1rem">
+            ❌ Error al conectar con la base de datos. Verifica que el backend esté activo.<br>
+            <small>${err.message}</small>
+          </td></tr>`;
+        console.error(err);
+      }
+    }
+
+    // ── Tabs ────────────────────────────────────────────────
+    document.getElementById('tab-inst').addEventListener('click', () => {
+      document.getElementById('panel-inst').style.display = 'block';
+      document.getElementById('panel-top').style.display  = 'none';
+      document.getElementById('tab-inst').classList.add('active');
+      document.getElementById('tab-top').classList.remove('active');
+    });
+    document.getElementById('tab-top').addEventListener('click', () => {
+      document.getElementById('panel-inst').style.display = 'none';
+      document.getElementById('panel-top').style.display  = 'block';
+      document.getElementById('tab-top').classList.add('active');
+      document.getElementById('tab-inst').classList.remove('active');
+    });
+
+    // ── Arrancar ────────────────────────────────────────────
+    cargarResumen();
+  </script>
 </body>
 </html>

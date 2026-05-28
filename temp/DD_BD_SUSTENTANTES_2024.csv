@@ -1,0 +1,820 @@
+Variable,Tipo,Longitud,Decimales,Descripción,Valores,Etiquetas
+FOLIO,Carácter,9,,Número de Folio de registro del aspirante ,,
+SEXO,Carácter,1,,Género del aspirante ,H,Hombre
+,,,,,M,Mujer
+COLONIA,Carácter,30,,Colonia del domicilio del aspirante,,
+CP,Carácter,5,,Código postal del domicilio del aspirante,,
+CVE_ALCMUN,Carácter,3,,Clave de la alcaldía/municipio del domicilio particular del aspirante,,
+CVE_ENT,Carácter,2,,Clave de la entidad del domicilio particular del aspirante,,
+ALCMUN_ASP,Carácter,36,,Nombre de la alcaldía/municipio del domicilio del Aspirante,,
+CATEGO_ASP,Carácter,1,,Clave de categoría del aspirante ,E,Egresado
+,,,,,F,Foráneo
+,,,,,I,Inea
+,,,,,Z,Local
+CCT,Carácter,10,,Clave del centro de trabajo (escuela secundaria de procedencia del aspirante),,
+REGI_SEC,Carácter,20,,Régimen de la secundaria de origen,,
+MODA_SEC,Carácter,30,,Modalidad de la secundaria de origen,,
+CVE_MUNALC,Carácter,3,,Clave de la alcaldía/municipio donde está ubicada la escuela del aspirante,,
+MUNALC_ESC,Carácter,36,,Nombre de la alcaldía/municipio donde está ubicada la escuela del aspirante,,
+PROMEDIO,Numérica,4,1,Promedio general de aprovechamiento del aspirante (promedio del certificado),,
+OPC_ED01,Carácter,7,,Clave de la opción educativa 1 del aspirante,,
+OPC_ED02,Carácter,7,,Clave de la opción educativa 2 del aspirante,,
+OPC_ED03,Carácter,7,,Clave de la opción educativa 3 del aspirante,,
+OPC_ED04,Carácter,7,,Clave de la opción educativa 4 del aspirante,,
+OPC_ED05,Carácter,7,,Clave de la opción educativa 5 del aspirante,,
+OPC_ED06,Carácter,7,,Clave de la opción educativa 6 del aspirante,,
+OPC_ED07,Carácter,7,,Clave de la opción educativa 7 del aspirante,,
+OPC_ED08,Carácter,7,,Clave de la opción educativa 8 del aspirante,,
+OPC_ED09,Carácter,7,,Clave de la opción educativa 9 del aspirante,,
+OPC_ED10,Carácter,7,,Clave de la opción educativa 10 del aspirante,,
+OPC_ED11,Carácter,7,,Clave de la opción educativa 11 del aspirante,,
+OPC_ED12,Carácter,7,,Clave de la opción educativa 12 del aspirante,,
+OPC_ED13,Carácter,7,,Clave de la opción educativa 13 del aspirante,,
+OPC_ED14,Carácter,7,,Clave de la opción educativa 14 del aspirante,,
+OPC_ED15,Carácter,7,,Clave de la opción educativa 15 del aspirante,,
+OPC_ED16,Carácter,7,,Clave de la opción educativa 16 del aspirante,,
+OPC_ED17,Carácter,7,,Clave de la opción educativa 17 del aspirante,,
+OPC_ED18,Carácter,7,,Clave de la opción educativa 18 del aspirante,,
+OPC_ED19,Carácter,7,,Clave de la opción educativa 19 del aspirante,,
+OPC_ED20,Carácter,7,,Clave de la opción educativa 20 del aspirante,,
+FTURN_EXAM,Carácter,1,,Clave del turno de aplicación del examen:,,
+,,,,"1         Sábado 15 de junio, turno matutino",,
+,,,,"2         Sábado 15 de junio, turno vespertino",,
+,,,,"3         Domingo 16 de junio, turno matutino",,
+,,,,"4         Domingo 16 de junio, turno vespertino",,
+,,,,"5         Sábado 22 de junio, turno matutino",,
+,,,,"6         Sábado 22 de junio, turno vespertino",,
+,,,,"7         Domingo 23 de junio, turno matutino",,
+,,,,"8         Domingo 23 de junio, turno vespertino",,
+PRE_EXA,Carácter,1,,Presentó examen,N,No
+,,,,,S,Sí
+EXAMEN,Carácter,2,,¿Presentó examen? por institución,CS,CENEVAL SI PRESENTADO
+,,,,,CN,CENEVAL NO PRESENTADO
+,,,,,US,UNAM SI PRESENTADO
+,,,,,UN,UNAM NO PRESENTADO
+NGLOBAL,Numérico,3,,Número de aciertos global,(0-128),
+NHV,Numérico,3,,Habilidad verbal en número de aciertos,(0-16),
+NESP,Numérico,3,,Español en número de aciertos,(0-12),
+NHIS,Numérico,3,,Historia en número de aciertos,(0-12),
+NGEO,Numérico,3,,Geografía en número de aciertos,(0-12),
+NFCE,Numérico,3,,Formación cívica y ética en número de aciertos,(0-12),
+NHM,Numérico,3,,Habilidad matemática en número de aciertos,(0-16),
+NMAT,Numérico,3,,Matemáticas en número de aciertos,(0-12),
+NFIS,Numérico,3,,Física en número de aciertos,(0-12),
+NQUI,Numérico,3,,Química en número de aciertos,(0-12),
+NBIO,Numérico,3,,Biología en número de aciertos,(0-12),
+PNGLOBAL,Numérico,6,2,Porcentaje de aciertos global,(0.00-100.00),
+PNHV,Numérico,6,2,Habilidad verbal en porcentaje de aciertos,(0.00-100.00),
+PNESP,Numérico,6,2,Español en porcentaje de aciertos,(0.00-100.00),
+PNHIS,Numérico,6,2,Historia en porcentaje de aciertos,(0.00-100.00),
+PNGEO,Numérico,6,2,Geografía en porcentaje de aciertos,(0.00-100.00),
+PNFCE,Numérico,6,2,Formación cívica y ética en porcentaje de aciertos,(0.00-100.00),
+PNHM,Numérico,6,2,Habilidad matemática en porcentaje de aciertos,(0.00-100.00),
+PNMAT,Numérico,6,2,Matemáticas en porcentaje de aciertos,(0.00-100.00),
+PNFIS,Numérico,6,2,Física en porcentaje de aciertos,(0.00-100.00),
+PNQUI,Numérico,6,2,Química en porcentaje de aciertos,(0.00-100.00),
+PNBIO,Numérico,6,2,Biología en porcentaje de aciertos,(0.00-100.00),
+EXPL_ASI,Carácter,5,,Explicación después de haber corrido el proceso de asignación en el Ceneval,ASI,ASIGNADO
+,,,,,CDO,CON DERECHO A OTRA OPCIÓN
+,,,,,NP,NO PRESENTÓ
+,,,,,SC,SIN CERTIFICADO
+,,,,,BI,Baja por irregularidad
+NOPC_ASI,Numérico,2,,Número de opción asignada,,
+COPC_ASI,Carácter,7,,Clave de la opción educativa asignada en el proceso de asignación en el Ceneval,,
+CVEINS_ASI,Carácter,2,,Clave de la institución asignada,B0,COLBACH
+,,,,,C1,CONALEP
+,,,,,G2,DGB
+,,,,,A3,DGETAyCM
+,,,,,D4,DGETI
+,,,,,I5,IPN
+,,,,,U6,UNAM
+,,,,,S0,SECTI COBAEM
+,,,,,S1,SECTI CONALEP
+,,,,,S2,SECTI TELEBACHILLERATO
+,,,,,S4,SECTI CBT
+,,,,,S5,SECTI CECYTEM
+,,,,,S7,SECTI P.O.
+,,,,,S8,SECTI P.O.
+,,,,,M9,UAEM
+CVESUB_ASI,Carácter,2,,Clave del subsistema asignado,01,COLBACH
+,,,,,02,CONALEP
+,,,,,03,DGB
+,,,,,04,DGETAyCM
+,,,,,05,DGETI
+,,,,,06,IPN
+,,,,,07,UNAM
+,,,,,08,SECTI TELEBACHILLERATO
+,,,,,09,SECTI P.O.
+,,,,,10,SECTI CONALEP
+,,,,,11,SECTI COBAEM
+,,,,,12,SECTI CECYTEM
+,,,,,13,SECTI CBT
+,,,,,14,UAEM
+ASIG_FIN,Carácter,7,,Clave de la opción educativa después del periodo de atención CDO y SC,,
+EXPL_FIN,Carácter,10,,Explicación después del periodo de atención CDO y SC,ASI,ASIGNADO
+,,,,,PREINS,PREINSCRITO
+,,,,,REASIG,REASIGNADO
+,,,,,BI,BAJA POR IRREGULARIDAD
+,,,,,CDO,CON DERECHO A OTRA OPCIÓN
+,,,,,NP,NO PRESENTÓ
+,,,,,SC,SIN CERTIFICADO
+NOPC_FIN,Numérico,2,,Número de opción asignada después del periodo de atención CDO y SC,,
+INST_FIN,Carácter,2,,Clave de la institución asignada después del periodo de atención CDO y SC,,
+IV. CUESTIONARIO DE CONTEXTO,,,,,,
+¿Enfrentas algunas de las siguientes condiciones? ,,,,,,
+IMP_CAM,CARÁCTER,1,,Dificultad para caminar,1,Sí
+,,,,,2,No
+IMP_ECU,CARÁCTER,1,,"Dificultad para escuchar, aun a corta distancia",1,Sí
+,,,,,2,No
+IMP_VER,CARÁCTER,1,,"Problemas graves para ver, aun con lentes",1,Sí
+,,,,,2,No
+IMP_CON,CARÁCTER,1,,Problemas de conducta,1,Sí
+,,,,,2,No
+IMP_PAN,CARÁCTER,1,,Problemas de ansiedad/estrés,1,Sí
+,,,,,2,No
+IMP_PCA,CARÁCTER,1,,Problemas de agresividad,1,Sí
+,,,,,2,No
+IMP_PDP,CARÁCTER,1,,Problemas de depresión,1,Sí
+,,,,,2,No
+IMP_PAT,CARÁCTER,1,,Problemas de atención,1,Sí
+,,,,,2,No
+IMP_POB,CARÁCTER,1,,Obesidad,1,Sí
+,,,,,2,No
+IMP_PAB,CARÁCTER,1,,Anorexia o bulimia,1,Sí
+,,,,,2,No
+¿Alguno de tus padres habla una lengua indígena o un dialecto?,,,,,,
+LENG_MA,CARÁCTER,1,,Madre,1,Sí
+,,,,,2,No
+,,,,,3,No sé
+LENG_PA,CARÁCTER,1,,Padre,1,Sí
+,,,,,2,No
+,,,,,3,No sé
+REG_PROC,CARÁCTER,1,,¿Cuál es el régimen de sostenimiento de la escuela en la que estudiaste el último año de secundaria?,1,Público
+,,,,,2,Privado
+MOD_SEC,CARÁCTER,1,,¿En qué tipo de escuela estudiaste el último año de secundaria?,1,Secundaria general
+,,,,,2,Secundaria técnica
+,,,,,3,Secundaria comunitaria
+,,,,,4,Telesecundaria
+,,,,,5,Secundaria abierta
+,,,,,6,Otro
+TURNO,CARÁCTER,1,,¿En qué turno estudiaste el último año de secundaria?,1,Matutino
+,,,,,2,Vespertino
+,,,,,3,Nocturno
+,,,,,4,No aplica
+,,,,,5,Otro
+PROM_MAT,NUMÉRICO,4,1,¿Cuál fue tu promedio final de matemáticas en segundo año de la secundaria?,(6.0 - 10.0),
+PROM_ESP,NUMÉRICO,4,1,¿Cuál fue tu promedio final de español en segundo año de la secundaria?,(6.0 - 10.0),
+BEC_NEC,CARÁCTER,1,,¿Recibiste beca por necesidad económica en la secundaria?,1,Sí
+,,,,,2,No
+EXA_EXT,CARÁCTER,1,,¿Cuántos exámenes extraordinarios presentaste en la secundaria?,1,Ninguno
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+MAT_REP,CARÁCTER,1,,¿Cuántas materias reprobaste en la secundaria?,1,Ninguna
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+Califica tu nivel de habilidad para realizar las siguientes tareas.,,,,,,
+HBS_MEMC,CARÁCTER,1,,Memorizar conceptos,1,Nada hábil
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HBS_STI,CARÁCTER,1,,Sintetizar información,1,Nada hábil
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HBS_IRP,CARÁCTER,1,,Interpretar los resultados de un problema,1,Nada hábil
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HBS_ACRP,CARÁCTER,1,,Aplicar los conocimientos adquiridos en clase para resolver problemas,1,Nada hábil
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+¿Con qué frecuencia realizas lo siguiente cuando trabajas en equipo? ,,,,,,
+FRE_PPA,CARÁCTER,1,,Participo en la planeación de actividades,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_CDE,CARÁCTER,1,,Colaboro en el desarrollo de estrategias para cumplir con las metas del trabajo,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_TSC,CARÁCTER,1,,Intervengo para tratar de solucionar conflictos entre los miembros del equipo,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_SME,CARÁCTER,1,,Realizo sugerencias para mejorar el desempeño del equipo,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_CTR,CARÁCTER,1,,Cumplo con las tareas que me toca realizar,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+Califica tu nivel de habilidad social para realizar las siguientes actividades: ,,,,,,
+SOC_PTFG,CARÁCTER,1,,Presentar un trabajo frente a un grupo,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+SOC_IMC,CARÁCTER,1,,Iniciar y mantener una conversación con compañeros que no conoces,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+SOC_PDC,CARÁCTER,1,,Participar durante las clases,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+SOC_PDM,CARÁCTER,1,,Plantear dudas a los maestros,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+¿Con qué frecuencia realizas lo siguiente? ,,,,,,
+FRE_FCL,CARÁCTER,1,,Falto a clases,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_LTC,CARÁCTER,1,,Llego a tiempo a clases,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_LLTM,CARÁCTER,1,,"Llevo todos los materiales que utilizo en las clases (libros, cuadernos, lápices, etc.)",1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_PDC,CARÁCTER,1,,Participo durante la clase,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_DTE,CARÁCTER,1,,Dedico tiempo a estudiar fuera de la escuela,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_ETTE,CARÁCTER,1,,Entrego a tiempo las tareas que me dejan en la escuela,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_HESC,CARÁCTER,1,,Hago los ejercicios que me solicitan en las clases,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_ACL,CARÁCTER,1,,Asisto a clases,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_PADC,CARÁCTER,1,,Pongo atención durante las clases,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_PAEC,CARÁCTER,1,,"Participo en actividades extracurriculares que se realizan en la escuela (actividades deportivas, artísticas, etc.)",1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+Indica qué tanto te identificas con las siguientes afirmaciones:   ,,,,,,
+IDE_ESE,CARÁCTER,1,,"Si me esfuerzo lo suficiente, tendré éxito en la escuela ",1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_VBM,CARÁCTER,1,,El que me vaya bien o mal en la escuela depende totalmente de mí,1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_OME,CARÁCTER,1,,Si hubiera tenido otros maestros me iría mejor en la escuela  ,1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_PPM,CARÁCTER,1,,"Si me lo propongo, me va mejor en la escuela",1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_FAM,CARÁCTER,1,,"Si mi familia me apoyara más, me iría mejor en la escuela",1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_CES,CARÁCTER,1,,Mis calificaciones en la escuela se deben a la suerte que tengo,1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+IDE_CEC,CARÁCTER,1,,Mis calificaciones en la escuela se deben a cosas que no puedo cambiar,1,No me identifico
+,,,,,2,Me identifico poco
+,,,,,3,Me identifico
+,,,,,4,Me identifico totalmente
+Indica qué tanto te describen las siguientes afirmaciones:  ,,,,,,
+DES_DESA,CARÁCTER,1,,Los problemas inesperados me desaniman,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_ESME,CARÁCTER,1,,Soy una persona que se esmera,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_TERM,CARÁCTER,1,,Termino todo lo que empiezo,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_DURO,CARÁCTER,1,,Soy una persona que trabaja duro,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_ESFU,CARÁCTER,1,,Soy una persona que se esfuerza,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_SOIO,CARÁCTER,1,,Puedo superar los obstáculos que se interponen para alcanzar mis objetivos,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+DES_META,CARÁCTER,1,,He alcanzado metas que requirieron años de esfuerzo,1,No me describe
+,,,,,2,Me describe poco
+,,,,,3,Me describe
+,,,,,4,Me describe mucho
+"Cuando tienes que tomar una decisión, ¿con qué frecuencia realizas lo siguiente?",,,,,,
+FRE_CTOD,CARÁCTER,1,,Considero todas las opciones cuando tomo decisiones,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_DESO,CARÁCTER,1,,En una decisión trato de encontrar cuáles son las desventajas de cada opción,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_REIN,CARÁCTER,1,,Antes de tomar la decisión trato de recolectar mucha información,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_CLOB,CARÁCTER,1,,Procuro tener claros mis objetivos antes de decidir,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_TRIV,CARÁCTER,1,,Pierdo mucho el tiempo en asuntos triviales antes de tomar una decisión,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+FRE_CUID,CARÁCTER,1,,Soy muy cuidadoso(a) antes de elegir,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+Indica tu grado de acuerdo con los siguientes enunciados:,,,,,,
+GRA_PART,CARÁCTER,1,,Puedo captar con facilidad si otra persona quiere participar en una conversación,1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_COSA,CARÁCTER,1,,"Puedo identificar fácilmente si una persona dice una cosa, cuando en realidad quiere decir otra",1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_PRSE,CARÁCTER,1,,Tengo facilidad para predecir cómo se sentirá otra persona,1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_ENTR,CARÁCTER,1,,"Me doy cuenta cuando estoy siendo entrometido, incluso si la otra persona no me lo dice",1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_OCUL,CARÁCTER,1,,Puedo darme cuenta si otra persona está ocultando sus emociones,1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_ESFU,CARÁCTER,1,,Me esfuerzo para que los demás me entiendan,1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+GRA_LUGA,CARÁCTER,1,,Me resulta fácil ponerme en el lugar de otra persona,1,Totalmente en desacuerdo
+,,,,,2,En desacuerdo
+,,,,,3,De acuerdo
+,,,,,4,Totalmente de acuerdo
+¿Con qué frecuencia te sucedió lo siguiente?,,,,,,
+SUC_AFEC,CARÁCTER,1,,Me afectó algo que me ocurrió inesperadamente,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_CIMP,CARÁCTER,1,,Me sentí incapaz de controlar cosas importantes en mi vida,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_ACOS,CARÁCTER,1,,Pensé que no podía afrontar todas las cosas que tenía que hacer,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_FRCO,CARÁCTER,1,,Me enojé porque las cosas que me ocurrieron estaban fuera de mi control,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_DISU,CARÁCTER,1,,"Sentí que las dificultades se acumulaban tanto, que no pude superarlas",1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_ENES,CARÁCTER,1,,Me enfermé por estrés,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+SUC_INFL,CARÁCTER,1,,Las personas a mi alrededor tuvieron una gran influencia sobre mi estado de humor,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+Califica tu nivel de habilidad para realizar las siguientes actividades: ,,,,,,
+HAB_PTAE,CARÁCTER,1,,Planear tus actividades escolares,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_DAM,CARÁCTER,1,,Identificar las dificultades para alcanzar tus metas,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_AEA,CARÁCTER,1,,"Apreciar el arte (como la música, la danza y la pintura)",1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_TEVS,CARÁCTER,1,,"Tener un estilo de vida saludable (hacer ejercicio, comer sanamente)",1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_LTI,CARÁCTER,1,,Leer textos en inglés,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_ETI,CARÁCTER,1,,Expresar tus ideas en un escrito,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_ETIV,CARÁCTER,1,,Expresar tus ideas verbalmente (de manera oral),1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_MHC,CARÁCTER,1,,Manejar hojas de cálculo (como Excel),1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_OIF,CARÁCTER,1,,Ordenar información,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_IOA,CARÁCTER,1,,Identificar el objetivo de las actividades que te dejan en la escuela,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_ETO,CARÁCTER,1,,Evaluar tus opiniones y las de otras personas,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_APM,CARÁCTER,1,,Aprender por ti mismo(a),1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_REL,CARÁCTER,1,,Realizar experimentos en laboratorios o en ambientes naturales,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_SAL,CARÁCTER,1,,Identificar y solicitar la aplicación de las leyes que te protegen como ciudadano(a),1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_DAP,CARÁCTER,1,,Dialogar y aprender de otras personas distintos puntos de vista y tradiciones culturales,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+HAB_CMA,CARÁCTER,1,,Cuidar el medio ambiente,1,No lo sé hacer
+,,,,,2,Poco hábil
+,,,,,3,Hábil
+,,,,,4,Muy hábil
+EST_ALCA,CARÁCTER,1,,¿Cuál es el nivel máximo de estudios que te gustaría alcanzar?,1,Bachillerato
+,,,,,2,Técnico Superior Universitario
+,,,,,3,Licenciatura
+,,,,,4,"Posgrado (especialidad, maestría, doctorado)"
+¿Te interesaría recibir orientación o apoyo sobre los siguientes temas?,,,,,,
+ORI_AUE,CARÁCTER,1,,Autoestima,1,Sí
+,,,,,2,No
+ORI_CME,CARÁCTER,1,,Control de miedos,1,Sí
+,,,,,2,No
+ORI_ESX,CARÁCTER,1,,Educación sexual,1,Sí
+,,,,,2,No
+ORI_HSO,CARÁCTER,1,,Habilidades sociales,1,Sí
+,,,,,2,No
+ORI_DEC,CARÁCTER,1,,Toma de decisiones,1,Sí
+,,,,,2,No
+ORI_MDP,CARÁCTER,1,,Manejo de depresión,1,Sí
+,,,,,2,No
+ORI_MES,CARÁCTER,1,,Manejo de ansiedad/estrés,1,Sí
+,,,,,2,No
+ORI_MAG,CARÁCTER,1,,Manejo de la agresividad,1,Sí
+,,,,,2,No
+ORI_NUT,CARÁCTER,1,,Alimentación saludable (nutrición),1,Sí
+,,,,,2,No
+"¿Con qué frecuencia utilizas el teléfono celular, la tableta electrónica (tablet) o la computadora para realizar las siguientes actividades? ",,,,,,
+UTI_LPLR,CARÁCTER,1,,"Leer periódicos, libros o revistas",1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+UTI_BITE,CARÁCTER,1,,Buscar información para tareas escolares,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+UTI_CCE,CARÁCTER,1,,Comunicarte con tus compañeros de la escuela para hacer tareas,1,Nunca o casi nunca
+,,,,,2,Algunas veces
+,,,,,3,Frecuentemente
+,,,,,4,Siempre o casi siempre
+¿Qué tanto daño te causó que tus compañeros en la secundaria te…,,,,,,
+DAN_MALF,CARÁCTER,1,,"golpearan, patearan, cachetearan o maltrataran físicamente?",1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+DAN_OFI,CARÁCTER,1,,"ofendieran con insultos, groserías o apodos hirientes?",1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+DAN_EIR,CARÁCTER,1,,"excluyeran, ignoraran o rechazaran?",1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+DAN_REQC,CARÁCTER,1,,"robaran, escondieran o quitaran tus cosas?",1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+DAN_MFT,CARÁCTER,1,,"molestaran por medio de Facebook, Twitter, correo electrónico o mensajes de texto por el celular?",1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+DAN_FHC,CARÁCTER,1,,forzaran a hacer cosas que tú no querías?,1,No me sucedió
+,,,,,2,Nada de daño
+,,,,,3,Poco daño
+,,,,,4,Algo de daño
+,,,,,5,Mucho daño
+CPVHTUM,CARÁCTER,1,,¿Cuántas personas de 14 años o más que viven en tu hogar trabajaron en el último mes?,1,Ninguna
+,,,,,2,Una
+,,,,,3,Dos
+,,,,,4,Tres
+,,,,,5,Cuatro o más
+ESCO_MAN,CARÁCTER,2,,¿Cuál es el máximo nivel de estudios del jefe o jefa de tu hogar?,01,No estudió
+,,,,,02,Primaria incompleta
+,,,,,03,Primaria completa
+,,,,,04,Secundaria incompleta
+,,,,,05,Secundaria completa
+,,,,,06,Bachillerato (nivel medio superior) incompleto
+,,,,,07,Bachillerato (nivel medio superior) completo
+,,,,,08,Carrera técnica incompleta
+,,,,,09,Carrera técnica completa
+,,,,,10,Técnico superior universitario (después del bachillerato) incompleto
+,,,,,11,Técnico superior universitario (después del bachillerato) completo
+,,,,,12,Licenciatura incompleta
+,,,,,13,Licenciatura completa
+,,,,,14,"Posgrado (especialidad, maestría, doctorado)"
+ESCO_MAD,CARÁCTER,2,,¿Cuál es el máximo nivel de estudios de tu madre (aunque haya fallecido)?,01,No estudió
+,,,,,02,Primaria incompleta
+,,,,,03,Primaria completa
+,,,,,04,Secundaria incompleta
+,,,,,05,Secundaria completa
+,,,,,06,Bachillerato (nivel medio superior) incompleto
+,,,,,07,Bachillerato (nivel medio superior) completo
+,,,,,08,Carrera técnica incompleta
+,,,,,09,Carrera técnica completa
+,,,,,10,Técnico superior universitario (después del bachillerato) incompleto
+,,,,,11,Técnico superior universitario (después del bachillerato) completo
+,,,,,12,Licenciatura incompleta
+,,,,,13,Licenciatura completa
+,,,,,14,"Posgrado (especialidad, maestría, doctorado)"
+ESCO_PAD,CARÁCTER,2,,¿Cuál es el máximo nivel de estudios de tu padre (aunque haya fallecido)?,01,No estudió
+,,,,,02,Primaria incompleta
+,,,,,03,Primaria completa
+,,,,,04,Secundaria incompleta
+,,,,,05,Secundaria completa
+,,,,,06,Bachillerato (nivel medio superior) incompleto
+,,,,,07,Bachillerato (nivel medio superior) completo
+,,,,,08,Carrera técnica incompleta
+,,,,,09,Carrera técnica completa
+,,,,,10,Técnico superior universitario (después del bachillerato) incompleto
+,,,,,11,Técnico superior universitario (después del bachillerato) completo
+,,,,,12,Licenciatura incompleta
+,,,,,13,Licenciatura completa
+,,,,,14,"Posgrado (especialidad, maestría, doctorado)"
+CUAN_LIB,CARÁCTER,1,,"¿Cuántos libros hay en tu casa? (no consideres revistas, periódicos o libros de texto)",1,Ninguno
+,,,,,2,1 a 10
+,,,,,3,11 a 25 (ocupan la mitad de un estante)
+,,,,,4,26 a 50 (un estante)
+,,,,,5,51 a 100 (dos o tres estantes)
+,,,,,6,101 a 200 (cinco estantes)
+,,,,,7,201 a 500 (10 estantes o dos libreros)
+,,,,,8,Más de 500
+NIV_EDU,CARÁCTER,1,,¿Hasta qué nivel educativo quieren tus padres que estudies?,1,Secundaria
+,,,,,2,Nivel medio superior (bachillerato)
+,,,,,3,Carrera técnica
+,,,,,4,Carrera técnica superior (después del bachillerato)
+,,,,,5,Licenciatura
+,,,,,6,"Posgrado (especialidad, maestría, doctorado)"
+CPV_CASA,CARÁCTER,1,,¿Cuántas personas viven en tu casa?,1,1
+,,,,,2,2
+,,,,,3,3
+,,,,,4,4
+,,,,,5,5
+,,,,,6,6
+,,,,,7,7
+,,,,,8,8
+,,,,,9,9 o más
+¿Cuentas con los siguientes bienes y servicios en tu casa? ,,,,,,
+SER_TELE,CARÁCTER,1,,Línea telefónica fija,1,Sí
+,,,,,2,No
+SER_LAV,CARÁCTER,1,,Lavadora de ropa,1,Sí
+,,,,,2,No
+SER_REF,CARÁCTER,1,,Refrigerador,1,Sí
+,,,,,2,No
+SER_HOR,CARÁCTER,1,,Horno de microondas,1,Sí
+,,,,,2,No
+SER_INTE,CARÁCTER,1,,Internet en tu casa,1,Sí
+,,,,,2,No
+SER_CABL,CARÁCTER,1,,"Televisión de paga (Izzi, Sky, Dish, etc.)",1,Sí
+,,,,,2,No
+SER_TABL,CARÁCTER,1,,"Tableta (iPad, Samsung Galaxy, Playbook, etc.)",1,Sí
+,,,,,2,No
+CUARTOS,CARÁCTER,2,,"¿Cuántos cuartos tiene la casa en dónde vives? (sala, comedor, recámaras, estudio, etc., no cuentes cocina, baños, ni pasillos)",01,0
+,,,,,02,1
+,,,,,03,2
+,,,,,04,3
+,,,,,05,4
+,,,,,06,5
+,,,,,07,6
+,,,,,08,7
+,,,,,09,8
+,,,,,10,9 o más
+¿Cuántos de los siguientes bienes tienes en tu casa?,,,,,,
+BIEN_PC,CARÁCTER,1,,Computadora,1,Ninguno
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+SER_TV,CARÁCTER,1,,Televisor,1,Ninguno
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+SER_AUTO,CARÁCTER,1,,Automóvil,1,Ninguno
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+SER_BANO,CARÁCTER,1,,Baños completos (con regadera),1,Ninguno
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+VAC_RM,CARÁCTER,1,,¿Cuántas veces has salido de vacaciones dentro de la República Mexicana en los últimos 2 años?,1,Ninguna
+,,,,,2,1
+,,,,,3,2
+,,,,,4,3
+,,,,,5,4 o más
+¿Qué tanto influyeron las siguientes personas para elegir la escuela para estudiar el nivel medio superior?,,,,,,
+INF_PAD,CARÁCTER,1,,Padres,1,Nada
+,,,,,2,Poco
+,,,,,3,Algo
+,,,,,4,Mucho
+INF_HER,CARÁCTER,1,,Hermanos,1,Nada
+,,,,,2,Poco
+,,,,,3,Algo
+,,,,,4,Mucho
+INF_AMI,CARÁCTER,1,,Amigos,1,Nada
+,,,,,2,Poco
+,,,,,3,Algo
+,,,,,4,Mucho
+INF_PRF,CARÁCTER,1,,Profesores,1,Nada
+,,,,,2,Poco
+,,,,,3,Algo
+,,,,,4,Mucho
+INF_POE,CARÁCTER,1,,Psicólogos u orientadores educativos,1,Nada
+,,,,,2,Poco
+,,,,,3,Algo
+,,,,,4,Mucho
+UTI_GUI,CARÁCTER,1,,¿Utilizaste la guía interactiva para prepararte para este examen?,1,Sí
+,,,,,2,No
+¿Tomaste un curso de preparación para el examen de la COMIPEMS?,,,,,,
+CUR_ESC,CARÁCTER,1,,En tu escuela,1,Sí
+,,,,,2,No
+CUR_IPA,CARÁCTER,1,,En una institución particular,1,Sí
+,,,,,2,No
+CUR_MPA,CARÁCTER,1,,Con un maestro particular,1,Sí
+,,,,,2,No
+¿Cuáles de los siguientes motivos consideras que influirían para que abandonaras tus estudios en el nivel medio superior? ,,,,,,
+ANMS_APF,CARÁCTER,1,,Falta de apoyo de mi familia,1,Sí
+,,,,,2,No
+ANMS_ECE,CARÁCTER,1,,Por sentirme excluido por mis compañeros de escuela,1,Sí
+,,,,,2,No
+ANMS_PEC,CARÁCTER,1,,Problemas económicos,1,Sí
+,,,,,2,No
+ANMS_NET,CARÁCTER,1,,Necesidad de empezar a trabajar,1,Sí
+,,,,,2,No
+ANMS_DME,CARÁCTER,1,,Dificultad de algunas materias en la escuela,1,Sí
+,,,,,2,No
+ANMS_AME,CARÁCTER,1,,Falta de apoyo de mis maestros de la escuela,1,Sí
+,,,,,2,No
+ANMS_DCE,CARÁCTER,1,,Deficiencia en la calidad de la escuela,1,Sí
+,,,,,2,No
+ANMS_DLE,CARÁCTER,1,,Dificultad para llegar a la escuela (si mi escuela me quedara lejos),1,Sí
+,,,,,2,No
+ANMS_IDE,CARÁCTER,1,,Inseguridad dentro de la escuela,1,Sí
+,,,,,2,No
+ANMS_PEM,CARÁCTER,1,,Problemas emocionales,1,Sí
+,,,,,2,No
+ANMS_ENF,CARÁCTER,1,,Enfermedad,1,Sí
+,,,,,2,No
+ANMS_EPA,CARÁCTER,1,,Embarazo mío o de mi pareja,1,Sí
+,,,,,2,No
+"¿Tus padres cuentan con algunas de las siguientes prestaciones, aunque no las hayan utilizado?",,,,,,
+PRE_SSPM,CARÁCTER,1,,"Servicio médico por el Instituto de Salud para el Bienestar, antes Seguro Popular",1,Madre
+PRE_SSPP,CARÁCTER,1,,"Servicio médico por el Instituto de Salud para el Bienestar, antes Seguro Popular",1,Padre
+PRE_IMSM,CARÁCTER,1,,Servicios médicos del IMSS,1,Madre
+PRE_IMSP,CARÁCTER,1,,Servicios médicos del IMSS,1,Padre
+PRE_ISTM,CARÁCTER,1,,Servicios médicos del ISSSTE,1,Madre
+PRE_ISTP,CARÁCTER,1,,Servicios médicos del ISSSTE,1,Padre
+PRE_PDNM,CARÁCTER,1,,"Servicios médicos de Pemex, Defensa Nacional o Marina",1,Madre
+PRE_PDNP,CARÁCTER,1,,"Servicios médicos de Pemex, Defensa Nacional o Marina",1,Padre
+PRE_SMPM,CARÁCTER,1,,Servicios médicos privados,1,Madre
+PRE_SMPP,CARÁCTER,1,,Servicios médicos privados,1,Padre
+PRE_OSMM,CARÁCTER,1,,Otros servicios médicos,1,Madre
+PRE_OSMP,CARÁCTER,1,,Otros servicios médicos,1,Padre
+"¿Tus padres cuentan con algunos de los siguientes servicios de seguridad social, aunque no los hayan utilizado?",,,,,,
+ASSS_INM,CARÁCTER,1,,"Licencia o incapacidad con goce de sueldo (por enfermedad, accidente o maternidad)",1,Madre
+ASSS_INP,CARÁCTER,1,,"Licencia o incapacidad con goce de sueldo (por enfermedad, accidente o maternidad)",1,Padre
+ASSS_PEM,CARÁCTER,1,,Ahorro para el retiro o pensión para la vejez (SAR o AFORE),1,Madre
+ASSS_PEP,CARÁCTER,1,,Ahorro para el retiro o pensión para la vejez (SAR o AFORE),1,Padre
+ASSS_PIM,CARÁCTER,1,,Pensión en caso de invalidez,1,Madre
+ASSS_PIP,CARÁCTER,1,,Pensión en caso de invalidez,1,Padre
+ASSS_BAM,CARÁCTER,1,,Becas y apoyos educativos,1,Madre
+ASSS_BAP,CARÁCTER,1,,Becas y apoyos educativos,1,Padre
+ASSS_PFM,CARÁCTER,1,,Pensión para su familia en caso de fallecimiento,1,Madre
+ASSS_PFP,CARÁCTER,1,,Pensión para su familia en caso de fallecimiento,1,Padre
+MAT_PISOS,CARÁCTER,1,,¿Cuál es el material predominante en los pisos de tu vivienda?,1,Tierra
+,,,,,2,Cemento o firme
+,,,,,3,"Linóleum, congoleum o vinil"
+,,,,,4,Laminado o alfombra
+,,,,,5,"Mosaico, mármol o vitropiso"
+,,,,,6,"Madera, duela o parquet"
+MAT_TECHO,CARÁCTER,1,,¿Cuál es el material predominante en los techos de tu vivienda?,1,Material de desecho
+,,,,,2,Lámina de cartón
+,,,,,3,Lámina metálica
+,,,,,4,Lámina de asbesto
+,,,,,5,Palma o paja
+,,,,,6,Madera o tejamanil
+,,,,,7,Teja
+,,,,,8,Terrado con viguería
+,,,,,9,Losa de concreto o viguetas con bovedilla
+MAT_PARED,CARÁCTER,1,,¿Cuál es el material predominante en las paredes o muros de tu vivienda?,1,Material de desecho
+,,,,,2,Lámina de cartón
+,,,,,3,Lámina metálica o asbesto
+,,,,,4,"Carrizo, bambú o palma"
+,,,,,5,Embarro o bajareque
+,,,,,6,Madera
+,,,,,7,Adobe
+,,,,,8,"Muros de tabique, ladrillo o block o piedra o concreto"
+¿De qué servicios disfrutas en tu casa? ,,,,,,
+SDC_DRE,CARÁCTER,1,,Servicio de drenaje o alcantarillado,1,Sí
+,,,,,2,No
+SDC_APOT,CARÁCTER,1,,Servicio de agua potable entubada,1,Sí
+,,,,,2,No
+SDC_LUZ,CARÁCTER,1,,Luz eléctrica de servicio público,1,Sí
+,,,,,2,No
+SDC_GAS,CARÁCTER,1,,"Gas natural, de tanque o de tubería para cocinar",1,Sí
+,,,,,2,No
+¿De qué bienes disfrutas en tu casa?,,,,,,
+BDC_AUT,CARÁCTER,1,,"Automóvil o camioneta (0, 1, 2 o más)",1,0
+,,,,,2,1
+,,,,,3,2 o más
+BDC_BAN,CARÁCTER,1,,"Cuarto de baño con regadera y excusado (0, 1, 2 o más)",1,0
+,,,,,2,1
+,,,,,3,2 o más
+En los últimos tres meses por falta de dinero o recursos tú o alguien de tu familia:,,,,,,
+REC_ALI,CARÁCTER,1,,Tuvo una alimentación muy poco variada,1,Sí
+,,,,,2,No
+REC_DCC,CARÁCTER,1,,"Dejó de desayunar, comer o cenar",1,Sí
+,,,,,2,No
+REC_CMDC,CARÁCTER,1,,Comió menos de lo que piensa debería comer ,1,Sí
+,,,,,2,No
+REC_SCOM,CARÁCTER,1,,Se quedó sin comer ,1,Sí
+,,,,,2,No
+REC_HAM,CARÁCTER,1,,"Sintió hambre, y no comió",1,Sí
+,,,,,2,No
+REC_CUVD,CARÁCTER,1,,Sólo comió una vez al día,1,Sí
+,,,,,2,No
+ING_MEN,CARÁCTER,2,,"¿A cuánto ascienden los ingresos mensuales en tu familia, sin considerar impuestos? (incluye a todas las personas que contribuyen al ingreso familiar, aun cuando no vivan contigo)",01,"$1,748"
+,,,,,02,"de $1,748 a $3,496"
+,,,,,03,"de $3,496 a $5,244"
+,,,,,04,"de $5,244 a $6,992"
+,,,,,05,"de $6,992 a $8,740"
+,,,,,06,"de $8,740 a $10,488"
+,,,,,07,"de $10,488 a $12,236"
+,,,,,08,"de $12,236 a $13,984"
+,,,,,09,"de $13,984 a $15,732"
+,,,,,10,"de $15,732 a $17,480"
+,,,,,11,"de $17,480 a $19,228"
+,,,,,12,"de $19,228 a $20,976"
+,,,,,13,"de $20,976 a $22,724"
+,,,,,14,"de $22,724 a $24,472"
+,,,,,15,"de $24,472 a $26,220"
+,,,,,16,"de $26,220 a $27,968"
+,,,,,17,"de $27,968 a $29,716"
+,,,,,18,"de $29,716 a $31,464"
+,,,,,19,"de $31,464 a $33,212"
+,,,,,20,"de $33,212 a $34,960"
+,,,,,21,"más de $34,960"

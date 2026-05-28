@@ -59,24 +59,7 @@
 </head>
 <body class="page-wrapper">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-brand">
-      <div class="navbar-logo">E</div>
-      <div>
-        <span>Portal ECOEMS</span>
-        <small>Consulta Histórica · IPN-LCD</small>
-      </div>
-    </div>
-    <ul class="navbar-nav">
-      <li><a href="index.php" class="activo">Inicio</a></li>
-      <li><a href="escuela.php">Por Escuela</a></li>
-      <li><a href="comparar.php">Comparador</a></li>
-      <li><a href="mapa.php">Mapa</a></li>
-      <li><a href="resumen.php">Resumen</a></li>
-      <li><a href="acerca.php">Acerca</a></li>
-    </ul>
-  </nav>
+  <?php require 'includes/navbar.php'; ?>
 
   <!-- Hero -->
   <section class="hero">
@@ -97,34 +80,28 @@
       <div class="search-box quick-search-wrap">
         <div class="form-group">
           <label>Institución</label>
-          <select class="form-control">
+          <select id="hero-inst" class="form-control">
             <option value="">— Selecciona —</option>
-            <option>UNAM — CCH</option>
-            <option>UNAM — ENP</option>
-            <option>IPN — CECyT</option>
-            <option>SEP — CETIS</option>
-            <option>SEP — CBTIS</option>
-            <option>CONALEP</option>
-            <option>UAM</option>
+            <option value="COLBACH">COLBACH</option>
+            <option value="UNAM">UNAM</option>
+            <option value="IPN">IPN</option>
+            <option value="DGETI">DGETI</option>
+            <option value="CONALEP">CONALEP</option>
+            <option value="IEMS">IEMS</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="position:relative">
           <label>Plantel</label>
-          <input type="text" class="form-control" placeholder="Buscar plantel…">
+          <input type="text" id="hero-plantel" class="form-control" placeholder="Clave o nombre…" autocomplete="off">
+          <div id="hero-autocomplete" style="position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra);z-index:200;max-height:200px;overflow-y:auto;display:none"></div>
         </div>
         <div class="form-group">
           <label>Año</label>
-          <select class="form-control">
-            <option>2024</option>
-            <option>2023</option>
-            <option>2022</option>
-            <option>2019</option>
-            <option>2015</option>
-            <option>2010</option>
-            <option>Todos</option>
+          <select id="hero-anio" class="form-control">
+            <option value="2024">2024</option>
           </select>
         </div>
-        <button class="btn btn-primary">🔍 Buscar</button>
+        <button id="btn-hero-buscar" class="btn btn-primary">🔍 Buscar</button>
       </div>
 
       <!-- Mini stats -->
@@ -234,5 +211,55 @@
     <p style="margin-top:.4rem">Datos: <a href="https://xaber.org.mx" target="_blank">XABER A.C.</a> &nbsp;·&nbsp; 2026</p>
   </footer>
 
+  <script>
+    const heroInp = document.getElementById('hero-plantel');
+    const heroBtn = document.getElementById('btn-hero-buscar');
+    const heroInst = document.getElementById('hero-inst');
+    const heroAutocomplete = document.getElementById('hero-autocomplete');
+
+    function buscarHero() {
+      const q = heroInp.value.trim();
+      if (!q) { alert('Escribe una clave o nombre de plantel.'); return; }
+      window.location.href = 'escuela.php?plantel=' + encodeURIComponent(q);
+    }
+
+    heroBtn.addEventListener('click', buscarHero);
+    heroInp.addEventListener('keydown', e => { if (e.key === 'Enter') buscarHero(); });
+
+    let heroDebounce;
+    heroInp.addEventListener('input', () => {
+      clearTimeout(heroDebounce);
+      const q = heroInp.value.trim();
+      if (q.length < 2) { heroAutocomplete.style.display = 'none'; return; }
+      heroDebounce = setTimeout(async () => {
+        try {
+          const resp = await fetch('../backend/api/planteles.php?q=' + encodeURIComponent(q));
+          const json = await resp.json();
+          if (json.status !== 'ok' || !json.datos?.length) {
+            heroAutocomplete.style.display = 'none'; return;
+          }
+          heroAutocomplete.innerHTML = json.datos.map(item =>
+            `<div style="padding:.5rem .8rem;cursor:pointer;font-size:.82rem;border-bottom:1px solid var(--borde);color:#023047"
+                 onmouseover="this.style.background='#f0f8ff'" onmouseout="this.style.background=''"
+                 onclick="heroInp.value='${item.clave}';heroAutocomplete.style.display='none';buscarHero()">
+              <strong>${item.clave}</strong>
+              <span style="color:#4a6070;margin-left:.5rem">${item.nombre || ''}</span>
+            </div>`
+          ).join('');
+          heroAutocomplete.style.display = 'block';
+        } catch (e) { heroAutocomplete.style.display = 'none'; }
+      }, 350);
+    });
+
+    document.addEventListener('click', e => {
+      if (!heroAutocomplete.contains(e.target) && e.target !== heroInp)
+        heroAutocomplete.style.display = 'none';
+    });
+
+    heroInst.addEventListener('change', () => {
+      const v = heroInst.value;
+      if (v) window.location.href = 'planteles.php?q=' + encodeURIComponent(v);
+    });
+  </script>
 </body>
 </html>
