@@ -139,4 +139,4 @@ $pass = 'password';
 - **Melanie** — Backend, base de datos, API, ETL
 - **Amalia** — Frontend, diseno, Chart.js, Leaflet
 
-Proyecto para la materia de Digitalizacion de Archivos Web (DAW) — IPN-LCD.
+Proyecto para la materia de Desarrollo de Aplicaciones Web (DAW) — IPN-LCD.
