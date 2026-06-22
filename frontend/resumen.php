@@ -1,10 +1,11 @@
+<?php require_once __DIR__ . '/../backend/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS — Resumen Estadístico</title>
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/estilos.css?v=2">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -52,8 +53,7 @@
 
       <!-- KPIs globales (se llenan con JS) -->
       <div class="stats-row mb-3" id="kpis-globales">
-        <div class="stat-card"><div class="stat-num"><span class="spinner"></span></div><div class="stat-label">Total sustentantes</div></div>
-        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Presentaron examen</div></div>
+        <div class="stat-card"><div class="stat-num"><span class="spinner"></span></div><div class="stat-label">Presentaron examen</div></div>
         <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Asignados</div></div>
         <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Puntaje prom. global</div></div>
         <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Hombres</div></div>
@@ -152,7 +152,6 @@
         // ── KPIs ───────────────────────────────────────────
         const kpis = document.querySelectorAll('#kpis-globales .stat-num');
         const vals = [
-          parseInt(t.total_sustentantes ?? 0).toLocaleString('es-MX'),
           parseInt(t.presentaron_examen ?? 0).toLocaleString('es-MX'),
           parseInt(t.asignados ?? 0).toLocaleString('es-MX'),
           (t.promedio_global ?? '—') + ' pts',

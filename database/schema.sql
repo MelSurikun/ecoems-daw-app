@@ -145,3 +145,92 @@ SELECT
 FROM sustentantes
 WHERE pre_exa = 'S' AND opc_ed01 IS NOT NULL
 GROUP BY opc_ed01;
+
+-- ------------------------------------------------------------
+-- Usuarios y roles (login real: aspirante / admin)
+-- Detalle y datos semilla en database/auth.sql
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS usuarios (
+    id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre        VARCHAR(100) NOT NULL,
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    rol           ENUM('aspirante','admin') NOT NULL DEFAULT 'aspirante',
+    creado        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='Usuarios del portal ECOEMS (login real con roles)';
+
+-- ------------------------------------------------------------
+-- Biblioteca de guías y libros (catálogo administrable)
+-- Datos semilla en database/recursos.sql
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS recursos (
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo      VARCHAR(150) NOT NULL,
+    materia     VARCHAR(60)  NOT NULL COMMENT 'Español, Matemáticas, Habilidad verbal, etc.',
+    descripcion VARCHAR(400),
+    tipo        ENUM('enlace','pdf') NOT NULL DEFAULT 'enlace',
+    url         VARCHAR(300) NOT NULL,
+    creado_por  INT UNSIGNED NULL,
+    creado      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_recursos_usuario FOREIGN KEY (creado_por) REFERENCES usuarios(id)
+        ON DELETE SET NULL
+) ENGINE=InnoDB COMMENT='Biblioteca de guías y material de estudio ECOEMS';
+
+-- ------------------------------------------------------------
+-- Historial del examen simulador (alimenta "Mi panel")
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS intentos_simulador (
+    id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id   INT UNSIGNED NOT NULL,
+    fecha        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    aciertos     SMALLINT UNSIGNED NOT NULL,
+    total        SMALLINT UNSIGNED NOT NULL DEFAULT 128,
+    porcentaje   DECIMAL(5,2) NOT NULL,
+    detalle_json JSON NULL COMMENT 'Aciertos por materia, ej. {"Español":{"ok":10,"tot":12}}',
+    CONSTRAINT fk_intentos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB COMMENT='Historial de intentos del examen simulador por usuario';
+
+CREATE INDEX idx_intentos_usuario_fecha ON intentos_simulador (usuario_id, fecha);
+
+-- ------------------------------------------------------------
+-- Exámenes del simulador (soporta múltiples versiones)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS examenes (
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre      VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    activo      TINYINT(1) NOT NULL DEFAULT 1,
+    creado      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='Exámenes del simulador ECOEMS';
+
+-- ------------------------------------------------------------
+-- Reactivos (preguntas) del simulador
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reactivos (
+    id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    examen_id     INT UNSIGNED NOT NULL DEFAULT 1,
+    numero        INT UNSIGNED NOT NULL,
+    materia       VARCHAR(60) NOT NULL,
+    pregunta      TEXT NOT NULL,
+    opciones      JSON NOT NULL COMMENT '["opcion A","opcion B","opcion C","opcion D"]',
+    respuesta     CHAR(1) NOT NULL COMMENT 'A/B/C/D',
+    contexto      TEXT,
+    figura_clave  VARCHAR(60) COMMENT 'Clave para referenciar figura',
+    passage       TEXT COMMENT 'Texto de lectura previa al reactivo',
+    activo        TINYINT(1) NOT NULL DEFAULT 1,
+    creado        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_reactivos_examen FOREIGN KEY (examen_id) REFERENCES examenes(id) ON DELETE CASCADE,
+    UNIQUE KEY idx_examen_numero (examen_id, numero)
+) ENGINE=InnoDB COMMENT='Reactivos del simulador ECOEMS';
+
+-- ------------------------------------------------------------
+-- Figuras / imágenes para los reactivos
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS figuras (
+    id        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    clave     VARCHAR(60) NOT NULL UNIQUE,
+    datos     LONGTEXT NOT NULL COMMENT 'Imagen en base64 (data:image/...)',
+    creado    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='Imágenes/figuras para los reactivos del simulador';

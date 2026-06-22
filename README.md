@@ -46,7 +46,27 @@ mysql -u root -p < database/ecoems_db.sql
 
 > **Nota:** Te pedira la contrasena que elegiste al instalar MariaDB.
 
-Este comando crea la base `ecoems_db`, las tablas, las vistas y carga los 983 planteles del catalogo COMIPEMS.
+Este comando crea la base `ecoems_db`, las tablas y las vistas.
+
+Despues, aplica los modulos (usuarios, biblioteca, simulador) y carga el
+**catalogo curado de planteles de la Ciudad de Mexico** con su muestra de datos:
+
+```bash
+mysql -u root -p ecoems_db < database/auth.sql
+mysql -u root -p ecoems_db < database/recursos.sql
+mysql -u root -p ecoems_db < database/simulador.sql
+mysql -u root -p ecoems_db < database/planteles_cdmx.sql      # 40 planteles CDMX: UNAM e IPN completos, resto curado
+mysql -u root -p ecoems_db < database/sustentantes_demo.sql   # 150 sustentantes demo por plantel
+```
+
+> **Importante:** `planteles_cdmx.sql` y `sustentantes_demo.sql` **reemplazan** (TRUNCATE)
+> el catalogo masivo y los sustentantes que trae `ecoems_db.sql`. El portal usa ahora un
+> conjunto de planteles **solo de CDMX**, con **todas** las sedes de UNAM (ENP+CCH) e IPN
+> (CECyT) y una muestra curada de CONALEP/DGETI/COLBACH/IEMS, con ubicaciones confiables
+> tomadas de `temp/OPC_EDU_2025.pdf` para el mapa.
+
+> `auth.sql` crea 2 cuentas de prueba: `admin@ecoems.mx` / `Admin123!` (rol admin) y
+> `aspirante@ecoems.mx` / `Aspirante123!` (rol aspirante).
 
 ---
 
@@ -65,7 +85,7 @@ La base `ecoems_db` tiene **2 tablas** y **2 vistas**:
 | Objeto | Tipo | Contenido |
 |---|---|---|
 | `sustentantes` | Tabla | 66 columnas con datos demograficos, resultados del examen COMIPEMS y asignacion de cada aspirante |
-| `planteles` | Tabla | Catalogo de 983 opciones educativas con clave, nombre, especialidad, subsistema, ubicacion y coordenadas |
+| `planteles` | Tabla | Catalogo curado de planteles **solo de CDMX** (~28) con clave, nombre, especialidad, subsistema, ubicacion y coordenadas verificadas |
 | `v_corte_por_plantel` | Vista | Puntajes de corte por plantel |
 | `v_resumen_instituciones` | Vista | Metricas agregadas por institucion |
 

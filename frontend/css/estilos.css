@@ -39,6 +39,7 @@ body {
   color: var(--texto);
   font-size: 15px;
   line-height: 1.65;
+  padding-top: 62px;
 }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
@@ -112,6 +113,171 @@ img { max-width: 100%; display: block; }
   background: var(--oro);
   color: var(--bordo);
   font-weight: 600;
+}
+.navbar-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.navbar-session {
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255,255,255,.2);
+}
+
+/* ── Header + menú lateral (patrón checkbox-hack, sin JS) ── */
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  background: var(--bordo);
+  box-shadow: var(--sombra);
+}
+.main-header .logo { display: flex; align-items: center; }
+
+/* Checkbox oculto que controla el menú */
+#btn-nav { display: none; }
+
+/* Hamburguesa */
+.btn-nav {
+  position: relative;
+  z-index: 1002;
+  width: 30px;
+  height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.btn-nav span,
+.btn-nav span::before,
+.btn-nav span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--oro);
+  transition: var(--trans);
+}
+.btn-nav span { top: 10px; }
+.btn-nav span::before { content: ''; top: -9px; }
+.btn-nav span::after { content: ''; top: 9px; }
+#btn-nav:checked ~ .btn-nav span { background: transparent; }
+#btn-nav:checked ~ .btn-nav span::before { top: 0; transform: rotate(45deg); background: var(--oro); }
+#btn-nav:checked ~ .btn-nav span::after { top: 0; transform: rotate(-45deg); background: var(--oro); }
+
+/* Overlay oscuro detrás del menú abierto */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(2,24,44,.45);
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+#btn-nav:checked ~ .sidebar-overlay {
+  display: block;
+  opacity: 1;
+}
+
+/* Panel lateral */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -270px;
+  z-index: 1000;
+  width: 270px;
+  max-width: 85vw;
+  height: 100vh;
+  background: var(--bordo-os);
+  box-shadow: -4px 0 24px rgba(0,0,0,.35);
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 1.1rem 1.4rem;
+  transition: right .28s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+#btn-nav:checked ~ .sidebar { right: 0; }
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navigation a {
+  display: block;
+  padding: .7rem .95rem;
+  border-radius: var(--radio);
+  color: rgba(255,255,255,.85);
+  font-size: .9rem;
+  font-weight: 500;
+  transition: var(--trans);
+}
+.navigation a:hover { background: rgba(255,255,255,.15); color: #fff; }
+.navigation a.activo {
+  background: var(--oro);
+  color: var(--bordo);
+  font-weight: 700;
+}
+.navigation-session {
+  margin-top: .8rem;
+  padding-top: .9rem;
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+.sidebar-user {
+  color: var(--oro-cl);
+  font-weight: 700;
+  font-size: .92rem;
+  padding: .3rem .95rem .5rem;
+}
+.sidebar-logout {
+  color: #ffd0c4 !important;
+  border: 1px solid rgba(255,255,255,.18);
+  margin-top: .25rem;
+}
+.sidebar-logout:hover { background: var(--acento) !important; color: #fff !important; }
+
+/* ── Admin navbar ─────────────────────────────────────────── */
+.navbar-admin {
+  background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 50%, #1a3a4a 100%);
+  border-bottom: 2px solid var(--acento);
+}
+.navbar-admin .navbar-badge {
+  display: inline-block;
+  background: var(--acento);
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  padding: .2rem .55rem;
+  border-radius: 4px;
+  margin-left: .5rem;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.navbar-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,.2);
+  list-style: none;
+  margin: auto .2rem;
+}
+.nav-link-public {
+  opacity: .7;
+  font-size: .78rem !important;
+}
+.nav-link-public:hover {
+  opacity: 1 !important;
 }
 
 /* ── Layout principal ────────────────────────────────────── */

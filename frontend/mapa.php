@@ -1,10 +1,11 @@
+<?php require_once __DIR__ . '/../backend/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS — Mapa de Planteles</title>
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/estilos.css?v=2">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     .map-layout {
@@ -130,6 +131,7 @@
     inicializarMapa('mapa-leaflet');
 
     let todosPlanteles = [];
+    let filtroInstActual = '';
 
     async function cargarMapa(q) {
       const lista = document.getElementById('lista-planteles');
@@ -141,14 +143,20 @@
           const json = await resp.json();
           if (json.status !== 'ok') throw new Error('Error al cargar planteles');
           todosPlanteles = json.datos;
-          const conCoords = todosPlanteles.filter(p => p.latitud && p.longitud).length;
+          const conCoords = todosPlanteles.filter(p =>
+            coordsValidas(p.latitud ? parseFloat(p.latitud) : null, p.longitud ? parseFloat(p.longitud) : null)
+          ).length;
           console.log(`Planteles cargados: ${todosPlanteles.length}, con coordenadas: ${conCoords}`);
         }
 
-        const filtro = q ? todosPlanteles.filter(p =>
-          p.clave.toLowerCase().includes(q.toLowerCase()) ||
-          (p.nombre || '').toLowerCase().includes(q.toLowerCase())
-        ) : todosPlanteles;
+        const texto = q ? q.toLowerCase() : '';
+        const filtro = todosPlanteles.filter(p => {
+          const matchTexto = !texto ||
+            p.clave.toLowerCase().includes(texto) ||
+            (p.nombre || '').toLowerCase().includes(texto);
+          const matchInst = !filtroInstActual || (p.subsistema || 'Otras') === filtroInstActual;
+          return matchTexto && matchInst;
+        });
 
         if (filtro.length === 0) {
           lista.innerHTML = '<li style="padding:.8rem;color:var(--texto-2);font-size:.82rem">Sin resultados.</li>';
@@ -160,8 +168,10 @@
         lista.innerHTML = '';
 
         for (const p of filtro) {
-          const tieneCoords = p.latitud && p.longitud;
-          const coords = tieneCoords ? [parseFloat(p.latitud), parseFloat(p.longitud)] : null;
+          const lat = p.latitud ? parseFloat(p.latitud) : null;
+          const lng = p.longitud ? parseFloat(p.longitud) : null;
+          const tieneCoords = coordsValidas(lat, lng);
+          const coords = tieneCoords ? [lat, lng] : null;
           const color = colorPorInst(p.clave);
 
           const li = document.createElement('li');
@@ -227,7 +237,7 @@
           }
         }
 
-        renderFiltros(filtro);
+        renderFiltros();
 
       } catch (err) {
         lista.innerHTML = `<li style="padding:.8rem;color:#c00;font-size:.82rem">❌ Error: ${err.message}</li>`;
@@ -235,19 +245,19 @@
       }
     }
 
-    function renderFiltros(activos) {
+    function renderFiltros() {
       const insts = {};
       todosPlanteles.forEach(p => { const s = p.subsistema || 'Otras'; insts[s] = (insts[s] || 0) + 1; });
       const div = document.getElementById('filtros-inst');
-      div.innerHTML = '<button class="filtro-btn activo" data-inst="">Todas</button>' +
+      div.innerHTML = `<button class="filtro-btn${filtroInstActual === '' ? ' activo' : ''}" data-inst="">Todas</button>` +
         Object.entries(insts).sort().map(([k]) =>
-          `<button class="filtro-btn" data-inst="${k}">${k}</button>`
+          `<button class="filtro-btn${filtroInstActual === k ? ' activo' : ''}" data-inst="${k}">${k}</button>`
         ).join('');
 
       div.querySelectorAll('.filtro-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          div.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
-          btn.classList.add('activo');
+          filtroInstActual = btn.dataset.inst;
+          cargarMapa(document.getElementById('inp-buscar-mapa').value.trim());
         });
       });
     }

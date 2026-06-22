@@ -6,8 +6,8 @@ let marcadoresLayer;
 
 function inicializarMapa(elementId) {
     mapaLeaflet = L.map(elementId, {
-        center: [19.4, -99.1],
-        zoom: 10,
+        center: [19.40, -99.13],
+        zoom: 11,
         zoomControl: true
     });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -15,6 +15,17 @@ function inicializarMapa(elementId) {
         maxZoom: 18
     }).addTo(mapaLeaflet);
     marcadoresLayer = L.layerGroup().addTo(mapaLeaflet);
+}
+
+// Bounding box de la Ciudad de México (catálogo curado: solo planteles
+// de CDMX con coordenadas verificadas). Sirve de salvaguarda: si un
+// registro trae coordenadas fuera de la ciudad, no se dibuja su pin.
+const ZMVM_BBOX = { latMin: 19.05, latMax: 19.60, lngMin: -99.35, lngMax: -98.95 };
+
+function coordsValidas(lat, lng) {
+    if (lat === null || lng === null || Number.isNaN(lat) || Number.isNaN(lng)) return false;
+    return lat >= ZMVM_BBOX.latMin && lat <= ZMVM_BBOX.latMax &&
+           lng >= ZMVM_BBOX.lngMin && lng <= ZMVM_BBOX.lngMax;
 }
 
 function colorPorInst(clave) {
