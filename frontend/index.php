@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Inicio</title>
+  <title>Portal ECOEMS, Inicio</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <style>
     .hero-stats {
@@ -65,7 +65,7 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <p class="hero-eyebrow">📊 Datos históricos ECOEMS 1996–2024</p>
+      <p class="hero-eyebrow">Datos históricos ECOEMS 1996–2024</p>
       <h1 class="hero-title">
         Consulta el historial<br>
         de <em>puntajes de corte</em><br>
@@ -82,7 +82,7 @@
         <div class="form-group">
           <label>Institución</label>
           <select id="hero-inst" class="form-control">
-            <option value="">— Selecciona —</option>
+            <option value="">Selecciona</option>
             <option value="COLBACH">COLBACH</option>
             <option value="UNAM">UNAM</option>
             <option value="IPN">IPN</option>
@@ -102,7 +102,7 @@
             <option value="2024">2024</option>
           </select>
         </div>
-        <button id="btn-hero-buscar" class="btn btn-primary">🔍 Buscar</button>
+        <button id="btn-hero-buscar" class="btn btn-primary">Buscar</button>
       </div>
 
       <!-- Mini stats -->
@@ -129,8 +129,8 @@
 
   <!-- Franja info -->
   <div class="about-strip">
-    <span>📂 Fuente de datos:</span>
-    <span><strong>XABER A.C.</strong> — Repositorio abierto de evidencia educativa</span>
+    <span>Fuente de datos:</span>
+    <span><strong>XABER A.C.</strong>, Repositorio abierto de evidencia educativa</span>
     <span style="margin-left:auto; opacity:.6">xaber.org.mx/repositorio-de-datos</span>
   </div>
 
@@ -144,28 +144,28 @@
       <div class="modules-grid">
         <a href="escuela.php" style="text-decoration:none">
           <div class="module-card">
-            <div class="module-icon">🏫</div>
+            <div class="module-icon">E</div>
             <h3>Consulta por Escuela</h3>
             <p>Serie histórica de puntaje de corte y demanda para un plantel específico.</p>
           </div>
         </a>
         <a href="comparar.php" style="text-decoration:none">
           <div class="module-card">
-            <div class="module-icon">⚖️</div>
+            <div class="module-icon">C</div>
             <h3>Comparador</h3>
             <p>Compara hasta 4 opciones educativas en una misma gráfica.</p>
           </div>
         </a>
         <a href="mapa.php" style="text-decoration:none">
           <div class="module-card">
-            <div class="module-icon">🗺️</div>
+            <div class="module-icon">M</div>
             <h3>Mapa de Planteles</h3>
             <p>Visualiza todos los planteles de la ZMCDMX con sus puntajes de corte.</p>
           </div>
         </a>
         <a href="resumen.php" style="text-decoration:none">
           <div class="module-card">
-            <div class="module-icon">📋</div>
+            <div class="module-icon">R</div>
             <h3>Resumen Estadístico</h3>
             <p>Tabla comparativa de medias, tendencias y ranking por institución.</p>
           </div>
@@ -208,7 +208,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>Portal de Consulta Histórica <strong>ECOEMS</strong> &nbsp;·&nbsp; Proyecto escolar DAW — IPN Licenciatura en Ciencia de Datos &nbsp;·&nbsp; Equipo: Héctor · Melanie · Amalia</p>
+    <p>Portal de Consulta Histórica <strong>ECOEMS</strong> &nbsp;·&nbsp; Proyecto escolar DAW, IPN Licenciatura en Ciencia de Datos &nbsp;·&nbsp; Equipo: Héctor · Melanie · Amalia</p>
     <p style="margin-top:.4rem">Datos: <a href="https://xaber.org.mx" target="_blank">XABER A.C.</a> &nbsp;·&nbsp; 2026</p>
   </footer>
 

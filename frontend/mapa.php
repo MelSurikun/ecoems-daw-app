@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Mapa de Planteles</title>
+  <title>Portal ECOEMS, Mapa de Planteles</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -80,7 +80,7 @@
         <!-- Sidebar -->
         <div>
           <div class="sidebar-card mb-2">
-            <h4>🔍 Buscar plantel</h4>
+            <h4>Buscar plantel</h4>
             <div class="filter-group mb-2">
               <input type="text" id="inp-buscar-mapa" class="filter-select"
                      placeholder="Clave o nombre…" style="width:100%">
@@ -91,7 +91,7 @@
           </div>
 
           <div class="sidebar-card">
-            <h4 id="lista-titulo">📍 Planteles en el mapa</h4>
+            <h4 id="lista-titulo">Planteles en el mapa</h4>
             <div class="filtros-inst" id="filtros-inst"></div>
             <ul class="result-list" id="lista-planteles">
               <li style="padding:.8rem;color:var(--texto-2);font-size:.82rem">
@@ -163,7 +163,7 @@
           return;
         }
 
-        document.getElementById('lista-titulo').textContent = `📍 ${filtro.length} planteles`;
+        document.getElementById('lista-titulo').textContent = `${filtro.length} planteles`;
         marcadoresLayer.clearLayers();
         lista.innerHTML = '';
 
@@ -240,7 +240,7 @@
         renderFiltros();
 
       } catch (err) {
-        lista.innerHTML = `<li style="padding:.8rem;color:#c00;font-size:.82rem">❌ Error: ${err.message}</li>`;
+        lista.innerHTML = `<li style="padding:.8rem;color:#c00;font-size:.82rem">Error: ${err.message}</li>`;
         console.error(err);
       }
     }

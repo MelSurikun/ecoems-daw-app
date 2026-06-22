@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Acerca del Proyecto</title>
+  <title>Portal ECOEMS, Acerca del Proyecto</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <style>
     .team-grid {
@@ -148,28 +148,28 @@
       <div class="data-info-grid">
         <!-- Fuente de datos -->
         <div class="info-box">
-          <h4>📂 Fuente de datos — XABER A.C.</h4>
-          <div class="info-row"><span>Dataset</span><strong>ECOEMS — Concurso de asignación EMS</strong></div>
+          <h4>Fuente de datos, XABER A.C.</h4>
+          <div class="info-row"><span>Dataset</span><strong>ECOEMS, Concurso de asignación EMS</strong></div>
           <div class="info-row"><span>Organización</span><strong>XABER A.C.</strong></div>
           <div class="info-row"><span>URL</span><strong style="font-size:.78rem">xaber.org.mx/repositorio-de-datos</strong></div>
-          <div class="info-row"><span>Cobertura temporal</span><strong>1996 – presente</strong></div>
+          <div class="info-row"><span>Cobertura temporal</span><strong>1996 a la fecha</strong></div>
           <div class="info-row"><span>Cobertura geográfica</span><strong>ZMCDMX</strong></div>
           <div class="info-row"><span>Formato</span><strong>CSV comprimidos por año</strong></div>
           <div class="info-row"><span>Licencia</span><strong>Datos abiertos (recursos públicos)</strong></div>
-          <div class="info-row"><span>Volumen aprox.</span><strong>~350 000–400 000 registros/año</strong></div>
+          <div class="info-row"><span>Volumen aprox.</span><strong>350 000 a 400 000 registros/año</strong></div>
         </div>
 
         <!-- Stack -->
         <div class="info-box">
-          <h4>🛠 Stack tecnológico</h4>
-          <div class="info-row"><span>Frontend</span><strong>HTML5 · CSS3 · JavaScript</strong></div>
+          <h4>Stack tecnológico</h4>
+          <div class="info-row"><span>Frontend</span><strong>HTML5, CSS3, JavaScript</strong></div>
           <div class="info-row"><span>Visualización</span><strong>Chart.js</strong></div>
           <div class="info-row"><span>Mapas</span><strong>Leaflet.js + OpenStreetMap</strong></div>
           <div class="info-row"><span>Backend</span><strong>PHP 8.x</strong></div>
           <div class="info-row"><span>Base de datos</span><strong>MariaDB</strong></div>
-          <div class="info-row"><span>ETL</span><strong>Scripts PHP (carga CSV)</strong></div>
+          <div class="info-row"><span>ETL</span><strong>Scripts PHP y Python (carga de CSV y catálogo de planteles)</strong></div>
           <div class="info-row"><span>Control de versiones</span><strong>Git + GitHub</strong></div>
-          <div class="info-row"><span>Tipografía</span><strong>Fraunces + DM Sans (Google Fonts)</strong></div>
+          <div class="info-row"><span>Tipografía</span><strong>Sora + IBM Plex Serif (Google Fonts)</strong></div>
           <p style="font-size:.76rem;color:var(--texto-2);margin-top:.8rem">Tecnologías utilizadas:</p>
           <div class="tech-pills">
             <span class="tech-pill">HTML5</span>
@@ -185,24 +185,26 @@
 
         <!-- Mapa de sitio resumido -->
         <div class="info-box">
-          <h4>🗺 Mapa de sitio</h4>
-          <div class="info-row"><span>/index.php</span><strong>Inicio — buscador rápido</strong></div>
+          <h4>Mapa de sitio</h4>
+          <div class="info-row"><span>/index.php</span><strong>Inicio, buscador rápido</strong></div>
           <div class="info-row"><span>/escuela.php</span><strong>Consulta por plantel</strong></div>
           <div class="info-row"><span>/comparar.php</span><strong>Comparador (hasta 4 opciones)</strong></div>
           <div class="info-row"><span>/mapa.php</span><strong>Mapa interactivo ZMCDMX</strong></div>
           <div class="info-row"><span>/resumen.php</span><strong>Resumen estadístico</strong></div>
+          <div class="info-row"><span>/biblioteca.php</span><strong>Biblioteca de guías</strong></div>
+          <div class="info-row"><span>/simulador.php</span><strong>Examen simulador</strong></div>
           <div class="info-row"><span>/acerca.php</span><strong>Esta página</strong></div>
         </div>
 
         <!-- Créditos -->
         <div class="info-box">
-          <h4>📋 Créditos y contexto académico</h4>
+          <h4>Créditos y contexto académico</h4>
           <div class="info-row"><span>Materia</span><strong>Desarrollo de Aplicaciones Web</strong></div>
-          <div class="info-row"><span>Semestre</span><strong>IV — Lic. en Ciencia de Datos</strong></div>
-          <div class="info-row"><span>Institución</span><strong>IPN — ESCOM</strong></div>
-          <div class="info-row"><span>Ciclo</span><strong>2025–2026</strong></div>
+          <div class="info-row"><span>Semestre</span><strong>Lic. en Ciencia de Datos, IPN</strong></div>
+          <div class="info-row"><span>Institución</span><strong>IPN, Licenciatura en Ciencia de Datos</strong></div>
+          <div class="info-row"><span>Ciclo</span><strong>2025, 2026</strong></div>
           <div class="info-row"><span>Entrega</span><strong>Proyecto Final</strong></div>
-          <div class="info-row"><span>Fecha</span><strong>Mayo de 2026</strong></div>
+          <div class="info-row"><span>Fecha</span><strong>Junio de 2026</strong></div>
         </div>
       </div>
 

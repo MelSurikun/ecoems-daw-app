@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Resumen Estadístico</title>
+  <title>Portal ECOEMS, Resumen Estadístico</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -64,7 +64,7 @@
       <div class="grid-2 mb-3">
         <div class="chart-area">
           <div class="chart-area-header">
-            <h3>🏫 Asignados por institución</h3>
+            <h3>Asignados por institución</h3>
           </div>
           <div class="canvas-wrap">
             <canvas id="chart-inst" height="240"></canvas>
@@ -72,7 +72,7 @@
         </div>
         <div class="chart-area">
           <div class="chart-area-header">
-            <h3>📐 Porcentaje por materia (promedio global)</h3>
+            <h3>Porcentaje por materia (promedio global)</h3>
           </div>
           <div class="canvas-wrap">
             <canvas id="chart-materias" height="240"></canvas>
@@ -90,7 +90,7 @@
       <div id="panel-inst">
         <div class="data-table-wrap">
           <div style="padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--borde)">
-            <h3 style="font-family:var(--font-display);color:var(--bordo)">Resumen por institución asignada — 2024</h3>
+            <h3 style="font-family:var(--font-display);color:var(--bordo)">Resumen por institución asignada, 2024</h3>
           </div>
           <table class="data-table">
             <thead>
@@ -118,7 +118,7 @@
       <div id="panel-top" style="display:none">
         <div class="data-table-wrap">
           <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--borde)">
-            <h3 style="font-family:var(--font-display);color:var(--bordo)">Top 10 planteles más solicitados — 2024</h3>
+            <h3 style="font-family:var(--font-display);color:var(--bordo)">Top 10 planteles más solicitados, 2024</h3>
           </div>
           <table class="data-table">
             <thead>
@@ -184,32 +184,33 @@
           }
         });
 
-        // ── Gráfica: radar de materias ──────────────────────
+        // ── Gráfica: porcentaje de aciertos por materia ─────
         const materias   = ['Matemáticas','Español','Historia','Biología','Física','Química'];
         const pctCampos  = ['pct_matematicas','pct_espanol','pct_historia','pct_biologia','pct_fisica','pct_quimica'];
         new Chart(document.getElementById('chart-materias'), {
-          type: 'radar',
+          type: 'bar',
           data: {
             labels: materias,
             datasets: [{
               label: 'Promedio % aciertos',
               data:  pctCampos.map(k => parseFloat(t[k] ?? 0)),
-              borderColor: '#023047',
-              backgroundColor: 'rgba(2,48,71,0.1)',
-              borderWidth: 2,
-              pointBackgroundColor: '#ffb703',
-              pointRadius: 4,
+              backgroundColor: '#ffb703cc',
+              borderColor: '#fb8500',
+              borderWidth: 1.5,
+              borderRadius: 4,
             }]
           },
           options: {
+            indexAxis: 'y',
             responsive: true,
-            plugins: { legend: { labels: { font: { family: 'Sora' } } } },
+            plugins: { legend: { display: false } },
             scales: {
-              r: {
-                beginAtZero: true,
-                ticks: { font: { family: 'Sora', size: 10 } },
-                pointLabels: { font: { family: 'Sora', size: 11 } }
-              }
+              x: {
+                beginAtZero: true, max: 100,
+                ticks: { font: { family: 'Sora', size: 11 }, callback: v => v + '%' },
+                grid: { color: '#e2eaf0' }
+              },
+              y: { ticks: { font: { family: 'Sora', size: 11 } }, grid: { display: false } }
             }
           }
         });
@@ -247,7 +248,7 @@
       } catch (err) {
         document.getElementById('tbody-inst').innerHTML =
           `<tr><td colspan="8" style="text-align:center;color:#c00;padding:1rem">
-            ❌ Error al conectar con la base de datos. Verifica que el backend esté activo.<br>
+            Error al conectar con la base de datos. Verifica que el backend esté activo.<br>
             <small>${err.message}</small>
           </td></tr>`;
         console.error(err);

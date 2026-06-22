@@ -1,10 +1,10 @@
-<?php require_once __DIR__ . '/../backend/auth.php'; ?>
+<?php require_once __DIR__ . '/../backend/auth.php'; requiereSesionPagina('login.php'); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portal ECOEMS — Simulador de examen</title>
+<title>Portal ECOEMS, Simulador de examen</title>
 <link rel="stylesheet" href="css/estilos.css?v=2">
 <style>
 
@@ -32,8 +32,11 @@
     backdrop-filter:saturate(1.4) blur(6px); border-bottom:1px solid var(--line);
   }
   .bar .wrap{display:flex; align-items:center; gap:12px; padding:10px 16px}
-  .progress{flex:1; height:8px; background:var(--line); border-radius:99px; overflow:hidden}
-  .progress>i{display:block; height:100%; width:0; background:var(--accent); transition:width .25s}
+  .progress{flex:1; height:12px; background:var(--line); border-radius:99px; overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
+  .progress>i{display:flex; align-items:center; justify-content:flex-end; height:100%; width:0;
+    background:linear-gradient(90deg, var(--accent), var(--brand)); border-radius:99px;
+    transition:width .3s ease; min-width:0}
+  .progress>i span{font-size:.62rem; font-weight:700; color:#fff; padding-right:6px; white-space:nowrap}
   .bar small{color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
 
   #result{display:none; margin:18px 0 4px}
@@ -127,12 +130,12 @@
   <div class="container">
     <p class="page-header-eyebrow">Innovación · Examen simulador</p>
     <h1>Simulador de examen IPN-UNAM</h1>
-    <p>128 reactivos de muestra. Al calificar verás tu desglose por asignatura; si inicias sesión, tu resultado se guarda en tu panel.</p>
+    <p>128 reactivos de muestra. Al calificar verás tu desglose por asignatura y tu resultado se guarda en tu panel.</p>
   </div>
 </div>
 
 <div class="bar"><div class="wrap">
-  <div class="progress"><i id="pbar"></i></div>
+  <div class="progress"><i id="pbar"><span id="ppct"></span></i></div>
   <small id="pcount">0 / 128</small>
 </div></div>
 
@@ -226,8 +229,10 @@ function esc(s){ const d=document.createElement("div"); d.textContent=s; return 
 function answered(){ return DATA.filter(q => document.querySelector(`input[name="q${q.n}"]:checked`)).length; }
 function updateProgress(){
   const a = answered();
+  const pct = Math.round(a/DATA.length*100);
   document.getElementById("pcount").textContent = `${a} / ${DATA.length}`;
-  document.getElementById("pbar").style.width = (a/DATA.length*100)+"%";
+  document.getElementById("pbar").style.width = pct+"%";
+  document.getElementById("ppct").textContent = pct > 8 ? pct+"%" : "";
 }
 
 document.getElementById("grade").addEventListener("click", () => {
@@ -288,11 +293,11 @@ document.getElementById("grade").addEventListener("click", () => {
       body: JSON.stringify({ aciertos: total, total: DATA.length, detalle: bySub })
     }).then(r => r.json()).then(json => {
       if (json.status === 'ok') {
-        guardadoEl.innerHTML = '✅ Resultado guardado en tu panel. <a href="dashboard.php" style="color:var(--brand);font-weight:600">Ver mi progreso →</a>';
+        guardadoEl.innerHTML = 'Resultado guardado en tu panel. <a href="dashboard.php" style="color:var(--brand);font-weight:600">Ver mi progreso →</a>';
       } else {
-        guardadoEl.textContent = '⚠️ No se pudo guardar tu resultado: ' + (json.mensaje || 'error desconocido');
+        guardadoEl.textContent = 'No se pudo guardar tu resultado: ' + (json.mensaje || 'error desconocido');
       }
-    }).catch(() => { guardadoEl.textContent = '⚠️ No se pudo guardar tu resultado (sin conexión).'; });
+    }).catch(() => { guardadoEl.textContent = 'No se pudo guardar tu resultado (sin conexión).'; });
   } else if (guardadoEl) {
     guardadoEl.innerHTML = 'Inicia sesión para guardar tus resultados y ver tu progreso. <a href="login.php?next=simulador.php" style="color:var(--brand);font-weight:600">Iniciar sesión →</a>';
   }

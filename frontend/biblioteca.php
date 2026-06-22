@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Biblioteca de guías</title>
+  <title>Portal ECOEMS, Biblioteca de guías</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <style>
     .biblio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
@@ -48,7 +48,7 @@
 
       <?php if (tieneRol('admin')): ?>
       <div class="admin-panel" id="panel-admin">
-        <h3>⚙ Administrar recursos</h3>
+        <h3>Administrar recursos</h3>
         <form id="form-recurso" class="admin-form">
           <input type="hidden" id="r-id">
           <div>
@@ -114,7 +114,7 @@
         poblarFiltro();
         render();
       } catch (err) {
-        div.innerHTML = `<div class="estado-msg">❌ Error de conexión.<br><small>${err.message}</small></div>`;
+        div.innerHTML = `<div class="estado-msg">Error de conexión.<br><small>${err.message}</small></div>`;
       }
     }
 
@@ -140,7 +140,7 @@
           <span class="recurso-materia">${r.materia}</span>
           <div class="recurso-titulo">${r.titulo}</div>
           <div class="recurso-desc">${r.descripcion || ''}</div>
-          <div class="recurso-tipo">${r.tipo === 'pdf' ? '📄 PDF' : '🔗 Enlace'}</div>
+          <div class="recurso-tipo">${r.tipo === 'pdf' ? 'PDF' : 'Enlace'}</div>
           <a href="${r.url}" target="_blank" rel="noopener" class="btn btn-bordo btn-sm">Abrir recurso →</a>
           ${ES_ADMIN ? `
           <div class="recurso-admin-actions">

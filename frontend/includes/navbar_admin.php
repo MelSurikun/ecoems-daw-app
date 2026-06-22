@@ -31,7 +31,7 @@
       <li><a href="../index.php" class="nav-link-public">← Portal público</a></li>
     </ul>
     <ul class="navbar-nav navbar-session">
-      <li><a href="../dashboard.php">👤 <?= htmlspecialchars(usuarioActual()['nombre']) ?></a></li>
+      <li><a href="../dashboard.php"><?= htmlspecialchars(usuarioActual()['nombre']) ?></a></li>
       <li><a href="#" id="btn-logout">Salir</a></li>
     </ul>
   </div>

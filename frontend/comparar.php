@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Comparador</title>
+  <title>Portal ECOEMS, Comparador</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -82,21 +82,21 @@
 
       <!-- Slots -->
       <h2 class="section-title" style="font-size:1.15rem;margin-bottom:1rem">
-        <span>Paso 1 — Selecciona las opciones</span>
+        <span>Paso 1, selecciona las opciones</span>
         Opciones a comparar (máx. 4)
       </h2>
       <div class="compare-grid" id="slots-grid"></div>
 
       <!-- Botón actualizar -->
       <div class="filters-panel mb-3">
-        <button id="btn-comparar" class="btn btn-bordo btn-sm">📊 Comparar opciones</button>
+        <button id="btn-comparar" class="btn btn-bordo btn-sm">Comparar opciones</button>
         <span id="msg-comparar" style="font-size:.82rem;color:var(--texto-2)"></span>
       </div>
 
       <!-- Gráfica comparativa -->
       <div class="chart-area mb-3" id="area-grafica" style="display:none">
         <div class="chart-area-header">
-          <h3>📊 Estadísticas comparadas — datos 2024</h3>
+          <h3>Estadísticas comparadas, datos 2024</h3>
         </div>
         <div id="leyenda-comparar" class="legend-bar"></div>
         <div class="canvas-wrap">
@@ -189,7 +189,7 @@
             <span class="slot-name">${nombre}</span>
             <span class="slot-inst" id="slot-inst-${i}">cargando…</span>
             <span class="slot-corte" id="slot-corte-${i}">…</span>
-            <button class="slot-remove" onclick="quitarOpcion(${i})">✕ Quitar</button>
+            <button class="slot-remove" onclick="quitarOpcion(${i})">Quitar</button>
           </div>`;
       }).join('');
       opciones.forEach((clave, i) => { if (clave) cargarMiniDato(clave, i); });
@@ -250,7 +250,7 @@
     document.getElementById('btn-comparar').addEventListener('click', async () => {
       const claves = opciones.filter(Boolean);
       if (claves.length < 2) {
-        document.getElementById('msg-comparar').textContent = '⚠️ Agrega al menos 2 opciones.';
+        document.getElementById('msg-comparar').textContent = 'Agrega al menos 2 opciones.';
         return;
       }
       document.getElementById('msg-comparar').innerHTML = '<span class="spinner"></span> Consultando…';
@@ -261,7 +261,7 @@
         const json  = await resp.json();
 
         if (json.status !== 'ok') {
-          document.getElementById('msg-comparar').textContent = '❌ Error al obtener datos.';
+          document.getElementById('msg-comparar').textContent = 'Error al obtener datos.';
           return;
         }
 
@@ -270,7 +270,7 @@
         renderTablaComparacion(json.datos);
 
       } catch (err) {
-        document.getElementById('msg-comparar').textContent = '❌ Error de conexión.';
+        document.getElementById('msg-comparar').textContent = 'Error de conexión.';
         console.error(err);
       }
     });

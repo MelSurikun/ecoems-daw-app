@@ -7,7 +7,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECOEMS — Gestión del examen</title>
+  <title>ECOEMS, Gestión del examen</title>
   <link rel="stylesheet" href="../css/estilos.css?v=2">
   <style>
     .toolbar { display: flex; gap: 1rem; align-items: end; flex-wrap: wrap; margin-bottom: 1.5rem; }
@@ -140,7 +140,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
         reactivos = json.datos;
         render();
       } catch (err) {
-        document.getElementById('lista').innerHTML = '<div class="estado-msg" style="padding:2rem;text-align:center">❌ Error al cargar reactivos.</div>';
+        document.getElementById('lista').innerHTML = '<div class="estado-msg" style="padding:2rem;text-align:center">Error al cargar reactivos.</div>';
       }
     }
 

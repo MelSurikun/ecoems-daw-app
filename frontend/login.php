@@ -8,7 +8,7 @@ $next = $_GET['next'] ?? '';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Acceso</title>
+  <title>Portal ECOEMS, Acceso</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <style>
     .auth-page-body {

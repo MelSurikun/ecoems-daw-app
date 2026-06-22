@@ -7,7 +7,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECOEMS — Gestión de usuarios</title>
+  <title>ECOEMS, Gestión de usuarios</title>
   <link rel="stylesheet" href="../css/estilos.css?v=2">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -64,13 +64,13 @@ $usuario = requiereRolPagina('admin', '../index.php');
             <h2 id="det-nombre"></h2>
             <small id="det-email"></small>
           </div>
-          <button class="cerrar-detalle" id="btn-cerrar-detalle">✕ Cerrar</button>
+          <button class="cerrar-detalle" id="btn-cerrar-detalle">Cerrar</button>
         </div>
         <div class="detalle-body">
           <div class="detalle-stats" id="det-stats"></div>
           <div class="chart-grid">
-            <div class="chart-box"><h4>📈 Progreso por intento</h4><canvas id="chart-progreso"></canvas></div>
-            <div class="chart-box"><h4>📊 Aciertos por materia</h4><canvas id="chart-materias"></canvas></div>
+            <div class="chart-box"><h4>Progreso por intento</h4><canvas id="chart-progreso"></canvas></div>
+            <div class="chart-box"><h4>Aciertos por materia</h4><canvas id="chart-materias"></canvas></div>
           </div>
           <div class="data-table-wrap">
             <table class="data-table">
@@ -113,7 +113,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
           `).join('')}</tbody>
         </table>`;
       } catch (err) {
-        div.innerHTML = '<div class="estado-msg">❌ Error al cargar usuarios.</div>';
+        div.innerHTML = '<div class="estado-msg">Error al cargar usuarios.</div>';
       }
     }
 
@@ -234,7 +234,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
         }
 
       } catch (err) {
-        document.getElementById('det-stats').innerHTML = `<div class="estado-msg">❌ ${err.message}</div>`;
+        document.getElementById('det-stats').innerHTML = `<div class="estado-msg">${err.message}</div>`;
       }
     }
 

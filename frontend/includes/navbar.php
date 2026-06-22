@@ -44,9 +44,9 @@ $pagina = basename($_SERVER['PHP_SELF']);
     </ul>
     <ul class="navigation navigation-session">
       <?php if ($u = usuarioActual()): ?>
-        <li class="sidebar-user">👤 <?= htmlspecialchars($u['nombre']) ?></li>
+        <li class="sidebar-user"><?= htmlspecialchars($u['nombre']) ?></li>
         <?php if ($u['rol'] === 'admin'): ?>
-          <li><a href="admin/dashboard.php">⚙ Panel de administración</a></li>
+          <li><a href="admin/dashboard.php">Panel de administración</a></li>
         <?php endif; ?>
         <li><a href="dashboard.php"<?= $pagina === 'dashboard.php' ? ' class="activo"' : '' ?>>Mi panel</a></li>
         <li><a href="#" id="btn-logout" class="sidebar-logout">Salir</a></li>

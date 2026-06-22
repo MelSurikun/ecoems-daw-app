@@ -44,6 +44,7 @@ Todos los endpoints devuelven `{ status, datos }`, usan prepared statements e in
 | `backend/api/reactivos.php` | GET | — | `?examen_id=1` — reactivos publicos |
 | `backend/api/simulador.php` | GET/POST | requerida | POST guarda intento, GET historial |
 | `backend/api/recursos.php` | GET/POST/PUT/DELETE | escritura: admin | CRUD de recursos de estudio |
+| `backend/api/metas.php` | GET/PUT | requerida | Opciones de interés y puntaje meta del aspirante |
 | `backend/api/auth/login.php` | POST | — | Inicio de sesion (JSON body) |
 | `backend/api/auth/logout.php` | POST | — | Cierra sesion |
 | `backend/api/auth/registro.php` | POST | — | Registro de aspirante |
@@ -101,6 +102,7 @@ Esto crea la base `ecoems_db`, las tablas y las vistas. Despues aplica los modul
 mysql -u root -p ecoems_db < database/auth.sql
 mysql -u root -p ecoems_db < database/recursos.sql
 mysql -u root -p ecoems_db < database/simulador.sql
+mysql -u root -p ecoems_db < database/metas.sql
 mysql -u root -p ecoems_db < database/planteles_cdmx.sql
 mysql -u root -p ecoems_db < database/sustentantes_demo.sql
 ```
@@ -229,6 +231,7 @@ ecoems-daw-app/
 │   ├── auth.sql                — Tabla usuarios + cuentas semilla
 │   ├── recursos.sql            — Datos de biblioteca
 │   ├── simulador.sql           — Tablas del simulador
+│   ├── metas.sql               — Opciones de interés y puntaje meta del aspirante
 │   ├── planteles_cdmx.sql      — 40 planteles CDMX (UNAM + IPN completos)
 │   ├── sustentantes_demo.sql   — 150 sustentantes por plantel
 │   └── update_coords.sql

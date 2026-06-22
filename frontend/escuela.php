@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Consulta por Escuela</title>
+  <title>Portal ECOEMS, Consulta por Escuela</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -82,7 +82,7 @@
         <div class="filter-group" style="position:relative">
           <!-- El campo plantel es suficiente para la segunda entrega; año viene en entrega 3 -->
         </div>
-        <button id="btn-buscar" class="btn btn-bordo btn-sm">🔍 Consultar</button>
+        <button id="btn-buscar" class="btn btn-bordo btn-sm">Consultar</button>
       </div>
 
       <!-- Área de resultados -->
@@ -96,7 +96,7 @@
   </section>
 
   <!-- FAB -->
-  <button class="fab" id="btn-fab" style="display:none">⚖️ Agregar a comparación</button>
+  <button class="fab" id="btn-fab" style="display:none">Agregar a comparación</button>
 
   <footer class="site-footer">
     <p>Portal de Consulta Histórica <strong>ECOEMS</strong> &nbsp;·&nbsp; IPN-LCD &nbsp;·&nbsp; Datos: <a href="#">XABER A.C.</a> &nbsp;·&nbsp; 2026</p>
@@ -250,7 +250,7 @@
         };
 
       } catch (err) {
-        div.innerHTML = `<div class="estado-msg">❌ Error de conexión con el servidor. Verifica que el backend esté activo.<br><small>${err.message}</small></div>`;
+        div.innerHTML = `<div class="estado-msg">Error de conexión con el servidor. Verifica que el backend esté activo.<br><small>${err.message}</small></div>`;
         console.error(err);
       }
     }

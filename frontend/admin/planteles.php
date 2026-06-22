@@ -7,7 +7,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECOEMS — Gestión de planteles</title>
+  <title>ECOEMS, Gestión de planteles</title>
   <link rel="stylesheet" href="../css/estilos.css?v=2">
   <style>
     .estado-msg { padding: 2rem; text-align: center; color: var(--texto-2); font-size: .9rem; }
@@ -26,7 +26,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
     <div class="container">
       <div class="card" style="padding:2rem">
         <div class="estado-msg">
-          ⚙️ Módulo en construcción.<br>
+          Módulo en construcción.<br>
           Por ahora el catálogo se administra via SQL/ETL.
           <div style="margin-top:1rem">
             <a href="../planteles.php" class="btn btn-bordo btn-sm">Ver catálogo público →</a>

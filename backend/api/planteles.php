@@ -17,9 +17,9 @@ if ($clave) {
     $stmt = $pdo->prepare("
         SELECT clave, nombre, especialidad, subsistema, municipio, estado, direccion
         FROM planteles
-        WHERE clave LIKE :q OR nombre LIKE :q2
+        WHERE clave LIKE :q OR nombre LIKE :q2 OR subsistema LIKE :q2
         ORDER BY clave
-        LIMIT 20
+        LIMIT 30
     ");
     $like = $q . '%';
     $like2 = '%' . $q . '%';

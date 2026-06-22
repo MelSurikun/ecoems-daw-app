@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal ECOEMS — Planteles</title>
+  <title>Portal ECOEMS, Planteles</title>
   <link rel="stylesheet" href="css/estilos.css?v=2">
   <style>
     .search-bar {
@@ -77,8 +77,8 @@
                    placeholder="Ej. B00001, CETIS, Prepa…" style="width:100%">
             <div id="autocomplete" style="position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra);z-index:200;max-height:200px;overflow-y:auto;display:none"></div>
           </div>
-          <button id="btn-buscar" class="btn btn-bordo btn-sm">🔍 Buscar</button>
-          <button id="btn-todos" class="btn btn-sm" style="background:var(--fondo);border:1.5px solid var(--borde)">↻ Todos</button>
+          <button id="btn-buscar" class="btn btn-bordo btn-sm">Buscar</button>
+          <button id="btn-todos" class="btn btn-sm" style="background:var(--fondo);border:1.5px solid var(--borde)">Todos</button>
         </div>
       </div>
 
@@ -132,7 +132,7 @@
         }
 
         if (filtrados.length === 0) {
-          div.innerHTML = `<div class="estado-msg">${q ? '⚠️ Sin resultados para «' + q + '»' : '⚠️ No hay planteles registrados.'}</div>`;
+          div.innerHTML = `<div class="estado-msg">${q ? 'Sin resultados para «' + q + '»' : 'No hay planteles registrados.'}</div>`;
           return;
         }
 
@@ -144,10 +144,10 @@
               <div class="clave"><span class="inst-dot" style="background:${color}"></span>${p.clave}</div>
               <div class="nombre">${(p.nombre || '—').substring(0, 120)}</div>
               <div class="meta">
-                <span>🏛 ${p.subsistema || '—'}</span>
-                <span>📍 ${[p.municipio, p.estado].filter(Boolean).join(', ') || '—'}</span>
+                <span>${p.subsistema || '—'}</span>
+                <span>${[p.municipio, p.estado].filter(Boolean).join(', ') || '—'}</span>
               </div>
-              ${p.direccion ? `<div class="direccion">📫 ${p.direccion.substring(0, 150)}</div>` : ''}
+              ${p.direccion ? `<div class="direccion">${p.direccion.substring(0, 150)}</div>` : ''}
             </div>
             <div class="accion">
               <a href="escuela.php?plantel=${encodeURIComponent(p.clave)}" class="btn btn-bordo btn-sm" style="font-size:.75rem;padding:.35rem .7rem">Ver stats →</a>
@@ -158,7 +158,7 @@
         renderFiltros(filtrados);
 
       } catch (err) {
-        div.innerHTML = `<div class="estado-msg">❌ Error de conexión.<br><small>${err.message}</small></div>`;
+        div.innerHTML = `<div class="estado-msg">Error de conexión.<br><small>${err.message}</small></div>`;
         console.error(err);
       }
     }

@@ -56,6 +56,15 @@ $stmt3 = $pdo->query("
 ");
 $por_institucion = $stmt3->fetchAll();
 
+$nombresInst = [
+    'U6' => 'UNAM', 'I5' => 'IPN', 'B0' => 'COLBACH',
+    'C1' => 'CONALEP', 'D4' => 'DGETI', 'G2' => 'IEMS',
+];
+foreach ($por_institucion as &$fila) {
+    $fila['institucion'] = $nombresInst[$fila['clave_inst']] ?? $fila['clave_inst'];
+}
+unset($fila);
+
 echo json_encode([
     'status'          => 'ok',
     'totales'         => $totales,

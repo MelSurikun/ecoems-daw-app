@@ -7,7 +7,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECOEMS — Panel de administración</title>
+  <title>ECOEMS, Panel de administración</title>
   <link rel="stylesheet" href="../css/estilos.css?v=2">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -222,7 +222,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
         });
 
       } catch (err) {
-        document.querySelectorAll('.empty-msg').forEach(el => el.textContent = '❌ Error de conexión.');
+        document.querySelectorAll('.empty-msg').forEach(el => el.textContent = 'Error de conexión.');
       }
     }
     cargarDashboard();
