@@ -9,7 +9,7 @@ $next = $_GET['next'] ?? '';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS, Acceso</title>
-  <link rel="stylesheet" href="css/estilos.css?v=2">
+  <link rel="stylesheet" href="css/estilos.css?v=3">
   <style>
     .auth-page-body {
       min-height: 100vh;
@@ -66,7 +66,49 @@ $next = $_GET['next'] ?? '';
       font-family: var(--font-body); font-size: .9rem; outline: none; transition: var(--trans);
     }
     .auth-field input:focus { border-color: var(--bordo); }
+    .password-wrap { position: relative; display: flex; }
+    .password-wrap input { width: 100%; padding-right: 2.6rem; }
+    .password-toggle {
+      position: absolute; right: .5rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; padding: .3rem; cursor: pointer;
+      color: var(--texto-2); display: flex; align-items: center; transition: var(--trans);
+    }
+    .password-toggle:hover { color: var(--bordo); }
     .auth-msg { font-size: .8rem; padding: .55rem .8rem; border-radius: var(--radio); display: none; }
+    .auth-check-row { display: flex; align-items: flex-start; gap: .55rem; margin-top: .8rem; }
+    .auth-check-row input { margin-top: .2rem; flex-shrink: 0; accent-color: var(--bordo); cursor: pointer; }
+    .auth-check-row label { font-size: .78rem; color: var(--texto-2); line-height: 1.5; }
+    .auth-link-modal {
+      background: none; border: none; padding: 0; color: var(--bordo); font-weight: 600;
+      font-family: var(--font-body); font-size: .78rem; cursor: pointer; text-decoration: underline;
+    }
+    .auth-link-modal:hover { color: var(--bordo-cl); }
+
+    /* Modales de aviso de privacidad / términos */
+    .auth-modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(1,32,48,.55);
+      z-index: 500; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .auth-modal-overlay.show { display: flex; }
+    .auth-modal {
+      background: var(--fondo-card); border-radius: var(--radio-lg); box-shadow: var(--sombra-lg);
+      max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .auth-modal-header {
+      background: var(--bordo); color: #fff; padding: 1.2rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+    }
+    .auth-modal-header h2 { font-family: var(--font-display); font-size: 1.15rem; }
+    .auth-modal-cerrar {
+      background: rgba(255,255,255,.15); border: none; color: #fff; width: 30px; height: 30px;
+      border-radius: 50%; font-size: 1.2rem; line-height: 1; cursor: pointer; transition: var(--trans);
+    }
+    .auth-modal-cerrar:hover { background: rgba(255,255,255,.3); }
+    .auth-modal-body { padding: 1.5rem; overflow-y: auto; }
+    .auth-modal-body h3 { font-family: var(--font-display); color: var(--bordo); font-size: .95rem; margin: 1.1rem 0 .4rem; }
+    .auth-modal-body h3:first-child { margin-top: 0; }
+    .auth-modal-body p { font-size: .85rem; color: var(--texto); line-height: 1.7; margin-bottom: .5rem; }
     .auth-msg.error { display: block; background: #FFEBEE; color: #C62828; }
     .auth-msg.ok    { display: block; background: #E8F5E9; color: #2E7D32; }
     .auth-demo {
@@ -138,6 +180,8 @@ $next = $_GET['next'] ?? '';
 </head>
 <body class="auth-page-body">
 
+  <?php require __DIR__ . '/includes/loader.php'; ?>
+
   <header class="auth-mini-header">
     <a href="index.php" aria-label="Ir al inicio">
       <svg viewBox="0 0 300 70" aria-label="ECOEMS">
@@ -179,7 +223,17 @@ $next = $_GET['next'] ?? '';
           </div>
           <div class="auth-field" style="margin-top:.7rem">
             <label for="reg-password">Contraseña (mínimo 6 caracteres)</label>
-            <input type="password" id="reg-password" required minlength="6" autocomplete="new-password">
+            <div class="password-wrap">
+              <input type="password" id="reg-password" required minlength="6" autocomplete="new-password">
+              <button type="button" class="password-toggle" data-target="reg-password" aria-label="Mostrar contraseña">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="18" height="18"><path d="M12 5c-5 0-9 4-10.5 7C2.5 15 6.5 19 12 19s9.5-4 10.5-7C21 9 17 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" fill="currentColor"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path d="M3.5 4 21 21.5l-1.4 1.4-3-3C15.3 20.6 13.7 21 12 21c-5.5 0-9.5-4-11-7 .8-1.6 2.4-3.7 4.7-5.3L2.1 5.4 3.5 4Zm5.4 5.4 1.5 1.5a2 2 0 0 0 2.7 2.7l1.5 1.5a4 4 0 0 1-5.7-5.7ZM12 5c5 0 9 4 10.5 7-.5 1-1.4 2.3-2.6 3.5l-1.5-1.5C19.5 12.9 20.1 12 20.4 12c-1.3-2.6-4.4-5-8.4-5-.8 0-1.6.1-2.3.3L8.2 5.8C9.4 5.3 10.7 5 12 5Z" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="auth-check-row">
+            <input type="checkbox" id="reg-acepta" required>
+            <label for="reg-acepta">He leído y acepto el <button type="button" class="auth-link-modal" data-modal="modal-privacidad">Aviso de privacidad</button> y los <button type="button" class="auth-link-modal" data-modal="modal-terminos">Términos y condiciones</button>.</label>
           </div>
           <button type="submit" class="btn btn-bordo" style="width:100%;margin-top:1.1rem">Crear cuenta</button>
         </form>
@@ -200,7 +254,13 @@ $next = $_GET['next'] ?? '';
           </div>
           <div class="auth-field" style="margin-top:.7rem">
             <label for="login-password">Contraseña</label>
-            <input type="password" id="login-password" required autocomplete="current-password">
+            <div class="password-wrap">
+              <input type="password" id="login-password" required autocomplete="current-password">
+              <button type="button" class="password-toggle" data-target="login-password" aria-label="Mostrar contraseña">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="18" height="18"><path d="M12 5c-5 0-9 4-10.5 7C2.5 15 6.5 19 12 19s9.5-4 10.5-7C21 9 17 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" fill="currentColor"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" width="18" height="18" style="display:none"><path d="M3.5 4 21 21.5l-1.4 1.4-3-3C15.3 20.6 13.7 21 12 21c-5.5 0-9.5-4-11-7 .8-1.6 2.4-3.7 4.7-5.3L2.1 5.4 3.5 4Zm5.4 5.4 1.5 1.5a2 2 0 0 0 2.7 2.7l1.5 1.5a4 4 0 0 1-5.7-5.7ZM12 5c5 0 9 4 10.5 7-.5 1-1.4 2.3-2.6 3.5l-1.5-1.5C19.5 12.9 20.1 12 20.4 12c-1.3-2.6-4.4-5-8.4-5-.8 0-1.6.1-2.3.3L8.2 5.8C9.4 5.3 10.7 5 12 5Z" fill="currentColor"/></svg>
+              </button>
+            </div>
           </div>
           <button type="submit" class="btn btn-bordo" style="width:100%;margin-top:1.1rem">Entrar</button>
         </form>
@@ -236,6 +296,65 @@ $next = $_GET['next'] ?? '';
   </section>
   </main>
 
+  <!-- Modal: Aviso de privacidad -->
+  <div class="auth-modal-overlay" id="modal-privacidad">
+    <div class="auth-modal">
+      <div class="auth-modal-header">
+        <h2>Aviso de privacidad</h2>
+        <button type="button" class="auth-modal-cerrar" data-cerrar="modal-privacidad" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="auth-modal-body">
+        <p>El Portal ECOEMS es un proyecto académico desarrollado para la materia de Desarrollo de Aplicaciones Web de la Licenciatura en Ciencia de Datos del IPN. Este aviso describe el tratamiento que se da a los datos personales de quienes crean una cuenta en el portal.</p>
+
+        <h3>Datos que se recaban</h3>
+        <p>Al registrarte se solicitan tu nombre completo, tu correo electrónico y una contraseña. Si utilizas el simulador de examen, también se guarda el historial de tus intentos: aciertos, porcentaje obtenido y desglose por materia.</p>
+
+        <h3>Finalidad del tratamiento</h3>
+        <p>Estos datos se usan únicamente para identificarte dentro del portal, permitirte iniciar sesión, guardar tu progreso en el simulador y mostrarte tu propio historial en tu panel personal. No se utilizan con fines comerciales ni se comparten con terceros.</p>
+
+        <h3>Resguardo de la información</h3>
+        <p>La contraseña se almacena de forma cifrada y no es visible para el equipo del proyecto. La información se conserva en la base de datos del portal mientras la cuenta permanezca activa.</p>
+
+        <h3>Derechos del usuario</h3>
+        <p>Puedes solicitar el acceso, corrección o eliminación de tus datos personales en cualquier momento, comunicándote con el equipo de desarrollo a través de los medios de contacto indicados en la sección Acerca del portal.</p>
+
+        <h3>Cambios a este aviso</h3>
+        <p>Este aviso puede actualizarse conforme evolucione el proyecto. Se recomienda revisarlo periódicamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Términos y condiciones -->
+  <div class="auth-modal-overlay" id="modal-terminos">
+    <div class="auth-modal">
+      <div class="auth-modal-header">
+        <h2>Términos y condiciones</h2>
+        <button type="button" class="auth-modal-cerrar" data-cerrar="modal-terminos" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="auth-modal-body">
+        <p>Al crear una cuenta en el Portal ECOEMS aceptas los siguientes términos de uso.</p>
+
+        <h3>Naturaleza del portal</h3>
+        <p>El Portal ECOEMS es una herramienta educativa, sin fines de lucro, desarrollada como proyecto escolar. No tiene relación oficial con el concurso COMIPEMS ni con las instituciones educativas que en él participan.</p>
+
+        <h3>Uso de la cuenta</h3>
+        <p>La cuenta es de uso personal e intransferible. Eres responsable de mantener la confidencialidad de tu contraseña y de toda actividad realizada desde tu sesión.</p>
+
+        <h3>Uso del simulador</h3>
+        <p>El examen simulador tiene fines de práctica y autoevaluación. Los resultados obtenidos no constituyen una predicción oficial del desempeño en el concurso real.</p>
+
+        <h3>Origen de los datos estadísticos</h3>
+        <p>Las estadísticas históricas, puntajes de corte y demás información del concurso mostrada en el portal provienen de datos abiertos publicados por XABER A.C. y se presentan únicamente con fines de consulta e investigación.</p>
+
+        <h3>Conducta esperada</h3>
+        <p>Se espera que el portal se utilice de buena fe, sin intentar vulnerar su funcionamiento ni acceder a información de otras cuentas.</p>
+
+        <h3>Disponibilidad del servicio</h3>
+        <p>Por tratarse de un proyecto escolar, el portal se ofrece sin garantía de disponibilidad continua y puede sufrir interrupciones o cambios sin previo aviso.</p>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <p>Portal de Consulta Histórica <strong>ECOEMS</strong> &nbsp;·&nbsp; IPN-LCD &nbsp;·&nbsp; Datos: <a href="#">XABER A.C.</a> &nbsp;·&nbsp; 2026</p>
   </footer>
@@ -250,7 +369,39 @@ $next = $_GET['next'] ?? '';
       });
     });
 
-    function irA(url) { window.location.href = url || 'dashboard.php'; }
+    document.querySelectorAll('.password-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        const verEye = btn.querySelector('.icon-eye');
+        const verEyeOff = btn.querySelector('.icon-eye-off');
+        const mostrar = input.type === 'password';
+        input.type = mostrar ? 'text' : 'password';
+        verEye.style.display = mostrar ? 'none' : '';
+        verEyeOff.style.display = mostrar ? '' : 'none';
+        btn.setAttribute('aria-label', mostrar ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      });
+    });
+
+    document.querySelectorAll('.auth-link-modal').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById(btn.dataset.modal).classList.add('show');
+      });
+    });
+    document.querySelectorAll('.auth-modal-cerrar').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById(btn.dataset.cerrar).classList.remove('show');
+      });
+    });
+    document.querySelectorAll('.auth-modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('show');
+      });
+    });
+
+    function irA(url, rol) {
+      if (url) { window.location.href = url; return; }
+      window.location.href = rol === 'admin' ? 'admin/dashboard.php' : 'dashboard.php';
+    }
 
     document.getElementById('form-login').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -271,7 +422,7 @@ $next = $_GET['next'] ?? '';
           msg.className = 'auth-msg error';
           return;
         }
-        irA(NEXT);
+        irA(NEXT, json.datos?.rol);
       } catch (err) {
         msg.textContent = 'Error de conexión con el servidor.';
         msg.className = 'auth-msg error';
@@ -285,6 +436,12 @@ $next = $_GET['next'] ?? '';
       const nombre = document.getElementById('reg-nombre').value.trim();
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
+
+      if (!document.getElementById('reg-acepta').checked) {
+        msg.textContent = 'Debes leer y aceptar el aviso de privacidad y los términos y condiciones.';
+        msg.className = 'auth-msg error';
+        return;
+      }
 
       try {
         const resp = await fetch('../backend/api/auth/registro.php', {

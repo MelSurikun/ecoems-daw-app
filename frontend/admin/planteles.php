@@ -8,13 +8,13 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECOEMS, Gestión de planteles</title>
-  <link rel="stylesheet" href="../css/estilos.css?v=2">
+  <link rel="stylesheet" href="../css/estilos.css?v=3">
   <style>
     .estado-msg { padding: 2rem; text-align: center; color: var(--texto-2); font-size: .9rem; }
   </style>
 </head>
 <body class="page-wrapper">
-  <?php require '../includes/navbar.php'; ?>
+  <?php require '../includes/navbar_admin.php'; ?>
   <div class="page-header">
     <div class="container">
       <p class="page-header-eyebrow">Administración</p>

@@ -1,6 +1,17 @@
+<?php
+// Rutas relativas configurables: por defecto asume que se incluye desde
+// frontend/admin/*.php (un nivel bajo frontend/). Si se incluye desde
+// frontend/*.php directamente (p. ej. biblioteca.php compartida con el
+// aspirante), el archivo que hace el require debe definir estas variables
+// ANTES del include: $navAdminRoot = ''; $navAdminDir = 'admin/';
+$navAdminRoot = $navAdminRoot ?? '../';   // prefijo para llegar a frontend/
+$navAdminDir  = $navAdminDir  ?? '';      // prefijo para llegar a frontend/admin/
+$navBackend   = $navAdminRoot . '../';    // prefijo para llegar a la raíz del proyecto (backend/)
+require __DIR__ . '/loader.php';
+?>
 <nav class="navbar navbar-admin">
   <div class="navbar-brand">
-    <a href="../index.php" class="navbar-logo" aria-label="Ir al inicio">
+    <a href="<?= $navAdminRoot ?>index.php" class="navbar-logo" aria-label="Ir al inicio">
       <svg viewBox="0 0 300 70" width="210" height="49" aria-label="ECOEMS">
         <defs>
           <linearGradient id="goldGradAdmin" x1="0" y1="0" x2="1" y2="1">
@@ -22,16 +33,15 @@
   </div>
   <div class="navbar-nav-group">
     <ul class="navbar-nav">
-      <li><a href="dashboard.php"<?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? ' class="activo"' : '' ?>>Panel</a></li>
-      <li><a href="usuarios.php"<?= basename($_SERVER['PHP_SELF']) === 'usuarios.php' ? ' class="activo"' : '' ?>>Usuarios</a></li>
-      <li><a href="planteles.php"<?= basename($_SERVER['PHP_SELF']) === 'planteles.php' ? ' class="activo"' : '' ?>>Planteles</a></li>
-      <li><a href="../biblioteca.php"<?= basename($_SERVER['PHP_SELF']) === 'biblioteca.php' ? ' class="activo"' : '' ?>>Biblioteca</a></li>
-      <li><a href="examen.php"<?= basename($_SERVER['PHP_SELF']) === 'examen.php' ? ' class="activo"' : '' ?>>Examen</a></li>
+      <li><a href="<?= $navAdminDir ?>dashboard.php"<?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? ' class="activo"' : '' ?>>Panel</a></li>
+      <li><a href="<?= $navAdminDir ?>usuarios.php"<?= basename($_SERVER['PHP_SELF']) === 'usuarios.php' ? ' class="activo"' : '' ?>>Usuarios</a></li>
+      <li><a href="<?= $navAdminRoot ?>biblioteca.php"<?= basename($_SERVER['PHP_SELF']) === 'biblioteca.php' ? ' class="activo"' : '' ?>>Biblioteca</a></li>
+      <li><a href="<?= $navAdminDir ?>examen.php"<?= basename($_SERVER['PHP_SELF']) === 'examen.php' ? ' class="activo"' : '' ?>>Examen</a></li>
       <li class="navbar-divider"></li>
-      <li><a href="../index.php" class="nav-link-public">← Portal público</a></li>
+      <li><a href="<?= $navAdminRoot ?>index.php" class="nav-link-public">← Portal público</a></li>
     </ul>
     <ul class="navbar-nav navbar-session">
-      <li><a href="../dashboard.php"><?= htmlspecialchars(usuarioActual()['nombre']) ?></a></li>
+      <li class="navbar-username"><?= htmlspecialchars(usuarioActual()['nombre']) ?></li>
       <li><a href="#" id="btn-logout">Salir</a></li>
     </ul>
   </div>
@@ -39,7 +49,7 @@
 <script>
   document.getElementById('btn-logout').addEventListener('click', async (e) => {
     e.preventDefault();
-    await fetch('../../backend/api/auth/logout.php', { method: 'POST' });
-    window.location.href = '../index.php';
+    await fetch('<?= $navBackend ?>backend/api/auth/logout.php', { method: 'POST' });
+    window.location.href = '<?= $navAdminRoot ?>index.php';
   });
 </script>

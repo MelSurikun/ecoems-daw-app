@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../backend/auth.php';
+require __DIR__ . '/loader.php';
 if (tieneRol('admin') && strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
     require __DIR__ . '/navbar_admin.php';
     return;
@@ -40,6 +41,7 @@ $pagina = basename($_SERVER['PHP_SELF']);
       <li><a href="planteles.php"<?= $pagina === 'planteles.php' ? ' class="activo"' : '' ?>>Planteles</a></li>
       <li><a href="biblioteca.php"<?= $pagina === 'biblioteca.php' ? ' class="activo"' : '' ?>>Biblioteca</a></li>
       <li><a href="simulador.php"<?= $pagina === 'simulador.php' ? ' class="activo"' : '' ?>>Simulador</a></li>
+      <li><a href="repaso.php"<?= $pagina === 'repaso.php' ? ' class="activo"' : '' ?>>Repaso</a></li>
       <li><a href="acerca.php"<?= $pagina === 'acerca.php' ? ' class="activo"' : '' ?>>Acerca</a></li>
     </ul>
     <ul class="navigation navigation-session">
@@ -47,8 +49,9 @@ $pagina = basename($_SERVER['PHP_SELF']);
         <li class="sidebar-user"><?= htmlspecialchars($u['nombre']) ?></li>
         <?php if ($u['rol'] === 'admin'): ?>
           <li><a href="admin/dashboard.php">Panel de administración</a></li>
+        <?php else: ?>
+          <li><a href="dashboard.php"<?= $pagina === 'dashboard.php' ? ' class="activo"' : '' ?>>Mi panel</a></li>
         <?php endif; ?>
-        <li><a href="dashboard.php"<?= $pagina === 'dashboard.php' ? ' class="activo"' : '' ?>>Mi panel</a></li>
         <li><a href="#" id="btn-logout" class="sidebar-logout">Salir</a></li>
       <?php else: ?>
         <li><a href="login.php">Iniciar sesión</a></li>

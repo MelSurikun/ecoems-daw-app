@@ -8,7 +8,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECOEMS, Panel de administración</title>
-  <link rel="stylesheet" href="../css/estilos.css?v=2">
+  <link rel="stylesheet" href="../css/estilos.css?v=3">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
@@ -29,11 +29,24 @@ $usuario = requiereRolPagina('admin', '../index.php');
     .chart-wrap { height: 240px; padding: 1rem; }
     .empty-msg { padding: 2rem; text-align: center; color: var(--texto-2); font-size: .88rem; }
     @media (max-width: 800px) { .admin-grid { grid-template-columns: 1fr; } }
+    .admin-seccion-titulo {
+      font-family: var(--font-display); color: var(--bordo); font-size: 1.1rem;
+      margin: 2rem 0 1rem; padding-bottom: .5rem; border-bottom: 2px solid var(--borde);
+    }
+    .admin-seccion-titulo:first-of-type { margin-top: 0; }
+    .contenido-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .contenido-card {
+      background: var(--fondo-card); border-radius: var(--radio-lg); box-shadow: var(--sombra);
+      padding: 1.3rem; border-left: 4px solid var(--bordo); display: flex; flex-direction: column; gap: .5rem;
+    }
+    .contenido-card .num { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--bordo); }
+    .contenido-card .label { font-size: .78rem; color: var(--texto-2); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .contenido-card a { font-size: .8rem; color: var(--acento); font-weight: 600; margin-top: auto; }
   </style>
 </head>
 <body class="page-wrapper">
 
-  <?php require '../includes/navbar.php'; ?>
+  <?php require '../includes/navbar_admin.php'; ?>
 
   <div class="page-header">
     <div class="container">
@@ -46,11 +59,13 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <section class="section">
     <div class="container">
 
+      <h2 class="admin-seccion-titulo">Aspirantes — cómo van</h2>
+
       <div id="kpis" class="admin-stats">
         <div class="admin-stat-card"><div class="num" id="stat-aspirantes">—</div><div class="label">Aspirantes registrados</div></div>
-        <div class="admin-stat-card"><div class="num" id="stat-admins">—</div><div class="label">Administradores</div></div>
         <div class="admin-stat-card"><div class="num" id="stat-intentos">—</div><div class="label">Intentos de simulador</div></div>
-        <div class="admin-stat-card"><div class="num" id="stat-recursos">—</div><div class="label">Recursos en biblioteca</div></div>
+        <div class="admin-stat-card"><div class="num" id="stat-promedio">—</div><div class="label">Promedio global</div></div>
+        <div class="admin-stat-card"><div class="num" id="stat-admins">—</div><div class="label">Administradores</div></div>
       </div>
 
       <div class="admin-grid">
@@ -75,8 +90,33 @@ $usuario = requiereRolPagina('admin', '../index.php');
         </div>
 
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Usuarios vs. Intentos</h3></div>
-          <div class="chart-wrap"><canvas id="chart-comparativa"></canvas></div>
+          <div class="admin-card-header"><h3>% de aciertos promedio por materia</h3></div>
+          <div class="chart-wrap"><canvas id="chart-materia"></canvas></div>
+        </div>
+      </div>
+
+      <h2 class="admin-seccion-titulo">Contenido del sitio</h2>
+
+      <div class="contenido-grid">
+        <div class="contenido-card">
+          <div class="num" id="cont-recursos">—</div>
+          <div class="label">Recursos en biblioteca</div>
+          <a href="../biblioteca.php">Gestionar biblioteca →</a>
+        </div>
+        <div class="contenido-card">
+          <div class="num" id="cont-planteles">—</div>
+          <div class="label">Planteles en catálogo</div>
+          <a href="planteles.php">Ver planteles →</a>
+        </div>
+        <div class="contenido-card">
+          <div class="num">128</div>
+          <div class="label">Reactivos del simulador</div>
+          <a href="examen.php">Gestionar examen →</a>
+        </div>
+        <div class="contenido-card">
+          <div class="num">128</div>
+          <div class="label">Flashcards de repaso</div>
+          <a href="../repaso.php">Ver repaso →</a>
         </div>
       </div>
 
@@ -90,24 +130,31 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <script>
     async function cargarDashboard() {
       try {
-        const [resUsers, resSim, resRec] = await Promise.all([
-          fetch('../backend/api/admin/usuarios.php'),
-          fetch('../backend/api/admin/simulador_stats.php'),
-          fetch('../backend/api/recursos.php'),
+        const [resUsers, resSim, resRec, resPlanteles] = await Promise.all([
+          fetch('../../backend/api/admin/usuarios.php'),
+          fetch('../../backend/api/admin/simulador_stats.php'),
+          fetch('../../backend/api/recursos.php'),
+          fetch('../../backend/api/planteles.php'),
         ]);
         const users = await resUsers.json();
         const sim = await resSim.json();
         const rec = await resRec.json();
+        const planteles = await resPlanteles.json();
 
         const aspirantes = (users.datos || []).filter(u => u.rol === 'aspirante').length;
         const admins = (users.datos || []).filter(u => u.rol === 'admin').length;
         const intentos = (sim.datos?.intentos || []);
         const totalIntentos = intentos.length;
+        const promedioGlobal = totalIntentos > 0
+          ? (intentos.reduce((s, i) => s + parseFloat(i.porcentaje), 0) / totalIntentos).toFixed(1)
+          : 0;
 
         document.getElementById('stat-aspirantes').textContent = aspirantes;
         document.getElementById('stat-admins').textContent = admins;
         document.getElementById('stat-intentos').textContent = totalIntentos;
-        document.getElementById('stat-recursos').textContent = (rec.datos || []).length;
+        document.getElementById('stat-promedio').textContent = totalIntentos > 0 ? promedioGlobal + '%' : '—';
+        document.getElementById('cont-recursos').textContent = (rec.datos || []).length;
+        document.getElementById('cont-planteles').textContent = (planteles.datos || []).length;
 
         // Últimos 5 registros
         const recientes = (users.datos || []).slice(-5).reverse();
@@ -180,42 +227,36 @@ $usuario = requiereRolPagina('admin', '../index.php');
           }
         });
 
-        // Gráfica: usuarios registrados por día (últimos 7 días)
-        const ctx2 = document.getElementById('chart-comparativa').getContext('2d');
-        const dias = {};
-        const hoy = new Date();
-        for (let i = 6; i >= 0; i--) {
-          const d = new Date(hoy);
-          d.setDate(d.getDate() - i);
-          const key = d.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'numeric' });
-          dias[key] = 0;
-        }
-        (users.datos || []).forEach(u => {
-          if (!u.creado) return;
-          const fecha = new Date(u.creado.replace(' ', 'T'));
-          const diff = Math.round((hoy - fecha) / (1000 * 60 * 60 * 24));
-          if (diff >= 0 && diff < 7) {
-            const key = fecha.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'numeric' });
-            if (dias[key] !== undefined) dias[key]++;
-          }
+        // Gráfica: % de aciertos promedio por materia (agregado de todos los intentos)
+        const ctx2 = document.getElementById('chart-materia').getContext('2d');
+        const porMateria = {};
+        intentos.forEach(i => {
+          if (!i.detalle) return;
+          Object.entries(i.detalle).forEach(([materia, d]) => {
+            if (!porMateria[materia]) porMateria[materia] = { ok: 0, tot: 0 };
+            porMateria[materia].ok += d.ok;
+            porMateria[materia].tot += d.tot;
+          });
         });
+        const materias = Object.keys(porMateria);
+        const pctMaterias = materias.map(m => Math.round((porMateria[m].ok / porMateria[m].tot) * 100));
         new Chart(ctx2, {
-          type: 'line',
+          type: 'bar',
           data: {
-            labels: Object.keys(dias),
+            labels: materias,
             datasets: [{
-              label: 'Registros',
-              data: Object.values(dias),
+              label: '% de aciertos',
+              data: pctMaterias,
+              backgroundColor: '#fb8500cc',
               borderColor: '#fb8500',
-              backgroundColor: 'rgba(251,133,0,.1)',
-              fill: true, tension: .3, pointBackgroundColor: '#fb8500', pointRadius: 4,
+              borderWidth: 1.5, borderRadius: 4,
             }]
           },
           options: {
             responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-              y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Sora' } }, grid: { color: '#e2eaf0' } },
+              y: { beginAtZero: true, max: 100, ticks: { font: { family: 'Sora' } }, grid: { color: '#e2eaf0' } },
               x: { ticks: { font: { family: 'Sora', size: 9 } }, grid: { display: false } }
             }
           }

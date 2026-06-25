@@ -18,16 +18,16 @@ Sin build tools, sin npm, sin composer. Servido directamente por Apache.
 | `/resumen.php` | Dashboard con metricas globales |
 | `/planteles.php` | Catalogo completo con busqueda y filtros |
 | `/acerca.php` | Informacion del proyecto |
-| `/login.php` | Inicio de sesion (aspirante / admin) |
-| `/registro.php` | Registro de cuenta nueva |
+| `/login.php` | Inicio de sesion (aspirante / admin); incluye registro con aviso de privacidad y terminos en modal, y boton para mostrar/ocultar contrasena |
+| `/registro.php` | Redirige a login.php (panel "Crear cuenta") |
 | `/biblioteca.php` | Recursos de estudio (guias, libros, enlaces) |
 | `/simulador.php` | Examen simulado tipo COMIPEMS |
 | `/dashboard.php` | Panel del aspirante con historial de intentos |
-| `/admin/dashboard.php` | Panel administrativo |
-| `/admin/examen.php` | Gestion de reactivos del simulador |
+| `/admin/dashboard.php` | Panel administrativo: cómo van los aspirantes + estado del sitio |
+| `/admin/examen.php` | Reporte/corrección de reactivos del simulador (sin BD, ver más abajo) |
 | `/admin/planteles.php` | Administracion de catalogo de planteles |
 | `/admin/simulador.php` | Estadisticas globales del simulador |
-| `/admin/usuarios.php` | Gestion de usuarios |
+| `/admin/usuarios.php` | Gestion de usuarios, incluye alta de aspirantes y administradores |
 
 · · ·
 
@@ -48,10 +48,18 @@ Todos los endpoints devuelven `{ status, datos }`, usan prepared statements e in
 | `backend/api/auth/login.php` | POST | — | Inicio de sesion (JSON body) |
 | `backend/api/auth/logout.php` | POST | — | Cierra sesion |
 | `backend/api/auth/registro.php` | POST | — | Registro de aspirante |
-| `backend/api/admin/reactivos.php` | GET/POST/PUT/DELETE | admin | CRUD de reactivos |
+| `backend/api/admin/reportes.php` | GET/PUT | GET: sesión, PUT: admin | Reporte/corrección de reactivos (archivo JSON, sin BD) |
 | `backend/api/admin/simulador_stats.php` | GET | admin | Estadisticas agregadas |
 | `backend/api/admin/usuarios.php` | GET/PUT | admin | Listar y actualizar usuarios |
 | `backend/api/admin/usuarios_detalle.php` | GET | admin | Detalle de un usuario |
+| `backend/api/admin/crear_usuario.php` | POST | admin | Alta de cuentas, permite crear rol aspirante o admin |
+
+> `backend/api/reactivos.php` y `backend/api/admin/reactivos.php` (CRUD contra las tablas
+> `examenes`/`reactivos`/`figuras`) ya **no se usan**: el banco real de 128 preguntas vive en
+> `frontend/js/examen1_data.js` (compartido por `simulador.php` y `admin/examen.php`), y las
+> correcciones del admin se guardan en `backend/data/reportes_examen.json` vía
+> `backend/api/admin/reportes.php`, sin tocar la base de datos. `database/examenes.sql` queda
+> por compatibilidad pero no es necesario importarlo.
 
 · · ·
 
@@ -103,6 +111,7 @@ mysql -u root -p ecoems_db < database/auth.sql
 mysql -u root -p ecoems_db < database/recursos.sql
 mysql -u root -p ecoems_db < database/simulador.sql
 mysql -u root -p ecoems_db < database/metas.sql
+mysql -u root -p ecoems_db < database/examenes.sql
 mysql -u root -p ecoems_db < database/planteles_cdmx.sql
 mysql -u root -p ecoems_db < database/sustentantes_demo.sql
 ```
@@ -205,25 +214,30 @@ ecoems-daw-app/
 ├── frontend/
 │   ├── includes/
 │   │   ├── navbar.php          — Navbar publico / aspirante
-│   │   └── navbar_admin.php    — Navbar para administradores
+│   │   ├── navbar_admin.php    — Navbar para administradores
+│   │   └── loader.php          — Loader global (overlay con animacion al cargar la pagina)
 │   ├── admin/                  — Paneles administrativos
 │   ├── css/estilos.css         — Estilos con variables CSS (--bordo, --font-display)
 │   ├── js/
 │   │   ├── graficas.js         — Chart.js
-│   │   └── mapa.js             — Leaflet (claves: U6=UNAM, I5=IPN, B0=COLBACH...)
+│   │   ├── mapa.js             — Leaflet (claves: U6=UNAM, I5=IPN, B0=COLBACH...)
+│   │   ├── examen1_data.js     — Banco de 128 reactivos del simulador (compartido con admin/examen.php)
+│   │   └── repaso_examen2.js   — Datos del examen 2 (128 reactivos) para flashcards
+│   ├── img/examen1/, img/examen2/ — Figuras de los reactivos con imagen
 │   ├── index, escuela, comparar, mapa, resumen...
 │   ├── login, registro
-│   ├── biblioteca, simulador, dashboard
+│   ├── biblioteca, simulador, repaso, dashboard
 │   └── acerca.php
 ├── backend/
 │   ├── config.php              — Conexion PDO a MariaDB (memoizada)
 │   ├── auth.php                — Helpers de sesion (requiereSesion, requiereRol)
 │   ├── api/
 │   │   ├── auth/               — login, logout, registro
-│   │   ├── admin/              — reactivos, simulador_stats, usuarios
+│   │   ├── admin/              — reportes (correcciones JSON), simulador_stats, usuarios
 │   │   ├── planteles, escuela, comparar, resumen
-│   │   ├── reactivos, simulador, recursos
+│   │   ├── simulador, recursos, metas
 │   │   └── ...
+│   ├── data/reportes_examen.json — Correcciones de reactivos (sin BD, ver admin/examen.php)
 │   └── etl/                    — carga_csv.php, carga_planteles.py
 ├── database/
 │   ├── schema.sql              — DDL completo (8 tablas + 2 vistas)
@@ -232,6 +246,7 @@ ecoems-daw-app/
 │   ├── recursos.sql            — Datos de biblioteca
 │   ├── simulador.sql           — Tablas del simulador
 │   ├── metas.sql               — Opciones de interés y puntaje meta del aspirante
+│   ├── examenes.sql            — Tablas para el CRUD de reactivos del panel admin
 │   ├── planteles_cdmx.sql      — 40 planteles CDMX (UNAM + IPN completos)
 │   ├── sustentantes_demo.sql   — 150 sustentantes por plantel
 │   └── update_coords.sql

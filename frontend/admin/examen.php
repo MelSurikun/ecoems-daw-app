@@ -8,7 +8,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECOEMS, Gestión del examen</title>
-  <link rel="stylesheet" href="../css/estilos.css?v=2">
+  <link rel="stylesheet" href="../css/estilos.css?v=3">
   <style>
     .toolbar { display: flex; gap: 1rem; align-items: end; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .toolbar .form-group { min-width: 180px; }
@@ -16,29 +16,30 @@ $usuario = requiereRolPagina('admin', '../index.php');
     .toolbar .form-group select, .toolbar .form-group input { width: 100%; padding: .5rem .75rem; border-radius: var(--radio); border: 1.5px solid var(--borde); font-family: var(--font-body); font-size: .85rem; }
 
     .reactivo-card { background: var(--fondo-card); border-radius: var(--radio-lg); box-shadow: var(--sombra); margin-bottom: .75rem; overflow: hidden; }
-    .reactivo-header { display: flex; align-items: center; gap: 1rem; padding: .85rem 1.2rem; cursor: pointer; transition: var(--trans); border-left: 4px solid var(--bordo); }
+    .reactivo-card.con-reporte { border-left: 4px solid var(--acento); }
+    .reactivo-card:not(.con-reporte) { border-left: 4px solid var(--bordo); }
+    .reactivo-header { display: flex; align-items: center; gap: 1rem; padding: .85rem 1.2rem; cursor: pointer; transition: var(--trans); }
     .reactivo-header:hover { background: rgba(2,48,71,.03); }
     .reactivo-header .num { flex: none; width: 32px; height: 32px; border-radius: 8px; background: var(--bordo); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: .82rem; }
     .reactivo-header .materia { font-size: .72rem; font-weight: 600; color: var(--bordo); text-transform: uppercase; letter-spacing: .06em; background: rgba(2,48,71,.08); padding: .2rem .6rem; border-radius: 4px; min-width: 70px; text-align: center; }
     .reactivo-header .preview { flex: 1; font-size: .85rem; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .reactivo-header .estado { font-size: .7rem; font-weight: 700; text-transform: uppercase; padding: .2rem .5rem; border-radius: 4px; }
-    .reactivo-header .estado.activo { background: #E8F5E9; color: #2E7D32; }
-    .reactivo-header .estado.inactivo { background: #FFEBEE; color: #C62828; }
+    .reactivo-header .preview.oculto-txt { text-decoration: line-through; color: var(--texto-2); }
     .reactivo-header .respuesta { font-size: .78rem; font-weight: 700; color: var(--acento); background: rgba(251,133,0,.12); padding: .2rem .6rem; border-radius: 4px; }
+    .reactivo-header .estado { font-size: .7rem; font-weight: 700; text-transform: uppercase; padding: .2rem .5rem; border-radius: 4px; }
+    .reactivo-header .estado.oculto { background: #FFEBEE; color: #C62828; }
+    .reactivo-header .estado.corregido { background: #FFF3E0; color: #E65100; }
 
     .reactivo-body { display: none; padding: 1.2rem; border-top: 1px solid var(--borde); }
     .reactivo-body.open { display: block; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-grid .full { grid-column: 1 / -1; }
     .form-grid label { font-size: .72rem; font-weight: 600; color: var(--texto-2); text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: .25rem; }
-    .form-grid input, .form-grid select, .form-grid textarea { width: 100%; padding: .5rem .75rem; border-radius: var(--radio); border: 1.5px solid var(--borde); font-family: var(--font-body); font-size: .85rem; }
-    .form-grid textarea { resize: vertical; min-height: 60px; }
-    .opcion-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
-    .opcion-row .letra { font-weight: 700; font-size: .85rem; color: var(--bordo); min-width: 20px; }
-    .opcion-row input { flex: 1; }
-    .opcion-row .check { width: 18px; height: 18px; accent-color: var(--acento); cursor: pointer; }
-    .btn-icon { background: none; border: none; font-size: 1rem; cursor: pointer; opacity: .5; transition: var(--trans); padding: .25rem; }
-    .btn-icon:hover { opacity: 1; }
+    .form-grid select, .form-grid textarea { width: 100%; padding: .5rem .75rem; border-radius: var(--radio); border: 1.5px solid var(--borde); font-family: var(--font-body); font-size: .85rem; }
+    .form-grid textarea { resize: vertical; min-height: 50px; }
+    .pregunta-original { background: var(--fondo); border-radius: var(--radio); padding: .8rem 1rem; font-size: .85rem; color: var(--texto); margin-bottom: 1rem; }
+    .pregunta-original .opciones-lista { margin-top: .5rem; font-size: .8rem; color: var(--texto-2); }
+    .pregunta-original .opciones-lista .correcta { color: #1b7a43; font-weight: 700; }
+    .chk-row { display: flex; align-items: center; gap: .5rem; font-size: .85rem; font-weight: 500; }
     .acciones { margin-top: 1rem; display: flex; gap: .5rem; }
     .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--bordo); color: #fff; padding: .8rem 1.5rem; border-radius: var(--radio); box-shadow: var(--sombra-lg); font-size: .85rem; z-index: 999; opacity: 0; transform: translateY(10px); transition: all .3s ease; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateY(0); }
@@ -48,12 +49,12 @@ $usuario = requiereRolPagina('admin', '../index.php');
   </style>
 </head>
 <body class="page-wrapper">
-  <?php require '../includes/navbar.php'; ?>
+  <?php require '../includes/navbar_admin.php'; ?>
   <div class="page-header">
     <div class="container">
       <p class="page-header-eyebrow">Administración</p>
       <h1>Gestión del examen</h1>
-      <p>Administra los reactivos del simulador. 128 preguntas tipo COMIPEMS.</p>
+      <p>Reporta y corrige reactivos del simulador (128 preguntas tipo COMIPEMS). Los cambios se aplican directo al examen del aspirante.</p>
     </div>
   </div>
   <section class="section">
@@ -69,58 +70,24 @@ $usuario = requiereRolPagina('admin', '../index.php');
         </div>
         <div class="form-group" style="display:flex;align-items:end;gap:.5rem">
           <label style="display:flex;align-items:center;gap:.4rem;text-transform:none;font-weight:400;font-size:.82rem">
-            <input type="checkbox" id="chk-inactivos"> Ver inactivos
+            <input type="checkbox" id="chk-solo-reportados"> Solo con reporte
           </label>
         </div>
-        <button class="btn btn-bordo btn-sm" id="btn-nuevo" style="margin-left:auto">+ Nuevo reactivo</button>
       </div>
 
       <div id="lista"></div>
-
-      <!-- Formulario de edición/creación (oculto dentro de cada card) -->
-      <div id="form-template" style="display:none">
-        <div class="form-grid">
-          <div><label>Número</label><input type="number" class="f-num" min="1" max="999"></div>
-          <div><label>Materia</label>
-            <select class="f-materia">
-              <option value="Español">Español</option>
-              <option value="Matemáticas">Matemáticas</option>
-              <option value="Historia">Historia</option>
-              <option value="Geografía">Geografía</option>
-              <option value="Formación Cívica y Ética">Formación Cívica y Ética</option>
-              <option value="Física">Física</option>
-              <option value="Química">Química</option>
-              <option value="Biología">Biología</option>
-              <option value="Habilidad Verbal">Habilidad Verbal</option>
-              <option value="Habilidad Matemática">Habilidad Matemática</option>
-            </select>
-          </div>
-          <div class="full"><label>Pregunta</label><textarea class="f-pregunta" rows="2"></textarea></div>
-          <div class="full"><label>Contexto (texto previo, opcional)</label><textarea class="f-contexto" rows="2"></textarea></div>
-          <div class="full"><label>Texto de lectura (pasaje, opcional)</label><textarea class="f-passage" rows="3"></textarea></div>
-          <div class="full">
-            <label>Opciones</label>
-            <div class="f-opciones"></div>
-            <div style="font-size:.72rem;color:var(--texto-2);margin-top:.3rem">Selecciona el círculo de la opción correcta.</div>
-          </div>
-          <div><label>Clave de figura (opcional)</label><input class="f-figura" placeholder="Ej. q36_tabla"></div>
-          <div><label>Activo</label><select class="f-activo"><option value="1">Sí</option><option value="0">No</option></select></div>
-        </div>
-        <div class="acciones">
-          <button class="btn btn-bordo btn-sm btn-guardar">Guardar</button>
-          <button class="btn btn-sm btn-cancelar" style="background:var(--fondo);border:1.5px solid var(--borde)">Cancelar</button>
-        </div>
-      </div>
     </div>
   </section>
   <div id="toast" class="toast"></div>
   <footer class="site-footer">
     <p>Panel de Administración <strong>ECOEMS</strong> &nbsp;·&nbsp; IPN-LCD &nbsp;·&nbsp; 2026</p>
   </footer>
+
+  <script src="../js/examen1_data.js"></script>
   <script>
-    const MATERIAS = ['Español','Matemáticas','Historia','Geografía','Formación Cívica y Ética','Física','Química','Biología','Habilidad Verbal','Habilidad Matemática'];
-    let reactivos = [];
-    let editandoId = null;
+    const LETRAS = ['A','B','C','D'];
+    let overrides = {};
+    let editandoN = null;
 
     function toast(msg, tipo = 'ok') {
       const el = document.getElementById('toast');
@@ -128,27 +95,43 @@ $usuario = requiereRolPagina('admin', '../index.php');
       setTimeout(() => el.classList.remove('show'), 3000);
     }
 
-    async function cargar() {
-      const params = new URLSearchParams();
-      const materia = document.getElementById('filtro-materia').value;
-      if (materia) params.set('materia', materia);
-      if (document.getElementById('chk-inactivos').checked) params.set('inactivos', '1');
+    function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+    async function cargarReportes() {
       try {
-        const resp = await fetch('../backend/api/admin/reactivos.php?' + params.toString());
+        const resp = await fetch('../../backend/api/admin/reportes.php');
         const json = await resp.json();
-        if (json.status !== 'ok') throw new Error(json.mensaje);
-        reactivos = json.datos;
-        render();
+        if (json.status === 'ok') overrides = json.datos || {};
+      } catch (e) { overrides = {}; }
+      render();
+    }
+
+    async function guardarReportes() {
+      try {
+        const resp = await fetch('../../backend/api/admin/reportes.php', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(overrides),
+        });
+        const json = await resp.json();
+        if (json.status !== 'ok') throw new Error(json.mensaje || 'No se pudo guardar.');
+        return true;
       } catch (err) {
-        document.getElementById('lista').innerHTML = '<div class="estado-msg" style="padding:2rem;text-align:center">Error al cargar reactivos.</div>';
+        toast(err.message, 'error');
+        return false;
       }
     }
 
     function render() {
       const div = document.getElementById('lista');
+      const materia = document.getElementById('filtro-materia').value;
       const q = document.getElementById('filtro-buscar').value.toLowerCase().trim();
-      let filtrados = reactivos;
-      if (q) filtrados = filtrados.filter(r => r.pregunta.toLowerCase().includes(q) || (r.materia || '').toLowerCase().includes(q));
+      const soloReportados = document.getElementById('chk-solo-reportados').checked;
+
+      let filtrados = EXAMEN1_DATA;
+      if (materia) filtrados = filtrados.filter(r => r.s === materia);
+      if (q) filtrados = filtrados.filter(r => r.q.toLowerCase().includes(q) || r.s.toLowerCase().includes(q));
+      if (soloReportados) filtrados = filtrados.filter(r => overrides[r.n]);
 
       if (filtrados.length === 0) {
         div.innerHTML = '<div class="estado-msg" style="padding:3rem;text-align:center;color:var(--texto-2)">Sin reactivos para mostrar.</div>';
@@ -156,142 +139,129 @@ $usuario = requiereRolPagina('admin', '../index.php');
       }
 
       div.innerHTML = filtrados.map(r => {
-        const abierto = editandoId === r.id;
-        const preview = r.pregunta.length > 80 ? r.pregunta.slice(0, 80) + '…' : r.pregunta;
-        return `<div class="reactivo-card">
-          <div class="reactivo-header" onclick="toggleBody(${r.id})">
-            <span class="num">${r.numero}</span>
-            <span class="materia">${r.materia}</span>
-            <span class="preview">${preview}</span>
-            <span class="respuesta">${r.respuesta}</span>
-            <span class="estado ${r.activo == 1 ? 'activo' : 'inactivo'}">${r.activo == 1 ? 'Activo' : 'Inactivo'}</span>
+        const ov = overrides[r.n];
+        const abierto = editandoN === r.n;
+        const preview = r.q.length > 90 ? r.q.slice(0, 90) + '…' : r.q;
+        const respuestaActual = (ov && ov.respuesta) ? ov.respuesta : r.a;
+        let badges = '';
+        if (ov && ov.oculto) badges += '<span class="estado oculto">Oculta</span>';
+        if (ov && ov.respuesta) badges += '<span class="estado corregido">Corregida</span>';
+
+        return `<div class="reactivo-card ${ov ? 'con-reporte' : ''}">
+          <div class="reactivo-header" onclick="toggleBody(${r.n})">
+            <span class="num">${r.n}</span>
+            <span class="materia">${esc(r.s)}</span>
+            <span class="preview ${ov && ov.oculto ? 'oculto-txt' : ''}">${esc(preview)}</span>
+            <span class="respuesta">${respuestaActual}</span>
+            ${badges}
           </div>
-          <div class="reactivo-body ${abierto ? 'open' : ''}" id="body-${r.id}">
-            ${abierto ? renderForm(r) : ''}
+          <div class="reactivo-body ${abierto ? 'open' : ''}" id="body-${r.n}">
+            ${abierto ? renderForm(r, ov) : ''}
           </div>
         </div>`;
       }).join('');
     }
 
-    function renderForm(r) {
-      const tmpl = document.getElementById('form-template').innerHTML;
+    function renderForm(r, ov) {
       const div = document.createElement('div');
-      div.innerHTML = tmpl;
-      const form = div.firstElementChild;
+      const respuestaCorregida = (ov && ov.respuesta) || '';
+      const oculto = !!(ov && ov.oculto);
+      const nota = (ov && ov.nota) || '';
 
-      form.querySelector('.f-num').value = r.numero;
-      form.querySelector('.f-materia').value = r.materia;
-      form.querySelector('.f-pregunta').value = r.pregunta;
-      form.querySelector('.f-contexto').value = r.contexto || '';
-      form.querySelector('.f-passage').value = r.passage || '';
-      form.querySelector('.f-figura').value = r.figura_clave || '';
-      form.querySelector('.f-activo').value = r.activo;
-
-      const opsContainer = form.querySelector('.f-opciones');
-      const opciones = r.opciones || ['','','',''];
-      const letras = ['A','B','C','D'];
-      opsContainer.innerHTML = opciones.map((opt, i) => `
-        <div class="opcion-row">
-          <span class="letra">${letras[i]})</span>
-          <input type="text" class="f-opc" data-idx="${i}" value="${esc(opt)}" placeholder="Opción ${letras[i]}">
-          <input type="radio" class="check" name="resp-${r.id}" value="${letras[i]}" ${r.respuesta === letras[i] ? 'checked' : ''}>
+      div.innerHTML = `
+        <div class="pregunta-original">
+          <strong>Pregunta #${r.n}</strong> — ${esc(r.q)}
+          <div class="opciones-lista">
+            ${r.o.map((opt, i) => `<div ${LETRAS[i] === r.a ? 'class="correcta"' : ''}>${LETRAS[i]}) ${esc(opt)}${LETRAS[i] === r.a ? ' (respuesta original)' : ''}</div>`).join('')}
+          </div>
         </div>
-      `).join('');
+        <div class="form-grid">
+          <div class="chk-row full">
+            <input type="checkbox" class="f-oculto" id="oculto-${r.n}" ${oculto ? 'checked' : ''}>
+            <label for="oculto-${r.n}" style="margin:0;text-transform:none;font-weight:500">Ocultar este reactivo del simulador</label>
+          </div>
+          <div>
+            <label>Corregir respuesta correcta</label>
+            <select class="f-respuesta">
+              <option value="">Sin corrección (usar la original: ${r.a})</option>
+              ${LETRAS.map(l => `<option value="${l}" ${respuestaCorregida === l ? 'selected' : ''}>${l}</option>`).join('')}
+            </select>
+          </div>
+          <div class="full">
+            <label>Nota / motivo del reporte (opcional)</label>
+            <textarea class="f-nota" rows="2" placeholder="Ej. La opción correcta es C, no B.">${esc(nota)}</textarea>
+          </div>
+        </div>
+        <div class="acciones">
+          <button class="btn btn-bordo btn-sm btn-guardar">Guardar</button>
+          ${ov ? '<button class="btn btn-sm btn-restablecer" style="background:#FFEBEE;color:#C62828">Restablecer original</button>' : ''}
+          <button class="btn btn-sm btn-cancelar" style="background:var(--fondo);border:1.5px solid var(--borde)">Cancelar</button>
+        </div>
+      `;
 
-      form.querySelector('.btn-guardar').addEventListener('click', () => guardar(r.id, form));
-      form.querySelector('.btn-cancelar').addEventListener('click', () => cerrarEdicion());
+      div.querySelector('.btn-guardar').addEventListener('click', () => guardarUno(r.n, div));
+      div.querySelector('.btn-cancelar').addEventListener('click', cerrarEdicion);
+      const btnRestablecer = div.querySelector('.btn-restablecer');
+      if (btnRestablecer) btnRestablecer.addEventListener('click', () => restablecerUno(r.n));
 
-      return form.outerHTML;
+      return div.outerHTML;
     }
 
-    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-
-    function toggleBody(id) {
-      const body = document.getElementById('body-' + id);
-      if (body && body.classList.contains('open')) {
-        cerrarEdicion();
-        return;
-      }
-      abrirEdicion(id);
-    }
-
-    function abrirEdicion(id) {
-      editandoId = id;
+    function toggleBody(n) {
+      if (editandoN === n) { cerrarEdicion(); return; }
+      editandoN = n;
       render();
       setTimeout(() => {
-        const el = document.getElementById('body-' + id);
+        const el = document.getElementById('body-' + n);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 50);
     }
 
-    function cerrarEdicion() {
-      editandoId = null;
-      render();
-    }
+    function cerrarEdicion() { editandoN = null; render(); }
 
-    async function guardar(id, form) {
-      const opciones = [];
-      form.querySelectorAll('.f-opc').forEach(el => opciones.push(el.value.trim()));
-      const respuesta = form.querySelector('.check:checked');
-      if (!respuesta || opciones.some(o => !o)) {
-        toast('Completa todas las opciones y selecciona la respuesta correcta.', 'error');
-        return;
+    async function guardarUno(n, form) {
+      const oculto = form.querySelector('.f-oculto').checked;
+      const respuesta = form.querySelector('.f-respuesta').value;
+      const nota = form.querySelector('.f-nota').value.trim();
+
+      if (!oculto && !respuesta && !nota) {
+        delete overrides[n];
+      } else {
+        overrides[n] = {};
+        if (oculto) overrides[n].oculto = true;
+        if (respuesta) overrides[n].respuesta = respuesta;
+        if (nota) overrides[n].nota = nota;
       }
 
-      const payload = {
-        id, numero: parseInt(form.querySelector('.f-num').value),
-        materia: form.querySelector('.f-materia').value,
-        pregunta: form.querySelector('.f-pregunta').value.trim(),
-        opciones, respuesta: respuesta.value,
-        contexto: form.querySelector('.f-contexto').value.trim() || null,
-        passage: form.querySelector('.f-passage').value.trim() || null,
-        figura_clave: form.querySelector('.f-figura').value.trim() || null,
-        activo: parseInt(form.querySelector('.f-activo').value),
-      };
-
-      try {
-        const resp = await fetch('../backend/api/admin/reactivos.php', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const json = await resp.json();
-        if (json.status !== 'ok') throw new Error(json.mensaje || 'Error al guardar');
-        toast('Reactivo #' + payload.numero + ' guardado.');
-        editandoId = null;
-        cargar();
-      } catch (err) {
-        toast(err.message, 'error');
+      const ok = await guardarReportes();
+      if (ok) {
+        toast('Reactivo #' + n + ' actualizado.');
+        editandoN = null;
+        render();
       }
     }
 
-    document.getElementById('btn-nuevo').addEventListener('click', async () => {
-      const maxNum = reactivos.length > 0 ? Math.max(...reactivos.map(r => r.numero)) : 0;
-      const nuevo = { id: 0, numero: maxNum + 1, materia: 'Español', pregunta: '', opciones: ['','','',''], respuesta: 'A', contexto: '', passage: '', figura_clave: '', activo: 1 };
-      try {
-        const resp = await fetch('../backend/api/admin/reactivos.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(nuevo),
-        });
-        const json = await resp.json();
-        if (json.status !== 'ok') throw new Error(json.mensaje || 'Error al crear');
-        toast('Reactivo #' + nuevo.numero + ' creado.');
-        cargar();
-      } catch (err) {
-        toast(err.message, 'error');
+    async function restablecerUno(n) {
+      delete overrides[n];
+      const ok = await guardarReportes();
+      if (ok) {
+        toast('Reactivo #' + n + ' restablecido a su versión original.');
+        editandoN = null;
+        render();
       }
-    });
+    }
 
-    document.getElementById('filtro-materia').addEventListener('change', cargar);
-    document.getElementById('chk-inactivos').addEventListener('change', cargar);
+    document.getElementById('filtro-materia').addEventListener('change', render);
+    document.getElementById('chk-solo-reportados').addEventListener('change', render);
     document.getElementById('filtro-buscar').addEventListener('input', () => { clearTimeout(window._bf); window._bf = setTimeout(render, 300); });
 
-    // Poblar filtro de materias
+    // Poblar filtro de materias en el orden en que aparecen en el examen
+    const materiasUnicas = [];
+    EXAMEN1_DATA.forEach(q => { if (!materiasUnicas.includes(q.s)) materiasUnicas.push(q.s); });
     const sel = document.getElementById('filtro-materia');
-    MATERIAS.forEach(m => { sel.innerHTML += `<option value="${m}">${m}</option>`; });
+    materiasUnicas.forEach(m => { sel.innerHTML += `<option value="${m}">${m}</option>`; });
 
-    cargar();
+    cargarReportes();
   </script>
 </body>
 </html>

@@ -8,7 +8,7 @@ $usuario = requiereSesionPagina('login.php?next=dashboard.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS, Mi panel</title>
-  <link rel="stylesheet" href="css/estilos.css?v=2">
+  <link rel="stylesheet" href="css/estilos.css?v=3">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     .estado-msg { padding: 2rem; text-align: center; color: var(--texto-2); font-size: .9rem; }
@@ -348,7 +348,13 @@ $usuario = requiereSesionPagina('login.php?next=dashboard.php');
         .sort((a, b) => a.pct - b.pct)
         .slice(0, 3);
       ul.innerHTML = materias.map(m => `
-        <li><span>${m.materia}</span><span class="${m.pct < 60 ? 'pct-baja' : 'pct-ok'}">${m.pct}%</span></li>
+        <li>
+          <span>${m.materia}</span>
+          <span>
+            <span class="${m.pct < 60 ? 'pct-baja' : 'pct-ok'}">${m.pct}%</span>
+            <a href="repaso.php?materia=${encodeURIComponent(m.materia)}" style="margin-left:.6rem;font-size:.78rem;color:var(--bordo);font-weight:600">Repasar →</a>
+          </span>
+        </li>
       `).join('');
     }
 

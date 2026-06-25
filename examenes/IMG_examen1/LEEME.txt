@@ -1,0 +1,3 @@
+Abre examen-simulador-ipn-unam.html.
+La carpeta images debe quedarse junto al archivo HTML.
+No cambies los nombres P36.png, P40.png, etc.

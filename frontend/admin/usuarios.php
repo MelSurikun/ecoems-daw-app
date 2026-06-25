@@ -8,7 +8,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECOEMS, Gestión de usuarios</title>
-  <link rel="stylesheet" href="../css/estilos.css?v=2">
+  <link rel="stylesheet" href="../css/estilos.css?v=3">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     .admin-table-wrap { background: var(--fondo-card); border-radius: var(--radio-lg); box-shadow: var(--sombra); overflow: hidden; }
@@ -40,10 +40,27 @@ $usuario = requiereRolPagina('admin', '../index.php');
     .cerrar-detalle { background: rgba(255,255,255,.15); color: #fff; border: none; padding: .4rem 1rem; border-radius: var(--radio); cursor: pointer; font-family: var(--font-body); font-size: .82rem; font-weight: 600; transition: var(--trans); }
     .cerrar-detalle:hover { background: rgba(255,255,255,.25); }
     @media (max-width: 700px) { .chart-grid { grid-template-columns: 1fr; } }
+
+    /* ── Alta de usuario ──────────────────────────────────── */
+    .toolbar-usuarios { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
+    .nuevo-usuario-card {
+      background: var(--fondo-card); border-radius: var(--radio-lg); box-shadow: var(--sombra);
+      padding: 1.5rem; margin-bottom: 1.5rem; display: none; border-top: 3px solid var(--acento);
+    }
+    .nuevo-usuario-card.visible { display: block; }
+    .nuevo-usuario-card h3 { font-family: var(--font-display); color: var(--bordo); font-size: 1rem; margin-bottom: 1rem; }
+    .form-grid-usuario { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-grid-usuario .full { grid-column: 1 / -1; }
+    .form-grid-usuario label { font-size: .72rem; font-weight: 600; color: var(--texto-2); text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: .25rem; }
+    .form-grid-usuario input, .form-grid-usuario select {
+      width: 100%; padding: .55rem .8rem; border-radius: var(--radio); border: 1.5px solid var(--borde);
+      font-family: var(--font-body); font-size: .85rem;
+    }
+    .nuevo-usuario-acciones { margin-top: 1rem; display: flex; gap: .5rem; }
   </style>
 </head>
 <body class="page-wrapper">
-  <?php require '../includes/navbar.php'; ?>
+  <?php require '../includes/navbar_admin.php'; ?>
   <div class="page-header">
     <div class="container">
       <p class="page-header-eyebrow">Administración</p>
@@ -53,6 +70,42 @@ $usuario = requiereRolPagina('admin', '../index.php');
   </div>
   <section class="section">
     <div class="container">
+      <div class="toolbar-usuarios">
+        <button class="btn btn-bordo btn-sm" id="btn-nuevo-usuario">+ Nuevo usuario</button>
+      </div>
+
+      <div class="nuevo-usuario-card" id="nuevo-usuario-card">
+        <h3>Nuevo usuario</h3>
+        <div id="msg-nuevo-usuario" class="estado-msg" style="display:none;padding:.6rem 0;text-align:left"></div>
+        <form id="form-nuevo-usuario">
+          <div class="form-grid-usuario">
+            <div>
+              <label for="nu-nombre">Nombre completo</label>
+              <input type="text" id="nu-nombre" required>
+            </div>
+            <div>
+              <label for="nu-email">Correo electrónico</label>
+              <input type="email" id="nu-email" required>
+            </div>
+            <div>
+              <label for="nu-password">Contraseña (mínimo 6 caracteres)</label>
+              <input type="password" id="nu-password" required minlength="6">
+            </div>
+            <div>
+              <label for="nu-rol">Rol</label>
+              <select id="nu-rol">
+                <option value="aspirante">Aspirante</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+          </div>
+          <div class="nuevo-usuario-acciones">
+            <button type="submit" class="btn btn-bordo btn-sm">Crear usuario</button>
+            <button type="button" class="btn btn-sm" id="btn-cancelar-nuevo" style="background:var(--fondo);border:1.5px solid var(--borde)">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
       <div id="lista" class="admin-table-wrap">
         <div class="estado-msg"><span class="spinner"></span> Cargando usuarios…</div>
       </div>
@@ -66,7 +119,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
           </div>
           <button class="cerrar-detalle" id="btn-cerrar-detalle">Cerrar</button>
         </div>
-        <div class="detalle-body">
+        <div class="detalle-body" id="detalle-aspirante">
           <div class="detalle-stats" id="det-stats"></div>
           <div class="chart-grid">
             <div class="chart-box"><h4>Progreso por intento</h4><canvas id="chart-progreso"></canvas></div>
@@ -78,6 +131,9 @@ $usuario = requiereRolPagina('admin', '../index.php');
               <tbody id="det-tabla"></tbody>
             </table>
           </div>
+        </div>
+        <div class="detalle-body" id="detalle-admin" style="display:none">
+          <div class="detalle-stats" id="det-resumen-sitio"></div>
         </div>
       </div>
     </div>
@@ -94,7 +150,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
     async function cargarUsuarios() {
       const div = document.getElementById('lista');
       try {
-        const resp = await fetch('../backend/api/admin/usuarios.php');
+        const resp = await fetch('../../backend/api/admin/usuarios.php');
         const json = await resp.json();
         if (json.status !== 'ok' || !json.datos?.length) {
           div.innerHTML = '<div class="estado-msg">Sin usuarios registrados.</div>'; return;
@@ -117,6 +173,28 @@ $usuario = requiereRolPagina('admin', '../index.php');
       }
     }
 
+    async function renderResumenSitio() {
+      const div = document.getElementById('det-resumen-sitio');
+      div.innerHTML = '<div class="detalle-stat"><div class="num">…</div><div class="label">Cargando</div></div>';
+      try {
+        const resp = await fetch('../../backend/api/recursos.php');
+        const json = await resp.json();
+        const recursos = json.status === 'ok' ? (json.datos || []).length : '—';
+
+        const aspirantes = usuarios.filter(u => u.rol === 'aspirante').length;
+        const admins = usuarios.filter(u => u.rol === 'admin').length;
+
+        div.innerHTML = `
+          <div class="detalle-stat"><div class="num">${usuarios.length}</div><div class="label">Usuarios totales</div></div>
+          <div class="detalle-stat"><div class="num">${aspirantes}</div><div class="label">Aspirantes</div></div>
+          <div class="detalle-stat"><div class="num">${admins}</div><div class="label">Administradores</div></div>
+          <div class="detalle-stat"><div class="num">${recursos}</div><div class="label">Recursos en biblioteca</div></div>
+        `;
+      } catch (err) {
+        div.innerHTML = '<div class="estado-msg">No se pudo cargar el resumen del sitio.</div>';
+      }
+    }
+
     async function verDetalle(id) {
       document.querySelectorAll('.seleccionado').forEach(el => el.classList.remove('seleccionado'));
       const row = document.querySelector(`tr[data-id="${id}"]`);
@@ -127,7 +205,7 @@ $usuario = requiereRolPagina('admin', '../index.php');
       det.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       try {
-        const resp = await fetch(`../backend/api/admin/usuarios_detalle.php?id=${id}`);
+        const resp = await fetch(`../../backend/api/admin/usuarios_detalle.php?id=${id}`);
         const json = await resp.json();
         if (json.status !== 'ok') throw new Error(json.mensaje);
 
@@ -138,6 +216,15 @@ $usuario = requiereRolPagina('admin', '../index.php');
 
         document.getElementById('det-nombre').textContent = user.nombre;
         document.getElementById('det-email').textContent = `${user.email} · Rol: ${user.rol} · Registro: ${user.creado ? new Date(user.creado.replace(' ', 'T')).toLocaleDateString('es-MX') : '—'}`;
+
+        if (user.rol === 'admin') {
+          document.getElementById('detalle-aspirante').style.display = 'none';
+          document.getElementById('detalle-admin').style.display = 'block';
+          await renderResumenSitio();
+          return;
+        }
+        document.getElementById('detalle-aspirante').style.display = 'block';
+        document.getElementById('detalle-admin').style.display = 'none';
 
         const totalIntentos = intentos.length;
         const mejor = totalIntentos > 0 ? Math.max(...intentos.map(i => parseFloat(i.porcentaje))) : 0;
@@ -241,6 +328,48 @@ $usuario = requiereRolPagina('admin', '../index.php');
     document.getElementById('btn-cerrar-detalle').addEventListener('click', () => {
       document.getElementById('detalle').classList.remove('visible');
       document.querySelectorAll('.seleccionado').forEach(el => el.classList.remove('seleccionado'));
+    });
+
+    const nuevoUsuarioCard = document.getElementById('nuevo-usuario-card');
+    document.getElementById('btn-nuevo-usuario').addEventListener('click', () => {
+      nuevoUsuarioCard.classList.add('visible');
+      nuevoUsuarioCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    document.getElementById('btn-cancelar-nuevo').addEventListener('click', () => {
+      nuevoUsuarioCard.classList.remove('visible');
+      document.getElementById('form-nuevo-usuario').reset();
+      document.getElementById('msg-nuevo-usuario').style.display = 'none';
+    });
+
+    document.getElementById('form-nuevo-usuario').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('msg-nuevo-usuario');
+      msg.style.display = 'none';
+
+      const payload = {
+        nombre: document.getElementById('nu-nombre').value.trim(),
+        email: document.getElementById('nu-email').value.trim(),
+        password: document.getElementById('nu-password').value,
+        rol: document.getElementById('nu-rol').value,
+      };
+
+      try {
+        const resp = await fetch('../../backend/api/admin/crear_usuario.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const json = await resp.json();
+        if (json.status !== 'ok') throw new Error(json.mensaje || 'No se pudo crear el usuario.');
+
+        document.getElementById('form-nuevo-usuario').reset();
+        nuevoUsuarioCard.classList.remove('visible');
+        cargarUsuarios();
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.style.color = '#C62828';
+        msg.style.display = 'block';
+      }
     });
 
     cargarUsuarios();

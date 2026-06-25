@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS, Biblioteca de guías</title>
-  <link rel="stylesheet" href="css/estilos.css?v=2">
+  <link rel="stylesheet" href="css/estilos.css?v=3">
   <style>
     .biblio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
     .recurso-card { padding: 1.4rem; border-left: 4px solid var(--bordo); display: flex; flex-direction: column; gap: .6rem; }
@@ -33,7 +33,11 @@
 </head>
 <body class="page-wrapper">
 
-  <?php require 'includes/navbar.php'; ?>
+  <?php if (tieneRol('admin')): ?>
+    <?php $navAdminRoot = ''; $navAdminDir = 'admin/'; require 'includes/navbar_admin.php'; ?>
+  <?php else: ?>
+    <?php require 'includes/navbar.php'; ?>
+  <?php endif; ?>
 
   <div class="page-header">
     <div class="container">

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal ECOEMS, Acerca del Proyecto</title>
-  <link rel="stylesheet" href="css/estilos.css?v=2">
+  <link rel="stylesheet" href="css/estilos.css?v=3">
   <style>
     .team-grid {
       display: grid;
@@ -119,6 +119,10 @@
           que recopila y publica en abierto bases de datos educativas financiadas con recursos públicos, con el objetivo
           de impulsar la investigación y el diseño de políticas educativas basadas en evidencia.
         </p>
+        <p style="font-size:.98rem;line-height:1.8;color:var(--texto);margin-top:1rem">
+          El tratamiento de los datos personales de quienes crean una cuenta se describe en el aviso de privacidad
+          y en los términos y condiciones disponibles desde el formulario de registro.
+        </p>
       </div>
 
       <!-- Equipo -->
@@ -193,6 +197,9 @@
           <div class="info-row"><span>/resumen.php</span><strong>Resumen estadístico</strong></div>
           <div class="info-row"><span>/biblioteca.php</span><strong>Biblioteca de guías</strong></div>
           <div class="info-row"><span>/simulador.php</span><strong>Examen simulador</strong></div>
+          <div class="info-row"><span>/repaso.php</span><strong>Repaso por materia, flashcards</strong></div>
+          <div class="info-row"><span>/dashboard.php</span><strong>Mi panel, opciones y progreso</strong></div>
+          <div class="info-row"><span>/admin/dashboard.php</span><strong>Panel de administración</strong></div>
           <div class="info-row"><span>/acerca.php</span><strong>Esta página</strong></div>
         </div>
 
