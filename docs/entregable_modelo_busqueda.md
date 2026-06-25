@@ -32,7 +32,7 @@ erDiagram
     USUARIOS ||--o| PERFIL_ASPIRANTE : tiene
     USUARIOS ||--o{ INTENTOS_SIMULADOR : registra
     USUARIOS ||--o{ RECURSOS : publica
-    PLANTELES ||--o{ SUSTENTANTES : "es solicitado por (opc_ed01..20)"
+    PLANTELES ||--o{ SUSTENTANTES : es_solicitado_por
     PLANTELES ||--o| V_CORTE_POR_PLANTEL : agrega
     SUSTENTANTES ||--o| V_RESUMEN_INSTITUCIONES : agrega
 
@@ -44,7 +44,7 @@ erDiagram
         enum rol
     }
     PERFIL_ASPIRANTE {
-        int usuario_id PK_FK
+        int usuario_id PK
         smallint puntaje_meta
         json opciones_json
     }
