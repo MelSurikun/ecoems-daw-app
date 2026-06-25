@@ -77,8 +77,15 @@
                    placeholder="Ej. B00001, CETIS, Prepa…" style="width:100%">
             <div id="autocomplete" style="position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra);z-index:200;max-height:200px;overflow-y:auto;display:none"></div>
           </div>
+          <div class="filter-group">
+            <label>Municipio o alcaldía</label>
+            <select id="sel-municipio" class="filter-select" style="width:100%">
+              <option value="">Todos</option>
+            </select>
+          </div>
           <button id="btn-buscar" class="btn btn-bordo btn-sm">Buscar</button>
           <button id="btn-todos" class="btn btn-sm" style="background:var(--fondo);border:1.5px solid var(--borde)">Todos</button>
+          <a id="btn-exportar-xml" class="btn btn-sm" style="background:var(--fondo);border:1.5px solid var(--borde)" target="_blank">Exportar a XML</a>
         </div>
       </div>
 
@@ -106,6 +113,26 @@
     let todosPlanteles = [];
     let filtroActual = '';
 
+    function actualizarLinkXml(q) {
+      const params = new URLSearchParams();
+      if (q) params.set('q', q);
+      if (filtroActual) params.set('subsistema', filtroActual);
+      const municipio = document.getElementById('sel-municipio').value;
+      if (municipio) params.set('municipio', municipio);
+      const qs = params.toString();
+      document.getElementById('btn-exportar-xml').href =
+        '../backend/api/planteles_xml.php' + (qs ? '?' + qs : '');
+    }
+
+    function poblarMunicipios() {
+      const sel = document.getElementById('sel-municipio');
+      const actual = sel.value;
+      const municipios = [...new Set(todosPlanteles.map(p => p.municipio).filter(Boolean))].sort();
+      sel.innerHTML = '<option value="">Todos</option>' +
+        municipios.map(m => `<option value="${m}">${m}</option>`).join('');
+      sel.value = actual;
+    }
+
     async function cargarPlanteles(q) {
       const div = document.getElementById('resultados');
       div.innerHTML = `<div class="estado-msg"><span class="spinner"></span> Cargando…</div>`;
@@ -116,12 +143,13 @@
           const json = await resp.json();
           if (json.status !== 'ok') throw new Error('Error al cargar');
           todosPlanteles = json.datos;
+          poblarMunicipios();
         }
 
         let filtrados = todosPlanteles;
         if (q) {
           const lq = q.toLowerCase();
-          filtrados = todosPlanteles.filter(p =>
+          filtrados = filtrados.filter(p =>
             (p.clave || '').toLowerCase().includes(lq) ||
             (p.nombre || '').toLowerCase().includes(lq) ||
             (p.subsistema || '').toLowerCase().includes(lq)
@@ -130,6 +158,12 @@
         if (filtroActual) {
           filtrados = filtrados.filter(p => p.subsistema === filtroActual);
         }
+        const municipio = document.getElementById('sel-municipio').value;
+        if (municipio) {
+          filtrados = filtrados.filter(p => p.municipio === municipio);
+        }
+
+        actualizarLinkXml(q);
 
         if (filtrados.length === 0) {
           div.innerHTML = `<div class="estado-msg">${q ? 'Sin resultados para «' + q + '»' : 'No hay planteles registrados.'}</div>`;
@@ -190,7 +224,11 @@
     const ac = document.getElementById('autocomplete');
     document.getElementById('btn-buscar').addEventListener('click', () => cargarPlanteles(inp.value.trim()));
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') cargarPlanteles(inp.value.trim()); });
-    document.getElementById('btn-todos').addEventListener('click', () => { inp.value = ''; filtroActual = ''; cargarPlanteles(''); });
+    document.getElementById('btn-todos').addEventListener('click', () => {
+      inp.value = ''; filtroActual = ''; document.getElementById('sel-municipio').value = '';
+      cargarPlanteles('');
+    });
+    document.getElementById('sel-municipio').addEventListener('change', () => cargarPlanteles(inp.value.trim()));
 
     let db;
     inp.addEventListener('input', () => {

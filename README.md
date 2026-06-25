@@ -38,6 +38,7 @@ Todos los endpoints devuelven `{ status, datos }`, usan prepared statements e in
 | Endpoint | Metodo | Auth | Parametros |
 |---|---|---|---|
 | `backend/api/planteles.php` | GET | — | `?q=texto`, `?clave=X`, vacio = todos |
+| `backend/api/planteles_xml.php` | GET | — | `?q=`, `?subsistema=`, `?municipio=`, `?descargar=1` — extraccion de datos en XML |
 | `backend/api/escuela.php` | GET | — | `?plantel=X`, `?q=texto` |
 | `backend/api/comparar.php` | GET | — | `?claves[]=A&claves[]=B` (1 a 5) |
 | `backend/api/resumen.php` | GET | — | `?institucion=X`, vacio = general |
@@ -252,20 +253,25 @@ ecoems-daw-app/
 │   └── update_coords.sql
 ├── temp/                       — PDF oficial, CSV, SQL generado por ETL
 └── docs/
+    └── entregable_modelo_busqueda.md  — Modelo de datos, relacional, de objetos, tipos de
+                                          datos, criterios de busqueda y extraccion XML
 ```
 
 · · ·
 
 ## Configuracion
 
-Editar `backend/config.php` con las credenciales de la base de datos:
+Editar `backend/config.php` con las credenciales de la base de datos del servidor donde se
+despliegue (en produccion, tecweb, la base se llama `proyectoequc`):
 
 ```php
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'ecoems_db');
-define('DB_USER', 'ecoems_user');
-define('DB_PASS', 'password');
+define('DB_NAME', 'proyectoequc');
+define('DB_USER', 'TU_USUARIO_TECWEB');
+define('DB_PASS', 'TU_PASSWORD_TECWEB');
 ```
+
+> En desarrollo local, `DB_NAME` puede seguir siendo `ecoems_db` si se importo con ese nombre.
 
 · · ·
 

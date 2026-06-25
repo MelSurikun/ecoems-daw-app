@@ -1,14 +1,14 @@
 <?php
 // ============================================================
 //  ECOEMS — config.php
-//  Configuración de conexión a MariaDB
-//  TODO (Segunda entrega): ajustar credenciales del servidor
+//  Configuración de conexión a MariaDB (servidor de producción: tecweb)
 // ============================================================
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'ecoems_db');
-define('DB_USER', 'ecoems_user');
-define('DB_PASS', 'password');
+define('DB_NAME', 'proyectoequc');
+// >>> PON AQUÍ tu usuario y contraseña de MySQL de tecweb <<<
+define('DB_USER', 'grupoc');
+define('DB_PASS', '2024sdfg#2');
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO {
